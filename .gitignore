@@ -1,0 +1,18 @@
+$ cat .gitignore
+
+# Can ignore specific files
+.DS_Store
+
+# Use wildcards as well
+*.fig
+*.txt
+*.csv
+*.pdf
+*.tiff
+*.mov
+*.dat
+
+# Can also ignore all directories and files in a directory.
+/AnalysisFigs
+/ExportFiles
+/Sightings
