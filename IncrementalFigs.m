@@ -154,10 +154,19 @@ axis([0 2.5 0 270])
 text(0.11,20,'A','FontSize',14,'FontWeight','bold')
 
 subplot(132); hold on; box on
-plot([150 100 50 25], p_dec200(3:5:end,:)','.-','MarkerSize',20)
-plot([100 50 25], p_dec150(3:5:end,:)','.--','MarkerSize',20)
-plot([50 25], p_dec100(3:5:end,:)','.:','MarkerSize',20)
-plot([25], p_dec50(3:5:end,:)','.','MarkerSize',20)
+plot([150 100 50 25], p_dec200(3,:)','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([150 100 50 25], p_dec200(8,:)','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([150 100 50 25], p_dec200(13,:)','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([100 50 25], p_dec150(3,:)','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([100 50 25], p_dec150(8,:)','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([100 50 25], p_dec150(13,:)','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([50 25], p_dec100(3:5:end,:)','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([50 25], p_dec100(8,:)','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([50 25], p_dec100(13,:)','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+% plot([25], p_dec50(3:5:end,:)','.','MarkerSize',20)
 set(gca,'xdir','reverse')
 xlabel('Length of line (m)'); ylabel('Percent Decrease in Drag')
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
@@ -167,10 +176,21 @@ axis([0 200 0 100])
 
 
 subplot(133); hold on; box on
-plot([50/200 100/200 150/200 175/200], p_dec200(3:5:end,:)','.-','MarkerSize',20)
-plot([50/150 100/150 125/150], p_dec150(3:5:end,:)','.--','MarkerSize',20)
-plot([50/100 75/100], p_dec100(3:5:end,:)','.:','MarkerSize',20)
-plot(25/50, p_dec50(3:5:end,:)','.','MarkerSize',20)
+plot([50/200 100/200 150/200 175/200], p_dec200(3,:)','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([50/200 100/200 150/200 175/200], p_dec200(8,:)','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([50/200 100/200 150/200 175/200], p_dec200(13,:)','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([50/150 100/150 125/150], p_dec150(3:5:end,:)','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([50/150 100/150 125/150], p_dec150(8,:)','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([50/150 100/150 125/150], p_dec150(13,:)','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([50/100 75/100], p_dec100(3:5:end,:)','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([50/100 75/100], p_dec100(3:5:end,:)','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([50/100 75/100], p_dec100(3:5:end,:)','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+
+
+% plot(25/50, p_dec50(3:5:end,:)','.','MarkerSize',20)
 xlabel('Proportion of line removed');
 set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
