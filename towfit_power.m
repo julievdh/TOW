@@ -2,8 +2,8 @@ function [yfit,speeds,coefs,sse] = towfit_power(gset,speeds)
 
 % Inputs:
 %   gset = 2 x n matrix of [speeds (m/s) drag (N)] of a gear set tow
-%   i = gear set being towed 
 %   speeds = speeds across which want to fit curve (not required)
+
 % Outputs: 
 %   yfit = fit curve to speeds
 %   speeds = speeds across which curve is fit
@@ -13,10 +13,11 @@ function [yfit,speeds,coefs,sse] = towfit_power(gset,speeds)
 
 warning off
 
+% if speeds aren't specified, create speed vector
 if nargin == 1
 speeds = [0.2:0.15:2.2]';
-
 end
+
 
 % fit linear curve to transformed data
 ft = fittype('poly1');
