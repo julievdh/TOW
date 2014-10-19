@@ -11,6 +11,7 @@ $ cat .gitignore
 *.tiff
 *.mov
 *.dat
+*.mat
 
 # Can also ignore all directories and files in a directory.
 /AnalysisFigs
