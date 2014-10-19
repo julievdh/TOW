@@ -5,7 +5,10 @@
 
 close all
 
-
+% load data
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
+load('TOWDRAG')
+cd /Users/julievanderhoop/Documents/MATLAB/
 
 %     % calculate curves for each set
 speed = [0.5:0.1:2.2];
@@ -44,7 +47,7 @@ end
 
 
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
-adjustfigurefont
+% adjustfigurefont
 ylim([0 250])
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
@@ -71,7 +74,7 @@ plot(TOWDRAG(20).mn_speed(1:3),TOWDRAG(20).mn_dragN(1:3),'.',speed,yfit(:,5),'co
 
 legend('200 m','150 m','100 m','50 m','25 m','Location','NW')
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
-adjustfigurefont
+% adjustfigurefont
 ylim([0 250])
 % 
 % 
@@ -110,7 +113,7 @@ axis([0 1 0 100])
 text(0.06,8.5,'B','FontSize',14,'FontWeight','bold')
 
 
-adjustfigurefont
+% adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 print('-depsc','Incremental2')
@@ -173,7 +176,7 @@ set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 axis([0 1 0 100])
 text(0.06,8.5,'C','FontSize',14,'FontWeight','bold')
-adjustfigurefont
+% adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 print('-depsc','IncrementalABC')
