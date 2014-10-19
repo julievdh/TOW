@@ -147,10 +147,11 @@ reject = reject(find(h06));
 for i = 1:length(reject)
     
     n = reject(i);
+    figure(1); clf
 
-[yfit06(:,i),speed,coeffs06(:,i),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]],i);
-[yfit0(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)],i);
-[yfit6(:,i),speed,coeffs6(:,i),sse6(:,i)] = towfit_power([TOWDRAG(n).mn_speed(7:9)' TOWDRAG(n).mn_dragN(7:9)],i);
+[yfit06(:,i),speed,coeffs06(:,i),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]]);
+[yfit0(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)]);
+[yfit6(:,i),speed,coeffs6(:,i),sse6(:,i)] = towfit_power([TOWDRAG(n).mn_speed(7:9)' TOWDRAG(n).mn_dragN(7:9)]);
 
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 title(regexprep(TOWDRAG(n).filename,'_',' '))
@@ -159,6 +160,7 @@ legend('0 and 6','0 and 6','0 only','0 only','6 only','6 only')
 % adjustfigurefont
 
 end
+
 
 
  
