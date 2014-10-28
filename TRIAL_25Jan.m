@@ -1,6 +1,6 @@
 close all; clear all; clc
 
-cd /Volumes/TOW/ExportFiles
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
 
 filename = '20120912_8mm200m';
 % filename = '20120912_J081800'; % first example always running through
@@ -51,7 +51,8 @@ for i = 1:9
         bintime(i,1:2) = x(:,1)';
     end
     % save bintime to file
-    cd /Volumes/TOW/ExportFiles; save(filename, 'bintime', '-append')
+    cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
+    save(filename, 'bintime', '-append')
     
 end
 
@@ -135,6 +136,8 @@ mn_speed = nanmean(vertcat(handSOG,shipSOG));
 
 
 % STOPPED HERE IN REDOING! HOORAY!! 
+return
+
 %%
 
 % calculate mean drag ( CONVERTED TO NEWTONS ) vs. mean speed (m/s)
@@ -150,8 +153,8 @@ title(regexprep(filename,'_',' '),'FontSize',12)
 xlabel('Speed (m/s)','FontSize',12); ylabel('Force (N)','FontSize',12)
 legend('Surface','3m','6m','Location','NW')
 
-% save figure
-cd /Volumes/TOW/MATLAB/AnalysisFigs
-savename = strcat(filename,'_ForceSpeed');
-
-print('-depsc',savename)
+% % save figure
+% cd /Volumes/TOW/MATLAB/AnalysisFigs
+% savename = strcat(filename,'_ForceSpeed');
+% 
+% print('-depsc',savename)
