@@ -156,8 +156,10 @@ for i = 1:length(reject)
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 title(regexprep(TOWDRAG(n).filename,'_',' '))
 box on
+legend off
+adjustfigurefont
 legend('0 and 6','0 and 6','0 only','0 only','6 only','6 only')
-% adjustfigurefont
+errorbar(TOWDRAG(n).mn_speed,TOWDRAG(n).mn_dragN,TOWDRAG(n).sd_dragN,'o')
 
 end
 
