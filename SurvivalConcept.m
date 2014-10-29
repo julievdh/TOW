@@ -24,10 +24,10 @@ fate = [1; 0; 0; 0; 0; 1; 0; 0; 1; 0; 0; 0; 0; 1; 1];
 
 % plot
 figure(1)
-plot(topsurfdrag(fate == 0),mindur(fate == 0),'b.')
-hold on; plot(topsurfdrag(fate == 1),mindur(fate == 1),'r.')
-plot(topsurfdrag(fate == 0),maxdur(fate == 0),'bo')
-plot(topsurfdrag(fate == 1),maxdur(fate == 1),'ro')
+plot(mindur(fate == 0),topsurfdrag(fate == 0),'k.')
+hold on; plot(mindur(fate == 1),topsurfdrag(fate == 1),'r.')
+plot(maxdur(fate == 0),topsurfdrag(fate == 0),'ko')
+plot(maxdur(fate == 1),topsurfdrag(fate == 1),'ro')
 
 for i = 1:15
     % conditional colors based on fate
@@ -35,10 +35,11 @@ for i = 1:15
         c = [1 0 0];
     end
     if fate (i) == 0
-        c = [0 0 1];
+        c = [0 0 0];
     end
-    plot([topsurfdrag(i) topsurfdrag(i)],[mindur(i) maxdur(i)],'color',c)
+    plot([mindur(i) maxdur(i)],[topsurfdrag(i) topsurfdrag(i)],'color',c)
 end
 
-xlabel('Average Drag Force (N; surface, top speed)')
-ylabel('Entanglement Duration (days)')
+ylabel('Average Drag Force (N; surface, top speed)')
+xlabel('Entanglement Duration (days)')
+adjustfigurefont
