@@ -1,8 +1,7 @@
-close all; clear all; clc
+%  close all;
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
 
-filename = '20120912_8mm200m';
 % filename = '20120912_J081800'; % first example always running through
 load(filename)
 
