@@ -72,12 +72,16 @@ for n = 1:21
     
 end
 
-
+%% USED AIC IN R (see DepthEffect_AIC.R) to find where model with depth is preferred. 
+% Based on this, the following cases have effect of depth:
+% 8mm200m, 8mm100m, 011409, 020709, 070602, 072498, 120305, telembuoy
+% are == files:
+% [1 5 6 9 10 16 18 21]
 
 
 %% 5. For those where Ho is rejected, do pairwise comparisons
 
-reject = find(h);
+reject = [1 5 6 9 10 16 18 21];
 
 for i = 1:length(reject)
     
