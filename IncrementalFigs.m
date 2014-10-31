@@ -85,43 +85,60 @@ print('-depsc','Incremental1')
 
 %%
 
-figure(3); clf
-set(gcf,'Position',[360 240 700 340],'paperpositionmode','auto')
+figure(3); clf; hold on; box on
+set(gcf,'Position',[360 240 512 384],'paperpositionmode','auto')
+plot([200 150 100 50 25], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([200 150 100 50 25], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([200 150 100 50 25], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
 
+plot([150 100 50 25], [0 p_dec150(3,:)]','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([150 100 50 25], [0 p_dec150(8,:)]','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([150 100 50 25], [0 p_dec150(13,:)]','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
 
-subplot(121); hold on; box on
-plot([150 100 50 25], p_dec200(3:5:end,:)','.-','MarkerSize',20)
-plot([100 50 25], p_dec150(3:5:end,:)','.--','MarkerSize',20)
-plot([50 25], p_dec100(3:5:end,:)','.:','MarkerSize',20)
-plot(25, p_dec50(3:5:end,:)','.','MarkerSize',20)
+plot([100 50 25], [0 p_dec100(3,:)]','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([100 50 25], [0 p_dec100(8,:)]','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([100 50 25], [0 p_dec100(13,:)]','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+% plot([25], p_dec50(3:5:end,:)','.','MarkerSize',20)
 set(gca,'xdir','reverse')
 xlabel('Length of line (m)'); ylabel('Percent Decrease in Drag')
+adjustfigurefont
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 set(gca,'xtick',[0 25 50 100 150 200])
-text(190,8.5,'A','FontSize',14,'FontWeight','bold')
 axis([0 200 0 100])
 
 
-subplot(122); hold on; box on
-plot([50/200 100/200 150/200 175/200], p_dec200(1:end,:)','.-','MarkerSize',20)
-plot([50/150 100/150 125/150], p_dec150(1:end,:)','.--','MarkerSize',20)
-plot([50/100 75/100], p_dec100(1:end,:)','.:','MarkerSize',20)
-plot(25/50, p_dec50(1:end,:)','.','MarkerSize',20)
-xlabel('Proportion of line removed');
+
+figure(5); clf; hold on; box on
+% add in zeros at beginning of plot
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([0 50/150 100/150 125/150], [0 p_dec150(3,:)]','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/150 100/150 125/150], [0 p_dec150(8,:)]','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/150 100/150 125/150], [0 p_dec150(13,:)]','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+plot([0 50/100 75/100], [0 p_dec100(3,:)]','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/100 75/100], [0 p_dec100(8,:)]','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/100 75/100], [0 p_dec100(13,:)]','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+
+
+
+% plot(25/50, p_dec50(3:5:end,:)','.','MarkerSize',20)
+xlabel('Proportion of line removed'); ylabel('Percent Decrease in Drag')
 set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
+adjustfigurefont
+legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 axis([0 1 0 100])
-text(0.06,8.5,'B','FontSize',14,'FontWeight','bold')
 
-
-% adjustfigurefont
-
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('-depsc','Incremental2')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('-depsc','Incremental2')
 
 %% Figure 4 -- ABC Figure
 
 figure (4); clf
-set(gcf,'Position',[360 240 1200 340],'paperpositionmode','auto')
+set(gcf,'Position',[72 240 1200 340],'paperpositionmode','auto')
 
 subplot(131); hold on; box on
 % plot surface tow with SD
@@ -151,42 +168,42 @@ end
 
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 axis([0 2.5 0 270])
-text(0.11,20,'A','FontSize',14,'FontWeight','bold')
+text(0.09,200,'A','FontSize',14,'FontWeight','bold')
 
 subplot(132); hold on; box on
-plot([150 100 50 25], p_dec200(3,:)','.-','MarkerSize',20,'color',[202/255 0 32/255])
-plot([150 100 50 25], p_dec200(8,:)','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([150 100 50 25], p_dec200(13,:)','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([200 150 100 50 25], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([200 150 100 50 25], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([200 150 100 50 25], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
 
-plot([100 50 25], p_dec150(3,:)','.--','MarkerSize',20,'color',[202/255 0 32/255])
-plot([100 50 25], p_dec150(8,:)','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([100 50 25], p_dec150(13,:)','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([150 100 50 25], [0 p_dec150(3,:)]','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([150 100 50 25], [0 p_dec150(8,:)]','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([150 100 50 25], [0 p_dec150(13,:)]','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
 
-plot([50 25], p_dec100(3:5:end,:)','.:','MarkerSize',20,'color',[202/255 0 32/255])
-plot([50 25], p_dec100(8,:)','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([50 25], p_dec100(13,:)','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([100 50 25], [0 p_dec100(3,:)]','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([100 50 25], [0 p_dec100(8,:)]','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([100 50 25], [0 p_dec100(13,:)]','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
 
 % plot([25], p_dec50(3:5:end,:)','.','MarkerSize',20)
 set(gca,'xdir','reverse')
 xlabel('Length of line (m)'); ylabel('Percent Decrease in Drag')
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 set(gca,'xtick',[0 25 50 100 150 200])
-text(190,8.5,'B','FontSize',14,'FontWeight','bold')
+text(192,80,'B','FontSize',14,'FontWeight','bold')
 axis([0 200 0 100])
 
 
 subplot(133); hold on; box on
-plot([50/200 100/200 150/200 175/200], p_dec200(3,:)','.-','MarkerSize',20,'color',[202/255 0 32/255])
-plot([50/200 100/200 150/200 175/200], p_dec200(8,:)','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([50/200 100/200 150/200 175/200], p_dec200(13,:)','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
 
-plot([50/150 100/150 125/150], p_dec150(3,:)','.--','MarkerSize',20,'color',[202/255 0 32/255])
-plot([50/150 100/150 125/150], p_dec150(8,:)','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([50/150 100/150 125/150], p_dec150(13,:)','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([0 50/150 100/150 125/150], [0 p_dec150(3,:)]','.--','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/150 100/150 125/150], [0 p_dec150(8,:)]','.--','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/150 100/150 125/150], [0 p_dec150(13,:)]','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
 
-plot([50/100 75/100], p_dec100(3,:)','.:','MarkerSize',20,'color',[202/255 0 32/255])
-plot([50/100 75/100], p_dec100(8,:)','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
-plot([50/100 75/100], p_dec100(13,:)','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
+plot([0 50/100 75/100], [0 p_dec100(3,:)]','.:','MarkerSize',20,'color',[202/255 0 32/255])
+plot([0 50/100 75/100], [0 p_dec100(8,:)]','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+plot([0 50/100 75/100], [0 p_dec100(13,:)]','.:','MarkerSize',20,'color',[237/255 177/255 32/255])
 
 
 
@@ -195,8 +212,8 @@ xlabel('Proportion of line removed');
 set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 axis([0 1 0 100])
-text(0.06,8.5,'C','FontSize',14,'FontWeight','bold')
+text(0.04,80,'C','FontSize',14,'FontWeight','bold')
 % adjustfigurefont
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Incremental
 print('-depsc','IncrementalABC')
