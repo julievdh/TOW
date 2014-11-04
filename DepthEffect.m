@@ -72,7 +72,7 @@ for n = 1:21
     
 end
 
-%% USED AIC IN R (see DepthEffect_AIC.R) to find where model with depth is preferred. 
+%% USED AIC IN R (see DepthEffect_AIC.R) to find where model with depth is preferred.
 % Based on this, the following cases have effect of depth:
 % 8mm200m, 8mm100m, 011409, 020709, 070602, 072498, 120305, telembuoy
 % are == files:
@@ -89,38 +89,38 @@ for i = 1:length(reject)
     %%
     % 0 and 3
     % pool data
-%     [yfit03(:,i),speed,coeffs03(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(1:6)' TOWDRAG(reject(i)).mn_dragN(1:6)]);
-%     
-%     % RSSo = rss of pooled data
-%     
-%     % compute RSS if fit separately
-%     RSS1 = sse0(:,reject(i)) + sse3(:,reject(i));
-%     
-%     % compute F statistic
-%     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
-%     
-%     % calculate critical value w/ bonferroni correction
-%     crit = finv((1-(0.05/3)),2,2);
-%     
-%     % does F exceed critical value?
-%     h03(i) = F>crit;
-%     
-%     % 3 and 6
-%     % pool data
-%     [yfit36(:,i),speed,coeffs36(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(4:9)' TOWDRAG(reject(i)).mn_dragN(4:9)]);
-%     
-%     % compute RSS if fit separately
-%     RSS1 = sse3(:,reject(i)) + sse6(:,reject(i));
-%     
-%     % compute F statistic
-%     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
-%     
-%     h36(i) = F>crit;
-%     
-
-% compare only 0m and 6m as these are shallowest and deepest, minimizes
-% number of pairwise comparisons, increases power.
-
+    %     [yfit03(:,i),speed,coeffs03(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(1:6)' TOWDRAG(reject(i)).mn_dragN(1:6)]);
+    %
+    %     % RSSo = rss of pooled data
+    %
+    %     % compute RSS if fit separately
+    %     RSS1 = sse0(:,reject(i)) + sse3(:,reject(i));
+    %
+    %     % compute F statistic
+    %     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
+    %
+    %     % calculate critical value w/ bonferroni correction
+    %     crit = finv((1-(0.05/3)),2,2);
+    %
+    %     % does F exceed critical value?
+    %     h03(i) = F>crit;
+    %
+    %     % 3 and 6
+    %     % pool data
+    %     [yfit36(:,i),speed,coeffs36(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(4:9)' TOWDRAG(reject(i)).mn_dragN(4:9)]);
+    %
+    %     % compute RSS if fit separately
+    %     RSS1 = sse3(:,reject(i)) + sse6(:,reject(i));
+    %
+    %     % compute F statistic
+    %     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
+    %
+    %     h36(i) = F>crit;
+    %
+    
+    % compare only 0m and 6m as these are shallowest and deepest, minimizes
+    % number of pairwise comparisons, increases power.
+    
     % 0 and 6
     % pool data
     [yfit06(:,n),speed,coeffs06(:,n),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]]);
@@ -147,48 +147,46 @@ end
 % find where significant differences
 reject = reject(find(h06));
 
-%% 
+%%
 for i = 1:length(reject)
     
     n = reject(i);
     figure(1); clf
-
-[yfit06(:,i),speed,coeffs06(:,i),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]]);
-[yfit0(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)]);
-[yfit6(:,i),speed,coeffs6(:,i),sse6(:,i)] = towfit_power([TOWDRAG(n).mn_speed(7:9)' TOWDRAG(n).mn_dragN(7:9)]);
-
-xlabel('Speed (m/s)'); ylabel('Drag (N)')
-title(regexprep(TOWDRAG(n).filename,'_',' '))
-box on
-legend off
-adjustfigurefont
-legend('0 and 6','0 and 6','0 only','0 only','6 only','6 only')
-errorbar(TOWDRAG(n).mn_speed,TOWDRAG(n).mn_dragN,TOWDRAG(n).sd_dragN,'o')
-
+    
+    [yfit06(:,i),speed,coeffs06(:,i),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]]);
+    [yfit0(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)]);
+    [yfit6(:,i),speed,coeffs6(:,i),sse6(:,i)] = towfit_power([TOWDRAG(n).mn_speed(7:9)' TOWDRAG(n).mn_dragN(7:9)]);
+    
+    xlabel('Speed (m/s)'); ylabel('Drag (N)')
+    title(regexprep(TOWDRAG(n).filename,'_',' '))
+    box on
+    legend off
+    adjustfigurefont
+    legend('0 and 6','0 and 6','0 only','0 only','6 only','6 only')
+    errorbar(TOWDRAG(n).mn_speed,TOWDRAG(n).mn_dragN,TOWDRAG(n).sd_dragN,'o')
+    
 end
 
 
-
- 
 %% 6. Fix slope == 2 and test for intercept difference?
-% 
+%
 % % DO FOR first one: reject(1) = 6
 % for i = 1:4
 % n = reject(i)
-% 
+%
 % % calculate lin fit for 0 3 and 6 m depths
 % ylinhat0 = coeffs0(1,n)*log(TOWDRAG(n).mn_speed(1:3))+coeffs0(2,n);
-% 
+%
 % % calculate residuals and SSE
 % resid0 = (log(TOWDRAG(n).mn_dragN(1:3)) - ylinhat0');
 % sse_0 = sum(real(resid0).^2);
-% 
+%
 % % calculate lin fit for with fixed slope = 2
 % % for separate depths
 % ylinhat0_fixedslope = 2*log(TOWDRAG(n).mn_speed(1:3)+coeffs0(2,n));
 % ylinhat3_fixedslope = 2*log(TOWDRAG(n).mn_speed(4:6)+coeffs3(2,n));
 % ylinhat6_fixedslope = 2*log(TOWDRAG(n).mn_speed(7:9)+coeffs6(2,n));
-% 
+%
 % % calculate residuals and SSE
 % resid0_fs = (log(TOWDRAG(n).mn_dragN(1:3)) - ylinhat0_fixedslope');
 % sse_0_fs = sum(real(resid0_fs).^2);
@@ -196,12 +194,12 @@ end
 % sse_3_fs = sum(real(resid3_fs).^2);
 % resid6_fs = (log(TOWDRAG(n).mn_dragN(7:9)) - ylinhat6_fixedslope');
 % sse_6_fs = sum(real(resid6_fs).^2);
-% 
+%
 % % for pooled: 0 and 3, 3 and 6, 0 and 6
 % ylinhat03_fixedslope = 2*log(TOWDRAG(n).mn_speed(1:6)+coeffs03(2,i));
 % ylinhat36_fixedslope = 2*log(TOWDRAG(n).mn_speed(4:9)+coeffs36(2,i));
 % ylinhat06_fixedslope = 2*log([TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]+coeffs06(2,i));
-% 
+%
 % % calculate residuals and SSE
 % resid03_fs = (log(TOWDRAG(n).mn_dragN(1:6)) - ylinhat03_fixedslope');
 % sse_03_fs = sum(real(resid03_fs).^2);
@@ -209,27 +207,27 @@ end
 % sse_36_fs = sum(real(resid36_fs).^2);
 % resid06_fs = (log([TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]) - ylinhat06_fixedslope);
 % sse_06_fs = sum(real(resid06_fs).^2);
-% 
+%
 % % calculate Fs
 % F(:,1) = ((sse_03_fs - (sse_0_fs+sse_3_fs))/2) / ((sse_0_fs+sse_3_fs)/(6-4));
 % F(:,2) = ((sse_36_fs - (sse_3_fs+sse_6_fs))/2) / ((sse_3_fs+sse_6_fs)/(6-4));
 % F(:,3) = ((sse_06_fs - (sse_0_fs+sse_6_fs))/2) / ((sse_0_fs+sse_6_fs)/(6-4));
-% 
+%
 % F>crit
 % end
-% 
+%
 % %% 7. fix intercept == 1 and test for difference in slope?
-% 
+%
 % % DO FOR first one: reject(1) = 6
 % for i = 1:4
 % n = reject(i)
-% 
+%
 % % calculate lin fit for with fixed slope = 2
 % % for separate depths
 % ylinhat0_fixedint = coeffs0(1,n)*log(TOWDRAG(n).mn_speed(1:3)+2);
 % ylinhat3_fixedint = coeffs3(1,n)*log(TOWDRAG(n).mn_speed(4:6)+2);
 % ylinhat6_fixedint = coeffs6(1,n)*log(TOWDRAG(n).mn_speed(7:9)+2);
-% 
+%
 % % calculate residuals and SSE
 % resid0_fi = (log(TOWDRAG(n).mn_dragN(1:3)) - ylinhat0_fixedint');
 % sse_0_fi = sum(real(resid0_fi).^2);
@@ -237,12 +235,12 @@ end
 % sse_3_fi = sum(real(resid3_fi).^2);
 % resid6_fi = (log(TOWDRAG(n).mn_dragN(7:9)) - ylinhat6_fixedint');
 % sse_6_fi = sum(real(resid6_fi).^2);
-% 
+%
 % % for pooled: 0 and 3, 3 and 6, 0 and 6
 % ylinhat03_fixedint = coeffs03(1,i)*log(TOWDRAG(n).mn_speed(1:6)+2);
 % ylinhat36_fixedint = coeffs36(1,i)*log(TOWDRAG(n).mn_speed(4:9)+2);
 % ylinhat06_fixedint = coeffs06(1,i)*log([TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]+2);
-% 
+%
 % % calculate residuals and SSE
 % resid03_fi = (log(TOWDRAG(n).mn_dragN(1:6)) - ylinhat03_fixedint');
 % sse_03_fi = sum(real(resid03_fi).^2);
@@ -250,15 +248,15 @@ end
 % sse_36_fi = sum(real(resid36_fi).^2);
 % resid06_fi = (log([TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]) - ylinhat06_fixedint);
 % sse_06_fi = sum(real(resid06_fi).^2);
-% 
+%
 % % calculate Fs
 % F(:,1) = ((sse_03_fi - (sse_0_fi+sse_3_fi))/2) / ((sse_0_fi+sse_3_fi)/(6-4));
 % F(:,2) = ((sse_36_fi - (sse_3_fi+sse_6_fi))/2) / ((sse_3_fi+sse_6_fi)/(6-4));
 % F(:,3) = ((sse_06_fi - (sse_0_fi+sse_6_fi))/2) / ((sse_0_fi+sse_6_fi)/(6-4));
-% 
+%
 % F>crit
 % end
-% 
+%
 % %
 % % %% 6. Plot to illustrate which are rejected (white) and not rejected (black)
 % % figure
