@@ -9,57 +9,56 @@ warning off
 
 % plot mean drag vs. mean speed (m/s)
 figure(90); hold on
-set(gcf,'Position',[1580 0 1540 580]); box on
+set(gcf,'Position',[2530 0 420 580],'PaperPositionMode','auto'); box on
 
-for i = 1:15
-col = [rand rand rand];
-TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
-subplot(131); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
-        TOWDRAG(i).sd_dragN(1:3),'.','color',col,'MarkerSize',20)
-legend(TOWDRAG(1:20).filename,'Location','NW')
-axis([0 2.5 0 750])
-set(gca,'FontSize',12)
-title('Surface')
-xlabel('Speed (m/s)'); ylabel('Drag Force (N)')
+choose = [1:15];
+colormap = jet;
+colormap = colormap(1:4:end,:);
 
-subplot(132); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(4:6),TOWDRAG(i).mn_dragN(4:6),TOWDRAG(i).sd_dragN(4:6),...
-        TOWDRAG(i).sd_dragN(4:6),'.','color',col,'MarkerSize',20)
-axis([0 2.5 0 750])
-set(gca,'FontSize',12)
-title('3m')
-xlabel('Speed (m/s)')
-
-subplot(133); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(7:9),TOWDRAG(i).mn_dragN(7:9),TOWDRAG(i).sd_dragN(7:9),...
-    TOWDRAG(i).sd_dragN(7:9),'.','color',col,'MarkerSize',20)
-axis([0 2.5 0 750])
-set(gca,'FontSize',12)
-title('6m')
-xlabel('Speed (m/s)')
-
+for n = 1:length(choose)
+    i = choose(n);
+    TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
+    errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
+        TOWDRAG(i).sd_dragN(1:3),'.','color',colormap(n,:),'MarkerSize',20)
+    axis([0 2.5 0 750])
+    set(gca,'FontSize',18)
+    % title('Surface')
+    xlabel('Speed (m/s)'); ylabel('Drag Force (N)')
+    
 end
 
-return
+legend(TOWDRAG(choose).filename,'Location','NW')
 
-%%
+% calculate curves and plot
+for n = 1:length(choose)
+    i = choose(n);
+    [yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speed(1:3)' TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
+    plot(speed,yfit(:,n),'color',colormap(n,:))
+end
 
-% plot telemetry buoy
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('-depsc','SelectCases')
+
+
+return 
+
+%% plot telemetry buoy
 i = 21;
-subplot(131); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
-        TOWDRAG(i).sd_dragN(1:3),'.k','MarkerSize',20)
-plot(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),'k')
 
-subplot(132); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(4:6),TOWDRAG(i).mn_dragN(4:6),TOWDRAG(i).sd_dragN(4:6),...
-        TOWDRAG(i).sd_drag(4:6)*9.80665,'.k','MarkerSize',20)
-plot(TOWDRAG(i).mn_speed(4:6),TOWDRAG(i).mn_drag(4:6)*9.80665,'k')
+TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
+    errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
+        TOWDRAG(i).sd_dragN(1:3),'.','color','k','MarkerSize',20)
+[yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speed(1:3)' TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
+    plot(speed,yfit(:,n),'color','k','LineWidth',2)
 
-subplot(133); hold on; box on
-errorbar(TOWDRAG(i).mn_speed(7:9),TOWDRAG(i).mn_dragN(7:9),TOWDRAG(i).sd_dragN(7:9),...
-    TOWDRAG(i).sd_dragN(7:9),'.k','MarkerSize',20)
-plot(TOWDRAG(i).mn_speed(7:9),TOWDRAG(i).mn_dragN(7:9),'k')
-axis([0 2.5 0 750])
+       
+%% plot reference lines
 
+for i = 16:20
+
+TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
+    errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
+        TOWDRAG(i).sd_dragN(1:3),'.','color','k','MarkerSize',20)
+[yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speed(1:3)' TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
+    plot(speed,yfit(:,n),'color','k','LineWidth',2)
+end
