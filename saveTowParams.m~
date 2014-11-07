@@ -8,10 +8,7 @@ sz = size(TOWDRAG);
 % % put data in next available slot
 % sz1 = sz(2)+1;
 
-% OR
-
-% put data in specified slot
-sz1 = 1;
+% put dat
 
 % put data in next column
 TOWDRAG(sz1).filename = filename;
