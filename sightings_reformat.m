@@ -1,9 +1,15 @@
 % Reformat sightings data from catalog that has been cut/paste from excel
 % file
 % Julie van der Hoop 23 Oct 2012
+clear all
 
-whaleID = 3294;
+whaleID = 3714;
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/Sightings
+filename = strcat('sightings',num2str(whaleID));
+load(filename)
+
+%% 
 pre = [];
 
 %% cut and paste year, month, day into pre(:,2:4)
@@ -35,3 +41,7 @@ post(:,1) = datenum(post(:,2),post(:,3),post(:,4));
 %% cut and paste lat and long into post(:,2:3)
 
 post = post(:,1:3);
+
+
+%% save
+save(filename)
