@@ -116,8 +116,8 @@ figure(23); clf
 % create normalized colormap for weight
 colormap = winter;
 % set vector of weights to 64 for assigning colours from 64-length cmap
-% lnths_c = (wts/max(wts))*64;
-% lnths_c = round(lnths_c);
+lnths_c = (wts/max(wts))*64;
+lnths_c = round(lnths_c);
 
 
 for i = 1:length(reject)

@@ -1,4 +1,4 @@
-function [yfit,speeds,coefs,sse] = towfit_power(gset,speeds)
+function [yfit,speeds,coefs,sse] = towfit_power(gset,fignum,speeds)
 
 % Inputs:
 %   gset = 2 x n matrix of [speeds (m/s) drag (N)] of a gear set tow
@@ -13,8 +13,14 @@ function [yfit,speeds,coefs,sse] = towfit_power(gset,speeds)
 
 warning off
 
-% if speeds aren't specified, create speed vector
+% if figure number isn't specified, set default to 1
 if nargin == 1
+    fignum = 1;
+end
+
+
+% if speeds aren't specified, create speed vector
+if nargin < 3
 speeds = [0.2:0.15:2.2]';
 end
 
@@ -58,7 +64,7 @@ end
 % create transformed fitted curve and data
 yfit = exp(coefs(2))*speeds.^coefs(1);
 yhat = exp(coefs(2))*gset(:,1).^coefs(1);
-figure(1); hold on
+figure(fignum); hold on
 c = [rand rand rand];
 plot(speeds,yfit,'color',c)
 plot(gset(:,1),gset(:,2),'o','MarkerFaceColor',c)

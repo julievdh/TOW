@@ -3,7 +3,7 @@
 clear all;
 
 % load data/run import/align/select code
-filename = '20120912_J070602';
+filename = '20120912_8mm200m';
 TRIAL_25Jan
 
 % %% calculate FFT for each time/depth bin

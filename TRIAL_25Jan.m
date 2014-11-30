@@ -1,8 +1,7 @@
-close all; clear all; 
+close all; 
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
 
-filename = '20120912_telembuoy.mat'; % first example always running through
 load(filename)
 
 %%
