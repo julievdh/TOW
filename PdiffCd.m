@@ -44,3 +44,11 @@ speedmatters = find(speedmatters == 1);
 % for which cases does CD percent difference in depth > in speed?
 depthmatters = ddiff > sdiff;
 depthmatters = find(depthmatters == 1);
+
+% which clusters are these cases in?
+% set up cluster info from R:
+cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+
+cluster(depthmatters)
+cluster(speedmatters)
+

@@ -70,7 +70,7 @@ xlim([0 2.5])
 %%
 figure(2); clf;
 semilogx(Re,Cd,'.','MarkerSize',25); hold on
-semilogx(Re_3911,vdh_NESk3,'ko-')
+semilogx(Re_3911,vdh_NESk3,'k^-','MarkerFaceColor','k')
 xlabel('Reynolds Number'); ylabel('Drag Coefficient'); adjustfigurefont
 box on
 
