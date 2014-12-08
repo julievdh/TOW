@@ -3,7 +3,7 @@
 clear all; close all
 
 % load data
-whaleID = 3714;
+whaleID = 1102;
 filename = sprintf('sightings%d',whaleID);
 load(filename)
 
