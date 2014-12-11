@@ -16,19 +16,21 @@ lnth = [24;69;275;15;19;37;27;82;85;122;150;1.4;243;68;10;200;150;100;50;25;19];
 
 for i = 1:length(TOWDRAG)
     % Calculate drag coefficient
-    % Cd = 2D/(rho*Aw*U^2)
-    Cd(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*TOWDRAG(i).mn_speed'.^2);
+    % gearCd = 2D/(rho*Aw*U^2)
+    gearCd(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*TOWDRAG(i).mn_speed'.^2);
     
     % Calculate Reynolds number
     % Re = (l*u)/v
     % v for 60F seawater = 1.17e-6 [http://www.lmnoeng.com/fluids.htm]
     % mean september water temp buzzards bay = 65F
-    Re(:,i) = (lnth(i)*TOWDRAG(i).mn_speed')/1.17E-6;
+    gearRe(:,i) = (lnth(i)*TOWDRAG(i).mn_speed')/1.17E-6;
     
     % Make same matrix for speed for plotting ease
     speed(:,i) = TOWDRAG(i).mn_speed';
     depth(:,i) = TOWDRAG(i).mn_depth;
 end
+
+return
 
 %% Plot right whale Drag
 % McGregor DTAG drag coefficients and speed for foraging and traveling and
@@ -56,7 +58,7 @@ Re_3911 = (10*U)/1.17E-6;
 
 % plot
 figure(1); clf
-plot(speed,Cd,'.','MarkerSize',25); hold on
+plot(speed,gearCd,'.','MarkerSize',25); hold on
 
 plot(McG_FORAGE(:,2),McG_FORAGE(:,1),'k^','MarkerFaceColor','k')
 plot(McG_TRAVEL(:,2),McG_TRAVEL(:,1),'k^','MarkerFaceColor','k')
@@ -69,7 +71,7 @@ xlim([0 2.5])
 
 %%
 figure(2); clf;
-semilogx(Re,Cd,'.','MarkerSize',25); hold on
+semilogx(gearRe,gearCd,'.','MarkerSize',25); hold on
 semilogx(Re_3911,vdh_NESk3,'k^-','MarkerFaceColor','k')
 xlabel('Reynolds Number'); ylabel('Drag Coefficient'); adjustfigurefont
 box on
@@ -80,36 +82,36 @@ subplot(121)
 
 c = colormap(jet);
 
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii);
     hold on
     n = ii(i);
-    K = convhull(speed(:,n),Cd(:,n));
-    plot(speed(K,n),Cd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(speed(:,n),Cd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
+    K = convhull(speed(:,n),gearCd(:,n));
+    plot(speed(K,n),gearCd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(speed(:,n),gearCd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Speed (m/s)'); ylabel('Drag Coefficient');
 box on
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(speed(:,n),Cd(:,n));
-    plot(speed(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(1:3,n),Cd(1:3,n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(4:6,n),Cd(4:6,n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(7:9,n),Cd(7:9,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    K = convhull(speed(:,n),gearCd(:,n));
+    plot(speed(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(1:3,n),gearCd(1:3,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(4:6,n),gearCd(4:6,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(7:9,n),gearCd(7:9,n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
 subplot(122); hold on
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(speed(:,n),Cd(:,n));
-    plot(speed(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(i*4,:))
-    plot(speed(1:3,n),Cd(1:3,n),'.-','MarkerSize',20,'color',c(i*4,:))
-    plot(speed(4:6,n),Cd(4:6,n),'.-','MarkerSize',20,'color',c(i*4,:))
-    plot(speed(7:9,n),Cd(7:9,n),'.-','MarkerSize',20,'color',c(i*4,:))
+    K = convhull(speed(:,n),gearCd(:,n));
+    plot(speed(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(i*4,:))
+    plot(speed(1:3,n),gearCd(1:3,n),'.-','MarkerSize',20,'color',c(i*4,:))
+    plot(speed(4:6,n),gearCd(4:6,n),'.-','MarkerSize',20,'color',c(i*4,:))
+    plot(speed(7:9,n),gearCd(7:9,n),'.-','MarkerSize',20,'color',c(i*4,:))
 end
 xlabel('Speed (m/s)'); adjustfigurefont; box on
 
@@ -117,37 +119,37 @@ xlabel('Speed (m/s)'); adjustfigurefont; box on
 %% Plot Convex Hull w/ depth to see which ones vary a lot
 figure(4); clf
 
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 subplot(121)
 for i = 1:length(ii);
     hold on
     n = ii(i);
-    K = convhull(depth(:,n),Cd(:,n));
-    plot(depth(K,n),Cd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(depth(:,n),Cd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
+    K = convhull(depth(:,n),gearCd(:,n));
+    plot(depth(K,n),gearCd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(depth(:,n),gearCd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Depth (m)'); ylabel('Drag Coefficient')
 box on
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(depth(:,n),Cd(:,n));
-    plot(depth(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([1,4,7],n),Cd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([2,5,8],n),Cd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([3,6,9],n),Cd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    K = convhull(depth(:,n),gearCd(:,n));
+    plot(depth(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([1,4,7],n),gearCd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([2,5,8],n),gearCd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([3,6,9],n),gearCd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
 subplot(122); hold on
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(depth(:,n),Cd(:,n));
-    plot(depth(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(i*4,:))
-    plot(depth([1,4,7],n),Cd([1,4,7],n),'.-','MarkerSize',20,'color',c(i*4,:))
-    plot(depth([2,5,8],n),Cd([2,5,8],n),'.-','MarkerSize',20,'color',c(i*4,:))
-    plot(depth([3,6,9],n),Cd([3,6,9],n),'.-','MarkerSize',20,'color',c(i*4,:))
+    K = convhull(depth(:,n),gearCd(:,n));
+    plot(depth(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(i*4,:))
+    plot(depth([1,4,7],n),gearCd([1,4,7],n),'.-','MarkerSize',20,'color',c(i*4,:))
+    plot(depth([2,5,8],n),gearCd([2,5,8],n),'.-','MarkerSize',20,'color',c(i*4,:))
+    plot(depth([3,6,9],n),gearCd([3,6,9],n),'.-','MarkerSize',20,'color',c(i*4,:))
 end
 xlabel('Depth (m)'); adjustfigurefont; box on
 
@@ -155,90 +157,90 @@ xlabel('Depth (m)'); adjustfigurefont; box on
 figure(5); clf
 subplot(121)
 for i = 1:21;
-    K = convhull(Re(:,i),Cd(:,i));
-    semilogx(Re(K,i),Cd(K,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    K = convhull(gearRe(:,i),gearCd(:,i));
+    semilogx(gearRe(K,i),gearCd(K,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
     hold on
 end
 semilogx(Re_3911,vdh_NESk3,'ko-')
 xlabel('Reynolds Number'); ylabel('Drag Coefficient')
 box on
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(Re(:,n),Cd(:,n));
-    semilogx(Re(K,n),Cd(K,n),'.-','MarkerSize',20)
+    K = convhull(gearRe(:,n),gearCd(:,n));
+    semilogx(gearRe(K,n),gearCd(K,n),'.-','MarkerSize',20)
     hold on
 end
 
 subplot(122)
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(Re(:,n),Cd(:,n));
-    semilogx(Re(K,n),Cd(K,n),'.-','MarkerSize',20)
+    K = convhull(gearRe(:,n),gearCd(:,n));
+    semilogx(gearRe(K,n),gearCd(K,n),'.-','MarkerSize',20)
     hold on
 end
 semilogx(Re_3911,vdh_NESk3,'ko-')
 xlabel('Reynolds Number'); adjustfigurefont; box on
 
 
-%% Plot Cd with depth, lines connecting speed
+%% Plot gearCd with depth, lines connecting speed
 return
 
 figure(10); clf
 c = colormap;
 subplot(221)
 for i = 1:21
-    plot(depth([1,4,7],i),Cd([1,4,7],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(depth([1,4,7],i),gearCd([1,4,7],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
     hold on
-    plot(depth([2,5,8],i),Cd([2,5,8],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(depth([3,6,9],i),Cd([3,6,9],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(depth([2,5,8],i),gearCd([2,5,8],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(depth([3,6,9],i),gearCd([3,6,9],i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Depth (m)'); ylabel('Drag Coefficient')
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    plot(depth([1,4,7],n),Cd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([2,5,8],n),Cd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([3,6,9],n),Cd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([1,4,7],n),gearCd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([2,5,8],n),gearCd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([3,6,9],n),gearCd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
 subplot(222); hold on
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    plot(depth([1,4,7],n),Cd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([2,5,8],n),Cd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([3,6,9],n),Cd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([1,4,7],n),gearCd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([2,5,8],n),gearCd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([3,6,9],n),gearCd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 xlabel('Depth (m)')
 
 % lines connecting depths
 subplot(223); hold on
 for i = 1:21
-    plot(speed(1:3,i),Cd(1:3,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(speed(4:6,i),Cd(4:6,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(speed(7:9,i),Cd(7:9,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(speed(1:3,i),gearCd(1:3,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(speed(4:6,i),gearCd(4:6,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(speed(7:9,i),gearCd(7:9,i),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Speed (m/s)')
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    plot(speed(1:3,i),Cd(1:3,i),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(4:6,i),Cd(4:6,i),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(7:9,i),Cd(7:9,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(1:3,i),gearCd(1:3,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(4:6,i),gearCd(4:6,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(7:9,i),gearCd(7:9,i),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
 subplot(224); hold on
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    plot(speed(1:3,i),Cd(1:3,i),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(4:6,i),Cd(4:6,i),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(7:9,i),Cd(7:9,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(1:3,i),gearCd(1:3,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(4:6,i),gearCd(4:6,i),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(7:9,i),gearCd(7:9,i),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 xlabel('Speed (m/s)')
 
@@ -246,48 +248,48 @@ xlabel('Speed (m/s)')
 %% figure 6
 figure(6); clf
 
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 subplot(121)
 for i = 1:length(ii);
     hold on
     n = ii(i);
-    K = convhull(depth(:,n),Cd(:,n));
-    plot(depth(K,n),Cd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(depth(:,n),Cd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
+    K = convhull(depth(:,n),gearCd(:,n));
+    plot(depth(K,n),gearCd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(depth(:,n),gearCd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Depth (m)'); ylabel('Drag Coefficient')
 box on
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(depth(:,n),Cd(:,n));
-    plot(depth(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([1,4,7],n),Cd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([2,5,8],n),Cd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(depth([3,6,9],n),Cd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    K = convhull(depth(:,n),gearCd(:,n));
+    plot(depth(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([1,4,7],n),gearCd([1,4,7],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([2,5,8],n),gearCd([2,5,8],n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(depth([3,6,9],n),gearCd([3,6,9],n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
 subplot(122)
 
-ii = find(var(Cd)./mean(Cd) <= 0.01);
+ii = find(var(gearCd)./mean(gearCd) <= 0.01);
 for i = 1:length(ii);
     hold on
     n = ii(i);
-    K = convhull(speed(:,n),Cd(:,n));
-    plot(speed(K,n),Cd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
-    plot(speed(:,n),Cd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
+    K = convhull(speed(:,n),gearCd(:,n));
+    plot(speed(K,n),gearCd(K,n),'.-','MarkerSize',20,'color',[0.75 0.75 0.75])
+    plot(speed(:,n),gearCd(:,n),'.','MarkerSize',20,'color',[0.75 0.75 0.75])
 end
 xlabel('Speed (m/s)'); ylabel('Drag Coefficient');
 box on
 
-ii = find(var(Cd)./mean(Cd) > 0.01);
+ii = find(var(gearCd)./mean(gearCd) > 0.01);
 for i = 1:length(ii)
     n = ii(i);
-    K = convhull(speed(:,n),Cd(:,n));
-    plot(speed(K,n),Cd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(1:3,n),Cd(1:3,n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(4:6,n),Cd(4:6,n),'.-','MarkerSize',20,'color',c(n*3,:))
-    plot(speed(7:9,n),Cd(7:9,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    K = convhull(speed(:,n),gearCd(:,n));
+    plot(speed(K,n),gearCd(K,n),'.--','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(1:3,n),gearCd(1:3,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(4:6,n),gearCd(4:6,n),'.-','MarkerSize',20,'color',c(n*3,:))
+    plot(speed(7:9,n),gearCd(7:9,n),'.-','MarkerSize',20,'color',c(n*3,:))
 end
 
