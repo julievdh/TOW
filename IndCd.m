@@ -18,7 +18,7 @@ l = [1170;1237;1217;1170;1076;1032;1111;1345;1195;1076;1076;1111;1195;...
     1296;1358]/100;
 
 % speed, ms-1
-U = 0.5:0.1:3.0;
+U = 0.5:0.1:2.5;
 
 % kinematic viscosity of seawater, m2s-1
 v = 10^-6;
@@ -45,14 +45,38 @@ d = [284;298;294;284;265;255;272;321;290;265;265;272;290;311;324]/100;
 % Fineness Ratio
 FR = l./d;
 
+% drag augmentation factor for oscillation, = 3 as per Frank Fish, pers comm
+k = 1;
+% appendages
+g = 1.3; 
+% submergence
+load('gamma.mat')
+p = polyfit(gamma(:,1),gamma(:,2),8);
+f = polyval(p,gamma(:,1));
+
+hn = 9.3; % submergence depth not entangled (Eg 3911 tag)
+xn = hn./d; % h/d values based on the mean submergence depth while not entangled
+yn = interp1(gamma(:,1),f,xn); % interpolates gamma to find value for calculated h/d
+
+he = 4.0; % submergence depth while entangled (Eg 3911 tag)
+xe = he./d; % calculated h/d values based on the mean SD submergence depth while entangled
+ye = interp1(gamma(:,1),f,xe); % interpolates gamma to find value for calculated h/d
+
+
 % calculate drag coefficient [Eqn 5]
 for i = 1:length(Cf)
     whaleCD0(:,i) = Cf(:,i).*(1+1.5*(d./l).^(3/2) + 7*(d./l).^3);
     
     % calculate drag force on the whale body (N)
-    whaleDf(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i);
-    
+    whaleDf(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g; 
+    whaleDf_E(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g; 
 end
+% for each whale, add submergence effect
+for i = 1:length(yn)
+whaleDf(i,:) = whaleDf(i,:)*yn(i);
+whaleDf_E(i,:) = whaleDf(i,:)*ye(i);
+end
+
 
 % plot on figure
 figure(1)
@@ -89,36 +113,168 @@ for i = 1:15;
     plot(speed(:,i),gearCd(:,i),'.','MarkerSize',20,'color',c(i,:))
 end
 box on
-xlabel('Speed (m/s)'); ylabel('Drag (N)')
+xlabel('Speed (m/s)'); ylabel('Drag Coefficient')
 
 %% for each whale
 
+close all;
+for i = 1:15;
 % calculate width
-[width,stations] = bodywidth(l(1));
+[width,stations] = bodywidth(l(i));
 
 % obtain boundary layer dimensions
-BL = bndry_layer(width,d(1),stations);
+BL = bndry_layer(width,d(i),stations);
 
 % get parameters for entangling gear attachment points
-pt = [0.04*l(1) 0.15*l(1)]; % location of attachment point
-A = [0.0447 1.52E-5]; % frontal area of 2 attachment points
-p = [0.2 0.0044]; % height of protuberance at each attachment
+% pt = location of attachment point
+% A = frontal area of 2 attachment points
+% p = height of protuberance at each attachment
+load('case_pApt')
 
 % calculate interference drag
-DI(1,:) = interferenceDrag(pt,A,p,BL,stations);
+DI(i,:) = interferenceDrag(pt(i,:),A(i,:),p(i,:),BL,stations);
 
 % calculate gear drag curves 
-[yfit(:,1),speed,coeffs(:,1)] = towfit([TOWDRAG(1).mn_speed(1:3)' TOWDRAG(1).mn_dragN(1:3)],U);
+warning off
+[yfit(:,i),speed,coeffs(:,i)] = towfit([TOWDRAG(i).mn_speed' TOWDRAG(i).mn_dragN],U);
 
 % plot all components
-figure; hold on
-plot(U,whaleDf(1,:)) % whale
-plot(U,DI(1,:)) % interference drag
-plot(U,yfit(:,1),'.-')
+figure(5); hold on
+h1 = plot(U,whaleDf(i,:),'color',[0 0.40 0.7]); h1.Color(4) = 0.5; % whale
+h2 = plot(U,DI(i,:),'color',[0.494 0.184 0.556]); h2.Color(4) = 0.5; % interference drag
+h3 = plot(U,yfit(:,i),'color',[0.829 0.594 0.025]); h3.Color(4) = 0.5; % gear drag
+% h4 = plot(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,'.','color',[0.829 0.594 0.025],'MarkerSize',20);
 
 % add to whale and gear drag
-Dtot(1,:) = whaleDf(1,:) + yfit(:,1)' + DI(1,:);
+Dtot(i,:) = whaleDf_E(i,:) + yfit(:,i)' + DI(i,:);
 
-plot(U,Dtot(1,:))
+plot(U,Dtot(i,:),'color',[0.65 0.65 0.65])
+% title(whales(i))
+
+end
+plot(U,mean(Dtot),'k','LineWidth',2)
+plot(U,mean(whaleDf),'color',[38/255 80/255 170/255],'LineWidth',2)
+plot(U,mean(DI),'color',[0.494 0.184 0.556],'LineWidth',2)
+plot(U,mean(yfit'),'.-','color',[0.829 0.594 0.025],'LineWidth',2)
+
+box on
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 adjustfigurefont
+[legh,objh,outh,outm] = legend('Whale Drag','Interference Drag',...
+    'Gear Drag','Total Whale + Gear','Location','NW');
+set(objh,'linewidth',2);
+
+
+%% What is the percent increase
+% for all cases
+for i = 1:15
+    % for all speeds
+    for j = 1:21
+        foldinc(i,j) = Dtot(i,j)/whaleDf(i,j);
+    end
+end
+
+%% Find drag at U = 1.2 m/s
+
+mn_atspeed = mean(whaleDf(:,8));
+st_atspeed = std(whaleDf(:,8));
+
+mn_atspeed_E = mean(whaleDf_E(:,8));
+st_atspeed_E = std(whaleDf_E(:,8));
+
+% paired t test
+[h,p,ci,stats] = ttest(whaleDf_E(:,8),whaleDf(:,8));
+
+% mean sd percent increase in drag overall
+[mean(mean(foldinc')) std(mean(foldinc'))]
+
+% mean sd percent increase in drag at 1.23 m/s
+[mean(foldinc(:,8)) std(foldinc(:,8))]
+
+figure(12); clf; hold on
+plot(U,foldinc')
+plot(U,mean(foldinc),'k','LineWidth',2)
+xlabel('Speed (m/s)'); ylabel('Fold Increase in Drag')
+adjustfigurefont
+
+for i = 1:15
+ii = find(foldinc(i,:) == min(foldinc(i,:)));
+mininc(i) = ii;
+% plot(U(ii),foldinc(i,ii),'o')
+end
+
+%% What proportion of body drag is gear drag?
+
+for i = 1:15
+    bodyprop(i,:) = (yfit(:,i)' + DI(i,:))./whaleDf(i,:);
+end
+figure(19); clf
+subplot(5,1,[1,4]); hold on
+plot(U,bodyprop')
+plot([0.5 2.5],[1 1],'k--') % plot unity as a reference
+plot(U,mean(bodyprop),'k','LineWidth',2) % plot mean
+box on
+ylabel({'Gear Drag : Body Drag';''})
+% set(gca,'xticklabels',{' ',' ',' ',' ',' '})
+set(gca,'ytick',[0:1:4])
+text(0.60,3.7,'A','FontWeight','bold','FontSize',18)
+
+% overall what proportion is it?
+[mean(mean(bodyprop')) mean(std(bodyprop'))]
+
+% when it is exceeded, by how much?
+% for the 5 cases at low speeds:
+[r,c] = find(bodyprop >= 1 & bodyprop <1.9);
+[mean(diag(bodyprop(r,c))) std(diag(bodyprop(r,c)))]
+
+% for J091298
+[mean(bodyprop(1,:)) std(bodyprop(1,:))]
+
+%% What is the speed at minimum gear drag: whale drag?
+for i = 1:15
+ii = find(bodyprop(i,:) == min(bodyprop(i,:)));
+minprop(i) = ii;
+% plot(U(ii),bodyprop(i,ii),'o')
+end
+
+subplot(5,1,5)
+hist(U(minprop))
+xlim([0.5 2.5])
+xlabel('Speed (m/s)'); ylabel({'Freq';''})
+text(0.60,2.8,'B','FontWeight','bold','FontSize',18)
+adjustfigurefont
+
+%% Does gear drag exceed whale drag?
+
+% for all cases:
+for i = 1:15
+    exceed(i,:) = whaleDf(i,:) < yfit(:,i)' + DI(i,:);
+end
+
+%% Combined Figure
+figure(29); clf;
+subplot('Position',[0.05, 0.1, 0.425, 0.85]); hold on
+plot(U,foldinc')
+plot(U,mean(foldinc),'k','LineWidth',2)
+xlabel('Speed (m/s)'); ylabel('Fold Increase in Drag')
+set(gca,'ytick',[2:1:6])
+box on
+text(0.60,5.75,'A','FontWeight','bold','FontSize',18)
+
+subplot('Position',[0.535,0.35,0.425,0.6]); hold on
+plot(U,bodyprop')
+plot([0.5 2.5],[1 1],'k--') % plot unity as a reference
+plot(U,mean(bodyprop),'k','LineWidth',2) % plot mean
+box on
+ylabel('Gear Drag : Body Drag')
+% set(gca,'xticklabels',{' ',' ',' ',' ',' '})
+set(gca,'ytick',[0:1:4])
+text(0.60,3.7,'B','FontWeight','bold','FontSize',18)
+
+subplot('Position',[0.535,0.1,0.425,0.2])
+hist(U(minprop))
+xlim([0.5 2.5])
+xlabel('Speed (m/s)'); ylabel('Freq')
+text(0.60,2.8,'C','FontWeight','bold','FontSize',18)
+adjustfigurefont
+

@@ -12,6 +12,7 @@ function DI = interferenceDrag(pt,A,p,BL,stations)
 %   DI
 %   plots DI and individual components of total DI. 
 
+clear CDI_n keepcol I_n DI
 
 % example: J091298
 
@@ -28,16 +29,24 @@ end
 % p = [0.2 0.0044]; % height of protuberance at each attachment
 CDI_n = (p./BL_pt).^(1/3); % interference drag coefficient for each attachment
 
-U = 0.5:0.1:3; % speed, ms-1
+U = 0.5:0.1:2.5; % speed, ms-1
 
-for i = 1:length(CDI_n)
-    I_n(:,i) = (1/2)*1025*(U.^2).*A(i).*CDI_n(i); % interference drag for each attachment
+keepcol = ~isnan(CDI_n);
+keepcol = keepcol(keepcol);
+
+for i = 1:length(keepcol)
+    I_n(:,i) = real((1/2)*1025*(U.^2).*A(i).*CDI_n(i)); % interference drag for each attachment
 end
 
+if size(I_n,2) > 1
 DI = sum(I_n');
+else 
+    DI = I_n;
+end
 
-figure(3); clf; hold on
-plot(U,DI); plot(U,I_n)
-xlabel('Velocity (m/s)'); ylabel('Interference Drag (N)')
-set(gcf, 'color', 'white'); box on
+
+% figure(3); clf; hold on
+% plot(U,DI); plot(U,I_n)
+% xlabel('Velocity (m/s)'); ylabel('Interference Drag (N)')
+% set(gcf, 'color', 'white'); box on
 end
