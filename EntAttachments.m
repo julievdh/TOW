@@ -1,6 +1,5 @@
 % get body dimensions for entanglement attachment points
 
-
 % Whale ID follows order of TOWDATA
 whales = {'EG 2212','EG 2223','EG 3311','EG 3420','EG 3714','EG 3107',...
     'EG 2710','EG 1427','EG 2212','EG 3445','EG 3314','EG 3610',...

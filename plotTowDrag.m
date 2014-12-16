@@ -18,8 +18,8 @@ colormap = colormap(1:4:end,:);
 for n = 1:length(choose)
     i = choose(n);
     TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
-    errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
-        TOWDRAG(i).sd_dragN(1:3),'.','color',colormap(n,:),'MarkerSize',20)
+    errorbar(TOWDRAG(i).mn_speed(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
+        TOWDRAG(i).sd_dragN(1:9),'.','color',colormap(n,:),'MarkerSize',20)
     axis([0 2.5 0 750])
     set(gca,'FontSize',18)
     % title('Surface')
