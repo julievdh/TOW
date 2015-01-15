@@ -50,8 +50,8 @@ xlabel('Speed (m/s)'); ylabel('Drag (N)')
 % adjustfigurefont
 ylim([0 250])
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('-depsc','Incremental1_EB')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('-depsc','Incremental1_EB')
 
 %% figure 2 -- NO ERROR BARS
 
@@ -78,8 +78,8 @@ xlabel('Speed (m/s)'); ylabel('Drag (N)')
 ylim([0 250])
 % 
 % 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('-depsc','Incremental1')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('-depsc','Incremental1')
 
 
 
@@ -140,7 +140,7 @@ axis([0 1 0 100])
 figure (4); clf
 set(gcf,'Position',[72 240 1200 340],'paperpositionmode','auto')
 
-subplot(131); hold on; box on
+subplot('Position',[0.035,0.1,0.3,0.85]); hold on; box on
 % plot surface tow with SD
 for i = 1:5
     errorbar(TOWDRAG(i+15).mn_speed(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
@@ -165,12 +165,12 @@ for i = 1:5
     errorbar(TOWDRAG(i+15).mn_speed(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
 end
 
-
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 axis([0 2.5 0 270])
-text(0.09,200,'A','FontSize',14,'FontWeight','bold')
+text(0.09,190,'A','FontSize',18,'FontWeight','bold')
 
-subplot(132); hold on; box on
+
+subplot('Position',[0.37,0.1,0.3,0.85]); hold on; box on
 plot([200 150 100 50 25], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
 plot([200 150 100 50 25], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
 plot([200 150 100 50 25], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
@@ -188,11 +188,11 @@ set(gca,'xdir','reverse')
 xlabel('Length of line (m)'); ylabel('Percent Decrease in Drag')
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 set(gca,'xtick',[0 25 50 100 150 200])
-text(192,80,'B','FontSize',14,'FontWeight','bold')
+text(192,78,'B','FontSize',18,'FontWeight','bold')
 axis([0 200 0 100])
 
 
-subplot(133); hold on; box on
+subplot('Position',[0.692,0.1,0.3,0.85]); hold on; box on
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
@@ -212,8 +212,8 @@ xlabel('Proportion of line removed');
 set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 axis([0 1 0 100])
-text(0.04,80,'C','FontSize',14,'FontWeight','bold')
-% adjustfigurefont
+text(0.04,78,'C','FontSize',18,'FontWeight','bold')
+adjustfigurefont
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Incremental
-print('-depsc','IncrementalABC')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Incremental
+% print('-depsc','IncrementalABC')

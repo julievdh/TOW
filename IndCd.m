@@ -7,9 +7,9 @@
 clear all; close all
 
 % Whale ID follows order of TOWDATA
-whales = {'EG 2212','EG 2223','EG 3311','EG 3420','EG 3714','EG 3107',...
-    'EG 2710','EG 1427','EG 2212','EG 3445','EG 3314','EG 3610',...
-    'EG 3294','EG 2030','EG 1102'};
+whales = {'EG 2212  ','EG 2223  ','EG 3311  ','EG 3420  ','EG 3714  ',...
+    'EG 3107  ','EG 2710  ','EG 1427  ','EG 2212  ','EG 3445  ','EG 3314  ',...
+    'EG 3610  ','EG 3294  ','EG 2030  ','EG 1102  '};
 age = [5,8,7,5,2,1,3,18,6,2,2,3,6,12,21];
 
 
@@ -186,10 +186,10 @@ st_atspeed_E = std(whaleDf_E(:,8));
 [h,p,ci,stats] = ttest(whaleDf_E(:,8),whaleDf(:,8));
 
 % mean sd percent increase in drag overall
-[mean(mean(foldinc')) std(mean(foldinc'))]
+[mean(mean(foldinc')) std(mean(foldinc'))];
 
 % mean sd percent increase in drag at 1.23 m/s
-[mean(foldinc(:,8)) std(foldinc(:,8))]
+[mean(foldinc(:,8)) std(foldinc(:,8))];
 
 figure(12); clf; hold on
 plot(U,foldinc')
@@ -220,15 +220,15 @@ set(gca,'ytick',[0:1:4])
 text(0.60,3.7,'A','FontWeight','bold','FontSize',18)
 
 % overall what proportion is it?
-[mean(mean(bodyprop')) mean(std(bodyprop'))]
+[mean(mean(bodyprop')) mean(std(bodyprop'))];
 
 % when it is exceeded, by how much?
 % for the 5 cases at low speeds:
 [r,c] = find(bodyprop >= 1 & bodyprop <1.9);
-[mean(diag(bodyprop(r,c))) std(diag(bodyprop(r,c)))]
+[mean(diag(bodyprop(r,c))) std(diag(bodyprop(r,c)))];
 
 % for J091298
-[mean(bodyprop(1,:)) std(bodyprop(1,:))]
+[mean(bodyprop(1,:)) std(bodyprop(1,:))];
 
 %% What is the speed at minimum gear drag: whale drag?
 for i = 1:15
@@ -278,3 +278,36 @@ xlabel('Speed (m/s)'); ylabel('Freq')
 text(0.60,2.8,'C','FontWeight','bold','FontSize',18)
 adjustfigurefont
 
+%% What is relative contribution of whale vs gear vs interference vs diving changes?
+
+bardata(1,:) = mean(whaleDf');
+bardata(2,:) = mean(whaleDf_E') - mean(whaleDf');
+bardata(3,:) = mean(DI');
+bardata(4,:) = mean(yfit);
+
+% figure(99); clf
+% bar(bardata(1:4,:)','stacked')
+% legend('Whale Body','Behaviour','Interference Drag','Gear Drag')
+% ylabel('Entangled Whale Drag (N)')
+% set(gca,'xticklabels',whales)
+% xticklabel_rotate
+
+cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+bardata(5,:) = cluster(1:15); % assign clusters
+[B,I] = sort(bardata(5,:)); % sort by cluster
+bardata = bardata(:,I); % reform data matrix
+figure(98); clf; hold on
+bar(bardata(1:4,:)','stacked')
+legend('Whale Body','Behaviour','Interference Drag','Gear Drag')
+ylabel('Drag (N)')
+% set(gca,'xticklabel',whales(I))
+xticklabel_rotate(1:15,90,whales(I))
+set(legend,'Position',[0.22, 0.79, 0.25, 0.1])
+
+% add cluster information to the plot
+text(0.9,65,'B','color','w')
+text(1.9,65,'C','color','w')
+text(3.9,65,'D','color','w'); plot([3 5],[40 40],'color','w')
+text(9.9,65,'E','color','w'); plot([6 15],[40 40],'color','w')
+box on
+adjustfigurefont

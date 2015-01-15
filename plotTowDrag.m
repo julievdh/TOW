@@ -11,9 +11,9 @@ warning off
 figure(90); hold on
 set(gcf,'Position',[2530 0 420 580],'PaperPositionMode','auto'); box on
 
-choose = [1:15];
+choose = [1:21];
 colormap = jet;
-colormap = colormap(1:4:end,:);
+colormap = colormap(1:3:end,:);
 
 for n = 1:length(choose)
     i = choose(n);
@@ -75,7 +75,7 @@ CD0 = Cf.*(1+1.5*(d/l)^(3/2) + 7*(d/l)^3);
 Df = (1/2)*rho*(U.^2)*Sw.*CD0;
 
 % plot on figure
-plot(U,Df,'k^-','MarkerFaceColor','k')
+% plot(U,Df,'k^-','MarkerFaceColor','k')
 
 
 %% plot telemetry buoy
