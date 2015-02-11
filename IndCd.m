@@ -54,11 +54,11 @@ load('gamma.mat')
 p = polyfit(gamma(:,1),gamma(:,2),8);
 f = polyval(p,gamma(:,1));
 
-hn = 9.3; % submergence depth not entangled (Eg 3911 tag)
+hn = 11.24; % median submergence depth not entangled (Eg 3911 tag)
 xn = hn./d; % h/d values based on the mean submergence depth while not entangled
 yn = interp1(gamma(:,1),f,xn); % interpolates gamma to find value for calculated h/d
 
-he = 4.0; % submergence depth while entangled (Eg 3911 tag)
+he = 5.4; % median submergence depth while entangled (mean of Eg 3911 and Eg 4057)
 xe = he./d; % calculated h/d values based on the mean SD submergence depth while entangled
 ye = interp1(gamma(:,1),f,xe); % interpolates gamma to find value for calculated h/d
 
@@ -310,4 +310,3 @@ text(1.9,65,'C','color','w')
 text(3.9,65,'D','color','w'); plot([3 5],[40 40],'color','w')
 text(9.9,65,'E','color','w'); plot([6 15],[40 40],'color','w')
 box on
-adjustfigurefont

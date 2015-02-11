@@ -4,7 +4,7 @@
 % Dec 15 2014
 
 % Run GearCdRe
-GearCdRe
+Nainoa13_284_A_BOAT
 close all
 warning off
 %%
