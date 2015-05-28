@@ -18,9 +18,9 @@ close all
 [yfit_telem,speed,coeffs(:,21)] = towfit([TOWDRAG(21).mn_speed' abs(TOWDRAG(21).mn_dragN)],U);
 
 %% gear number (so you don't keep making the same mistakes, Julie.
-i = 14;
-Tpower(i,8)
-Tpower_E(i,8)
+i = 7;
+power(i,8)
+power_E(i,8)
 
 % calculate total drag with telemetry
 D_wtelem = Dtot(i,:)+yfit_telem;
@@ -34,22 +34,22 @@ legend('Entangled','Entangled with Telemetry')
 
 %% calculate power with telemetry
 power_E_wtelem = (D_wtelem.*speed)./0.15;
-Tpower_E_wtelem = power_E_wtelem+repmat(BMR(i),[1,21]);
+% Tpower_E_wtelem = power_E_wtelem+repmat(BMR(i),[1,21]);
 
 % plot to check
 figure(2); clf; hold on
-plot(speed,Tpower_E_wtelem)
-plot(speed,Tpower_E(i,:))
-plot(speed,Tpower(i,:))
+plot(speed,power_E_wtelem)
+plot(speed,power_E(i,:))
+plot(speed,power(i,:))
 legend('Entangled with Telemetry','Entangled','Not Entangled','Location','NW')
 xlabel('Speed (m/s)'); ylabel('Power (W)')
 %%
 % calculate power for gear minus 134m
-Ddiff = (EstDrag(lnth(i)-6,0))-EstDrag(lnth(i),0); % difference in drag with removal of gear
+Ddiff = (EstDrag(10,0))-EstDrag(lnth(i),0); % difference in drag with removal of gear
 Dnew = Dtot(i,:)+Ddiff;
 
 % added telemetry
-Dnew = Dnew + yfit_telem;
+% Dnew = Dnew + yfit_telem;
 
 % recalculate power
 Pnew = (Dnew.*speed)./0.15;
@@ -63,16 +63,17 @@ xlabel('Speed (m/s)'); ylabel('Power (W)')
 legend('Entangled','Not Entangled','Change in Entanglement configuration')
 
 %% create timeline
-Timeline = [-349 Tpower(13,8); ... % prior to entanglement
-    -249 Tpower_E(13,8);... % last seen gear free
-    -11 Tpower_E(13,8);... % first seen entangled
-    -1 Tpower_E_wtelem(8);... % telemetry added
-    0 TPnew(8);... % telemetry and 134 m gear removed
-    44 Tpower(13,8)]; % confirmed gear free
+Timeline = [-299 7130; ... % prior to entanglement
+    -249 7130;... % last seen gear free
+    -11 8420;... % first seen entangled
+    -1 8890;... % telemetry added
+    0 8350;... % telemetry and 134 m gear removed
+    44 7130]; % confirmed gear free
 
 %% interpolate points in timeline for plotting
-maxTimeline = [Timeline(1,:); Timeline(2,1) Timeline(1,2); % baseline and increase @ LSGF
-    Timeline(2,:); % entangled
+maxTimeline = [Timeline(1,:); % baseline
+    Timeline(2,1) Timeline(2,2); % increase @ LSGF
+    Timeline(2,1) Timeline(3,2); % increase @ LSGF
     Timeline(3,:); Timeline(4,1) Timeline(3,2); % entangled and increase
     Timeline(4,:); Timeline(5,1) Timeline(5,2); % with telemetry
     Timeline(5,:); Timeline(6,1) Timeline(5,2); % removal of telemetry and some gear

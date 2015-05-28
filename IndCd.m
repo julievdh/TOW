@@ -191,6 +191,15 @@ st_atspeed_E = std(whaleDf_E(:,8));
 % mean sd percent increase in drag at 1.23 m/s
 [mean(foldinc(:,8)) std(foldinc(:,8))];
 
+% minimum and maximum fold increases
+[val,ind] = min(foldinc);
+[mean(val) std(val)];
+
+[val,ind] = max(foldinc);
+[mean(val) std(val)];
+
+
+
 figure(12); clf; hold on
 plot(U,foldinc')
 plot(U,mean(foldinc),'k','LineWidth',2)
@@ -216,7 +225,7 @@ plot(U,mean(bodyprop),'k','LineWidth',2) % plot mean
 box on
 ylabel({'Gear Drag : Body Drag';''})
 % set(gca,'xticklabels',{' ',' ',' ',' ',' '})
-set(gca,'ytick',[0:1:4])
+set(gca,'ytick',0:1:4)
 text(0.60,3.7,'A','FontWeight','bold','FontSize',18)
 
 % overall what proportion is it?
@@ -258,8 +267,8 @@ plot(U,foldinc')
 plot(U,mean(foldinc),'k','LineWidth',2)
 xlabel('Speed (m/s)'); ylabel('Fold Increase in Drag')
 set(gca,'ytick',[2:1:6])
-box on
-text(0.60,5.75,'A','FontWeight','bold','FontSize',18)
+box on; ylim([1 5.5])
+text(0.60,5.25,'A','FontWeight','bold','FontSize',18)
 
 subplot('Position',[0.535,0.35,0.425,0.6]); hold on
 plot(U,bodyprop')
@@ -268,7 +277,7 @@ plot(U,mean(bodyprop),'k','LineWidth',2) % plot mean
 box on
 ylabel('Gear Drag : Body Drag')
 % set(gca,'xticklabels',{' ',' ',' ',' ',' '})
-set(gca,'ytick',[0:1:4])
+set(gca,'ytick',0:1:4)
 text(0.60,3.7,'B','FontWeight','bold','FontSize',18)
 
 subplot('Position',[0.535,0.1,0.425,0.2])

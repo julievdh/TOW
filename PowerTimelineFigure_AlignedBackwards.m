@@ -42,6 +42,7 @@ ax2 = axes('Position',ax1_pos,...
 set(gca,'xtick',flip([1:-0.1043:0]),'xticklabel',{'-9';'-8';'-7';'-6';'-5';'-4';'-3';'-2';'-1';'0'})
 xlabel('Years Before End of Entanglement')
 set(gca,'ytick',[],'yticklabel','off')
+text(0.01,0.93,'B','FontSize',18,'FontWeight','Bold')
 %%
 % zoom in on transition
 subplot('position',[0.05 0.1 0.25 0.8]); hold on
@@ -55,5 +56,9 @@ end
 ylabel('Power (W)')
 set(gca,'Xtick',[0:1])
 set(gca,'XtickLabel',{'Not Entangled','Entangled'})
+text(-0.93,10600,'A','FontSize',18,'FontWeight','Bold')
 
 adjustfigurefont
+
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print -depsc -r300 PowerTimeline_Basic
