@@ -47,9 +47,9 @@ Rx = Rx+Rx_aux;
 figure(3); clf; hold on
 for gearset = 1:21
 if LineOnly(gearset) == 0
-    h = plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'o');
+    h = plot(Rx(gearset,:),TOWDRAG(gearset).mn_dragN,'o');
     set(h, 'MarkerFaceColor', get(h, 'Color'));
-else plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'o')
+else plot(Rx(gearset,:),TOWDRAG(gearset).mn_dragN,'o')
 end
 end
 
@@ -58,12 +58,4 @@ adjustfigurefont
 legend(TOWDRAG(1:21).filename)
 ylim([0 700])
 
-%% How much are we overestimating with theory?
-
-% set up tow matrix
-for gearset = 1:21
-    towmatrix(gearset,:) = abs(TOWDRAG(gearset).mn_dragN);
-end
-
-% compare
-overest = Rx./towmatrix;
+%% How much are we overes

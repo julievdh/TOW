@@ -26,7 +26,7 @@ Rx(i) = (Cx(i)*L*D*q(i))*9.8066; % output from function
 end
 
 % plot to check
-figure(2); hold on
-plot(Rx,TOWDRAG(gearset).mn_dragN,'o')
-xlabel('Expected Theoretical Drag (N)'); ylabel('Measured Drag (N)')
-adjustfigurefont
+% figure(2); hold on
+% plot(Rx,TOWDRAG(gearset).mn_dragN,'o')
+% xlabel('Expected Theoretical Drag (N)'); ylabel('Measured Drag (N)')
+% adjustfigurefont
