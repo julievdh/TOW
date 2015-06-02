@@ -1,5 +1,4 @@
-% TOWDRAGest
-%
+function Rx = TOWDRAGest(gearset,L,D)
 % Estimate drag for gear sets based on dimensions, compare to drag measured
 % from tow cell (TOWDRAG). 
 
@@ -10,10 +9,10 @@
 % q = rho*V^2/2 = hydrodynamic stagnation pressure
 
 rho = 105; % have these parameters be input in function
-gearset = 20; % index of gear set
-V = TOWDRAG(n).mn_speed';
-depth = TOWDRAG(n).mn_depth;
-L = 150;
+gearset = 16; % index of gear set
+V = TOWDRAG(gearset).mn_speed';
+depth = TOWDRAG(gearset).mn_depth;
+L = 2000;
 D = 0.008;
 
 q = (rho*V.^2)/2;
@@ -26,6 +25,6 @@ end
 
 % plot to check
 figure(2); hold on
-plot(Rx,TOWDRAG(20).mn_dragN,'o')
+plot(Rx,TOWDRAG(gearset).mn_dragN,'o')
 xlabel('Expected Theoretical Drag (N)'); ylabel('Measured Drag (N)')
 adjustfigurefont

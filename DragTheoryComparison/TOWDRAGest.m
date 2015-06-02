@@ -1,20 +1,21 @@
-% TOWDRAGest
-%
+function Rx = TOWDRAGest(gearset,L,D)
 % Estimate drag for gear sets based on dimensions, compare to drag measured
 % from tow cell (TOWDRAG). 
+% inputs: 
+    % gearset = index of gear set of interest
+    % L = length
+    % D = diameter of line
+%    
 
-% for all depths, for all speeds
+load('TOWDRAG')
 
 % Fridman 2986 Equation 3.17
 % Rx = Cx*L*D*q where Cx = drag coefficient, L = length, D = diameter and 
 % q = rho*V^2/2 = hydrodynamic stagnation pressure
 
 rho = 105; % have these parameters be input in function
-gearset = 16; % index of gear set
 V = TOWDRAG(gearset).mn_speed';
 depth = TOWDRAG(gearset).mn_depth;
-L = 200;
-D = 0.008;
 
 q = (rho*V.^2)/2;
 
