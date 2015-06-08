@@ -1,11 +1,12 @@
 % TOWDRAGEst_All
 % Estimate expected theoretical drag for all TOWDRAG gear sets
 
-clear all;
+clear all; close all;
 load('TOWDRAG')
 
 % gear sets with line only == 1
 LineOnly = [0; 1; 1; 1; 1; 0; 1; 1; 1; 0; 0; 1; 1; 0; 1; 1; 1; 1; 1; 1; 0];
+flt = abs(LineOnly-1);
 
 % Length of gear sets
 L = [24; 69; 275; 15; 19; 37; 27; 82; 85; 122; 150; 1.4; 243; 68; 10;...
@@ -46,17 +47,44 @@ Rx = Rx+Rx_aux;
 
 figure(3); clf; hold on
 for gearset = 1:21
-if LineOnly(gearset) == 0
-    h = plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'o');
-    set(h, 'MarkerFaceColor', get(h, 'Color'));
-else plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'o')
+    if LineOnly(gearset) == 0
+        h = plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'^');
+        set(h, 'MarkerFaceColor', get(h, 'Color'));
+    else h = plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'o');
+    end
+    %% Fit line for each gear set
+ft=fittype('poly1');
+if gearset == 16
+    exclude1 = [7 8];
+    [cf,gof] = fit(Rx(gearset,:)',TOWDRAG(gearset).mn_dragN,ft,'exclude',exclude1);
+else
+    [cf,gof] = fit(Rx(gearset,:)',TOWDRAG(gearset).mn_dragN,ft);
 end
+    coeffs(gearset,:) = coeffvalues(cf);
+    %% plot each line with the data to see
+    % set up x
+    x = 1:10:max(Rx(gearset,:));
+    y = coeffs(gearset,1)*x + coeffs(gearset,2);
+    
+    % plot
+    h2 = plot(x,y);
+    set(h2,'color',get(h,'color'));
+    
+
 end
 
 xlabel('Expected Theoretical Drag (N)'); ylabel('Measured Drag (N)')
 adjustfigurefont
-legend(TOWDRAG(1:21).filename)
+% legend(TOWDRAG(1:21).filename)
 ylim([0 700])
+
+%% histogram of slopes
+figure(4);
+histogram(coeffs(:,1),'binwidth',0.1)
+xlabel('Slope'); ylabel('Frequency')
+adjustfigurefont
+
+print('MeasExpected_Slopes.eps','-depsc','-r300')
 
 %% How much are we overestimating with theory?
 
@@ -65,5 +93,25 @@ for gearset = 1:21
     towmatrix(gearset,:) = abs(TOWDRAG(gearset).mn_dragN);
 end
 
-% compare
-overest = Rx./towmatrix;
+%% Linear model with covariates
+% model = measured drag ~ observed drag with gear type as a covariate
+
+measured = reshape(towmatrix,[],1);
+expected = reshape(Rx,[],1);
+float = repmat(flt,9,1);
+
+gear = table(measured,expected,float);
+gear.float = nominal(gear.float);
+
+fit = fitlm(gear,'measured~expected*float')
+figure(3)
+% h = gscatter(expected,measured,float,'bg','o^');
+% set(h(1),'MarkerFaceColor','b');
+% set(h(2),'MarkerFaceColor','g');
+w = linspace(min(expected),max(expected(float == 0)));
+line(w,feval(fit,w,'0'),'Color','k')
+w = linspace(min(expected),max(expected(float == 1)));
+line(w,feval(fit,w,'1'),'Color','k','LineStyle','--')
+
+anova(fit)
+print('MeasExpected_All.eps','-depsc','-r300')
