@@ -116,7 +116,7 @@ for i = 1:15;
        
 end
 
-text(-1450,3200,'B','FontSize',18,'FontWeight','Bold')
+text(-1470,3300,'B','FontSize',18,'FontWeight','Bold')
 xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Power (W)')
 % ax1 = gca; % current axes
 % ax1_pos = ax1.Position; % position of first axes
@@ -136,14 +136,14 @@ cmat(fate == 1) = 1;
 
 for i = 1:15
     % plot transition to entangled
-    plot([-0.25 1.25],[power(i,8) power_E(i,8)],'color',cmat(i,:))
-    plot([-0.25 1.25],[power(i,8) power_E(i,8)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
+    plot([-0.5 1.5],[power(i,8) power_E(i,8)],'color',cmat(i,:))
+    plot([-0.5 1.5],[power(i,8) power_E(i,8)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
 end
 ylabel('Propulsive Power (W)')
-set(gca,'Xtick',[-0.25 1.25])
+set(gca,'Xtick',[-0.25 1.5])
 set(gca,'XtickLabel',{'Not Entangled','Entangled'})
 ylim([900 5000]); xlim([-1 2])
-text(-0.926,4700,'A','FontSize',18,'FontWeight','Bold')
+text(-0.9,4750,'A','FontSize',18,'FontWeight','Bold')
 
 adjustfigurefont
 
