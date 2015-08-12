@@ -79,15 +79,48 @@ end
 
 
 % plot on figure
-figure(1)
+figure(2)
 subplot(211)
 plot(U,whaleDf)
 ylabel('Drag Force (N)')
 
-subplot(212)
+subplot(212); hold on
 plot(U,whaleCD0)
 xlabel('Speed (m/s'); ylabel('Drag Coefficient')
 adjustfigurefont
+
+% McGregor DTAG drag coefficients and speed for foraging and traveling and
+% CFD
+McG_FORAGE = [0.0099	0.95;
+    0.012	1.02;
+    0.024	0.91;
+    0.0091	1.06];
+McG_TRAVEL = [0.0052	0.97;
+    0.0036	1;
+    0.0038	1.07;
+    0.0049	1.08;
+    0.005	0.9];
+McG_CFD = [0.012    0.514];
+
+% speed and drag coefficient for Eg3911 whale, nonentangled
+vdh_NESk3(:,2) = [0.00370835542841646;0.00361910776902858;0.00354137208507408;
+    0.00347268871336042;0.00341129509882514;0.00335588747591488;0.00330547586381435;
+    0.00325929184961735;0.00321672773989446;0.00317729513661081;0.00314059597028095;
+    0.00310630176709948;0.00307413850356466;0.00304387534137935;0.00301531611280707;
+    0.00298829279160383;0.00296266042108549;0.00293829312750845;0.00291508095277899;
+    0.00289292731333564;0.00287174694299712;0.00285146421375123;0.00283201175451527];
+vdh_NESk3(:,1) = [0.772:0.1:2.98];
+Re_3911 = (10*U)/1.17E-6;
+
+% plot
+plot(McG_FORAGE(:,2),McG_FORAGE(:,1),'k^','MarkerFaceColor','k')
+plot(McG_TRAVEL(:,2),McG_TRAVEL(:,1),'r^','MarkerFaceColor','r')
+plot(McG_CFD(:,2),McG_CFD(:,1),'g^','MarkerFaceColor','g')
+
+plot(vdh_NESk3(:,1),vdh_NESk3(:,2),'b^-','MarkerFaceColor','b')
+
+xlabel('Speed (m/s)'); ylabel('Drag Coefficient'); adjustfigurefont
+xlim([0 2.5])
 
 % % speed of interest = 1.1 m/s (average minimum swim speeds from entangled and
 % % nonentangled argos data)
@@ -147,8 +180,13 @@ figure(5); hold on
 h1 = plot(U,whaleDf(i,:),'color',[0 0.40 0.7]); h1.Color(4) = 0.75; % whale
 % plot interference drag 
 h2 = plot(U,DI(i,:),'color',[0.494 0.184 0.556]); h2.Color(4) = 0.75; 
-% plot gear drag and prediction intervals
+% plot gear drag 
 h3 = plot(U,yfit(:,i),'color',[0.829 0.594 0.025]); h3.Color(4) = 0.75; 
+
+% add to whale and gear drag
+Dtot(i,:) = whaleDf_E(i,:) + yfit(:,i)' + DI(i,:);
+Dtot_lower(i,:) = whaleDf_E(i,:) + lower(:,i)' + DI_lower(i,:);
+Dtot_upper(i,:) = whaleDf_E(i,:) + upper(:,i)' + DI_upper(i,:);
 
 % plot total entangled whale with lower and upper bounds
 plot(U,Dtot(i,:),'color',[0.65 0.65 0.65])
@@ -161,7 +199,6 @@ h6 = plot(speed,upper(:,i),':','color',[0.829 0.594 0.025]); h6.Color(4) = 0.75;
 % plot interference drag +/- 10% estimates of CDI
 h7 = plot(U,DI_lower(i,:),':','color',[0.494 0.184 0.556]); h7.Color(4) = 0.75; 
 h8 = plot(U,DI_upper(i,:),':','color',[0.494 0.184 0.556]); h8.Color(4) = 0.75;
-
 % plot data points
 % h4 = plot(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,'.','color',[0.829 0.594 0.025],'MarkerSize',20);
 
@@ -181,7 +218,7 @@ set(objh,'linewidth',2);
 ylim([0 2500])
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('WhaleGearDrag_bounded.eps','-depsc','-r300')
+print('WhaleGearDrag_bounds.eps','-depsc','-r300')
 
 return
 

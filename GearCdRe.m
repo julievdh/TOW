@@ -61,8 +61,8 @@ figure(1); clf
 plot(speed,gearCd,'.','MarkerSize',25); hold on
 
 plot(McG_FORAGE(:,2),McG_FORAGE(:,1),'k^','MarkerFaceColor','k')
-plot(McG_TRAVEL(:,2),McG_TRAVEL(:,1),'k^','MarkerFaceColor','k')
-plot(McG_CFD(:,2),McG_CFD(:,1),'k^','MarkerFaceColor','k')
+plot(McG_TRAVEL(:,2),McG_TRAVEL(:,1),'r^','MarkerFaceColor','r')
+plot(McG_CFD(:,2),McG_CFD(:,1),'g^','MarkerFaceColor','g')
 
 plot(U,vdh_NESk3,'k^-','MarkerFaceColor','k')
 
