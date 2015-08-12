@@ -24,13 +24,11 @@ for n = 1:length(choose)
     set(gca,'FontSize',18)
     % title('Surface')
     xlabel('Speed (m/s)'); ylabel('Drag Force (N)')
-    % store mean and STD, lowest and highest values
+    % store mean and STD
     mn_drag(i) = mean(TOWDRAG(i).mn_dragN);
     std_drag(i) = std(TOWDRAG(i).mn_dragN);
-    min_drag(i) = min(abs(TOWDRAG(i).mn_dragN([1 4 7])));
+    min_drag(i) = min(abs(TOWDRAG(i).mn_dragN([1 4 5])));
     max_drag(i) = max(abs(TOWDRAG(i).mn_dragN([3 6 9])));
-    % store CV
-    CV(:,i) = abs(TOWDRAG(i).sd_dragN)./abs(TOWDRAG(i).mn_dragN);
 end
 
 legend(TOWDRAG(choose).filename,'Location','NW')
@@ -46,16 +44,11 @@ end
 % print('-depsc','SelectCases')
 
 %% lowest speed drag range
-[val,ind] = min(min_drag);
-test_speed = mean(TOWDRAG(ind).mn_speed([1 4 7]));
-[val,ind] = max(min_drag);
-test_speed = mean(TOWDRAG(ind).mn_speed([1 4 7]));
+[val,ind] = min(min_drag)
+
 
 %% highest speed drag range
-[val,ind] = max(max_drag);
-test_speed = mean(TOWDRAG(ind).mn_speed([3 6 9]));
-[val,ind] = min(max_drag);
-test_speed = mean(TOWDRAG(ind).mn_speed([3 6 9]));
+
 
 %% ADD WHALE: Eg 3911, same calculations as in van der Hoop et al 2013
 

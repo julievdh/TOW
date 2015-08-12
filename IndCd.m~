@@ -136,7 +136,7 @@ BL = bndry_layer(width,d(i),stations);
 load('case_pApt')
 
 % calculate interference drag
-[DI(i,:),DI_upper(i,:),DI_lower(i,:)] = interferenceDrag(pt(i,:),A(i,:),p(i,:),BL,stations);
+DI(i,:) = interferenceDrag(pt(i,:),A(i,:),p(i,:),BL,stations);
 
 % calculate gear drag curves 
 warning off
@@ -144,26 +144,17 @@ warning off
 
 % plot all components
 figure(5); hold on
-h1 = plot(U,whaleDf(i,:),'color',[0 0.40 0.7]); h1.Color(4) = 0.75; % whale
-% plot interference drag 
-h2 = plot(U,DI(i,:),'color',[0.494 0.184 0.556]); h2.Color(4) = 0.75; 
-% plot gear drag and prediction intervals
-h3 = plot(U,yfit(:,i),'color',[0.829 0.594 0.025]); h3.Color(4) = 0.75; 
+h1 = plot(U,whaleDf(i,:),':','color',[0 0.40 0.7]); h1.Color(4) = 0.75; % whale
+h2 = plot(U,DI(i,:),':','color',[0.494 0.184 0.556]); h2.Color(4) = 0.75; % interference drag
+h3 = plot(U,yfit(:,i),':','color',[0.829 0.594 0.025]); h3.Color(4) = 0.75; % gear drag
+h4 = plot(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,'.','color',[0.829 0.594 0.025],'MarkerSize',20);
+% sort measured speeds and plot l
 
-% plot total entangled whale with lower and upper bounds
-plot(U,Dtot(i,:),'color',[0.65 0.65 0.65])
-plot(U,Dtot_lower(i,:),':','color',[0.65 0.65 0.65])
-plot(U,Dtot_upper(i,:),':','color',[0.65 0.65 0.65])
+% add to whale and gear drag
+Dtot(i,:) = whaleDf_E(i,:) + yfit(:,i)' + DI(i,:);
 
-% plot lower and upper 95% prediction intervals
-h5 = plot(speed,lower(:,i),':','color',[0.829 0.594 0.025]); h5.Color(4) = 0.75;
-h6 = plot(speed,upper(:,i),':','color',[0.829 0.594 0.025]); h6.Color(4) = 0.75;
-% plot interference drag +/- 10% estimates of CDI
-h7 = plot(U,DI_lower(i,:),':','color',[0.494 0.184 0.556]); h7.Color(4) = 0.75; 
-h8 = plot(U,DI_upper(i,:),':','color',[0.494 0.184 0.556]); h8.Color(4) = 0.75;
-
-% plot data points
-% h4 = plot(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,'.','color',[0.829 0.594 0.025],'MarkerSize',20);
+plot(U,Dtot(i,:),':','color',[0.65 0.65 0.65])
+% title(whales(i))
 
 end
 % plot averages
@@ -172,6 +163,7 @@ plot(U,mean(DI),'color',[0.494 0.184 0.556],'LineWidth',3)
 plot(U,mean(yfit'),'.-','color',[0.829 0.594 0.025],'LineWidth',3)
 plot(U,mean(Dtot),'k','LineWidth',3)
 
+% 
 box on
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 adjustfigurefont
@@ -181,7 +173,7 @@ set(objh,'linewidth',2);
 ylim([0 2500])
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('WhaleGearDrag_bounded.eps','-depsc','-r300')
+% print('WhaleGearDrag.eps','-depsc','-r300')
 
 return
 

@@ -1,4 +1,4 @@
-function DI = interferenceDrag(pt,A,p,BL,stations)
+function [DI,DI_upper,DI_lower] = interferenceDrag(pt,A,p,BL,stations)
 %% Calculates Interference Drag for all entangling points.
 
 % inputs:
@@ -36,12 +36,18 @@ keepcol = keepcol(keepcol);
 
 for i = 1:length(keepcol)
     I_n(:,i) = real((1/2)*1025*(U.^2).*A(i).*CDI_n(i)); % interference drag for each attachment
+    I_n_upper(:,i) = real((1/2)*1025*(U.^2).*A(i).*(CDI_n(i)*1.1)); % what if CDI is 10% higher?
+    I_n_lower(:,i) = real((1/2)*1025*(U.^2).*A(i).*(CDI_n(i)*0.9)); % what if CDI is 10% lower?
 end
 
 if size(I_n,2) > 1
 DI = sum(I_n');
+DI_upper = sum(I_n_upper');
+DI_lower = sum(I_n_lower');
 else 
     DI = I_n;
+    DI_upper = I_n_upper;
+    DI_lower = I_n_lower;
 end
 
 
