@@ -46,7 +46,7 @@ d = [284;298;294;284;265;255;272;321;290;265;265;272;290;311;324]/100;
 FR = l./d;
 
 % drag augmentation factor for oscillation, = 3 as per Frank Fish, pers comm
-k = 1;
+k = 1.5;
 % appendages
 g = 1.3; 
 % submergence
@@ -68,8 +68,8 @@ for i = 1:length(Cf)
     whaleCD0(:,i) = Cf(:,i).*(1+1.5*(d./l).^(3/2) + 7*(d./l).^3);
     
     % calculate drag force on the whale body (N)
-    whaleDf(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g; 
-    whaleDf_E(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g; 
+    whaleDf(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g*k; 
+    whaleDf_E(:,i) = (1/2)*rho*(U(i).^2)*Sw.*whaleCD0(:,i)*g*k; 
 end
 % for each whale, add submergence effect
 for i = 1:length(yn)
