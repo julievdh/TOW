@@ -111,13 +111,13 @@ for i = 1:53 % high drag dives
     CT_E_a_upper(i,:) = Dtot_high_upper./(0.5*rho*U.^2.*(A_E_a(i)*span));
 end
 
-    % disentangled thrust coefficient CTD
+% disentangled thrust coefficient CTD
 for i = 54:154 % low drag dives
     % descent
     CT_DE_d(i,:) = Dtot_lowdrag./(0.5*rho*U.^2.*(A_E_d(i)*span));
     CT_DE_d_lower(i,:) = Dtot_low_lower./(0.5*rho*U.^2.*(A_E_d(i)*span));
     CT_DE_d_upper(i,:) = Dtot_low_upper./(0.5*rho*U.^2.*(A_E_d(i)*span));
-
+    
     % ascent
     CT_DE_a(i,:) = Dtot_lowdrag./(0.5*rho*U.^2.*(A_E_a(i)*span));
     CT_DE_a_lower(i,:) = Dtot_low_lower./(0.5*rho*U.^2.*(A_E_a(i)*span));
@@ -126,10 +126,10 @@ end
 
 % non-entangled thrust coefficient CTN
 CT_NE_a = whaleDf./(0.5*rho*U.^2.*(A_NE_a*span));
-CT_NE_a_lower = whaleDf_lower./(0.5*rho*U.^2.*((A_NE_a+0.12)*span)); % added amplitude SD 
+CT_NE_a_lower = whaleDf_lower./(0.5*rho*U.^2.*((A_NE_a+0.12)*span)); % added amplitude SD
 CT_NE_a_upper = whaleDf_upper./(0.5*rho*U.^2.*((A_NE_a-0.12)*span));
 CT_NE_d = whaleDf./(0.5*rho*U.^2.*(A_NE_d*span));
-CT_NE_d_lower = whaleDf_lower./(0.5*rho*U.^2.*((A_NE_d+0.17)*span)); % added amplitude SD 
+CT_NE_d_lower = whaleDf_lower./(0.5*rho*U.^2.*((A_NE_d+0.17)*span)); % added amplitude SD
 CT_NE_d_upper = whaleDf_upper./(0.5*rho*U.^2.*((A_NE_d-0.17)*span));
 
 figure(2); clf
@@ -157,7 +157,7 @@ print('Eg3911_CT.eps','-depsc','-r300')
 ind_a = nearest(U', asc_maxspeed');
 ind_d = nearest(U', desc_maxspeed');
 
-% calculate CT at those speeds 
+% calculate CT at those speeds
 for i = 1:53 % high drag
     CT_E_a_atspeed(i) = CT_E_a(i,ind_a(i));
     CT_E_d_atspeed(i) = CT_E_d(i,ind_d(i));
@@ -229,15 +229,15 @@ print('Eg3911_IdealEfficiency.eps','-depsc','-r300')
 
 %% Get ideal efficiency for actual speeds of descent and ascent
 
-% calculate CT at those speeds 
+% calculate CT at those speeds
 for i = 1:53 % high drag
     ni_E_a_atspeed(i) = ni_E_a(i,ind_a(i));
     ni_E_d_atspeed(i) = ni_E_d(i,ind_d(i));
 end
 
 for i = 54:154 % low drag
-ni_DE_a_atspeed(i) = ni_DE_a(i,ind_a(i));
-ni_DE_d_atspeed(i) = ni_DE_d(i,ind_d(i));
+    ni_DE_a_atspeed(i) = ni_DE_a(i,ind_a(i));
+    ni_DE_d_atspeed(i) = ni_DE_d(i,ind_d(i));
 end
 
 figure(5); clf; hold on
@@ -253,7 +253,7 @@ xlabel('Speed (m/s)'); ylabel('Ideal Efficiency, n_i')
 adjustfigurefont
 print('Eg3911_ni_alldives.eps','-depsc','-r300')
 
-%% Calculate differences between 
+%% Calculate differences between
 
 mean([CT_E_a_atspeed CT_E_d_atspeed])
 mean([CT_DE_a_atspeed(low) CT_DE_d_atspeed(low)])
@@ -279,7 +279,7 @@ CTSt2_DE_d = CT_DE_d_atspeed(low)./(st_dmax(low).^2);
 
 % plot
 figure(6); clf
-set(gcf,'position',[427 5 532 668]) 
+set(gcf,'position',[427 5 532 668])
 subplot(211); hold on; box on
 scatter(st_amax(high),CTSt2_E_a,'b^')
 scatter(st_dmax(high),CTSt2_E_d,'bv','filled')
@@ -328,49 +328,146 @@ text(0.0379,10.8465,'Sawtooth','Fontsize',14,'FontWeight','Bold')
 
 print('Eg3911_a_estimation.eps','-depsc','-r300')
 
-return
-%%
-% load data from Hover et al 2004 efficiency
-load('Hover2004_data')
+%% estimate alpha
+estimateAlpha
 
-eta10(:,1) = interp(angle10(:,1),5);
-eta10(:,2) = interp(angle10(:,2),5);
-eta15(:,1) = interp(angle15(:,1),5);
-eta15(:,2) = interp(angle15(:,2),5);
+%%
+% load and plot data from Hover et al 2004 efficiency
+plotHoverFig6
+
+%% Find nearest St for which eta is estimated from alpha curves
+% for high drag
+% descent
+for i = 1:length(high)
+    if alpha_high(i,1) == 109
+        % what is nearest index?
+        ind = nearest(a10_harmonic_i(:,1),st_dmax(high(i)));
+        % store
+        eta_high(i,1) = a10_harmonic_i(ind,2);
+        % plot
+        scatter(st_dmax(high(i)),eta_high(i,1),'bv','filled')
+    else if alpha_high(i,1) == 10
+            ind = nearest(a10_sawtooth_i(:,1),st_dmax(high(i)));
+            eta_high(i,1) = a10_sawtooth_i(ind,2);
+            scatter(st_dmax(high(i)),eta_high(i,1),'bv','filled')
+        else if alpha_high(i,1) == 20
+                ind = nearest(a20_sawtooth_i(:,1),st_dmax(high(i)));
+                eta_high(i,1) = a20_sawtooth_i(ind,2);
+                scatter(st_dmax(high(i)),eta_high(i,1),'bv','filled')
+            else if alpha_high(i,1) == 159
+                    ind = nearest(a15_harmonic_i(:,1),st_dmax(high(i)));
+                    eta_high(i,1) = a15_harmonic_i(ind,2);
+                    scatter(st_dmax(high(i)),eta_high(i,1),'bv','filled')
+                end
+            end
+        end
+    end
+end
+% ascent
+for i = 1:length(high)
+    if alpha_high(i,2) == 10
+        ind = nearest(a10_sawtooth_i(:,1),st_amax(high(i)));
+        eta_high(i,2) = a10_sawtooth_i(ind,2);
+        scatter(st_amax(high(i)),eta_high(i,2),'b^')
+    else if alpha_high(i,2) == 15
+            ind = nearest(a15_sawtooth_i(:,1),st_amax(high(i)));
+            eta_high(i,2) = a15_sawtooth_i(ind,2);
+            scatter(st_amax(high(i)),eta_high(i,2),'b^')
+        else if alpha_high(i,2) == 20
+                ind = nearest(a20_sawtooth_i(:,1),st_amax(high(i)));
+                eta_high(i,2) = a20_sawtooth_i(ind,2);
+                scatter(st_amax(high(i)),eta_high(i,2),'b^')
+            else if alpha_high(i,2) == 25
+                    ind = nearest(a25_sawtooth_i(:,1),st_amax(high(i)));
+                    eta_high(i,2) = a25_sawtooth_i(ind,2);
+                    scatter(st_amax(high(i)),eta_high(i,2),'b^')
+                else if alpha_high(i,2) == 35
+                        ind = nearest(a35_sawtooth_i(:,1),st_amax(high(i)));
+                        eta_high(i,2) = a35_sawtooth_i(ind,2);
+                        scatter(st_amax(high(i)),eta_high(i,2),'b^')
+                    end
+                end
+            end
+        end
+    end
+end
+
+%% for low drag
+% descent
+for i = 1:length(low)
+    if alpha_low(i,1) == 109
+        % what is nearest index?
+        ind = nearest(a10_harmonic_i(:,1),st_dmax(low(i)));
+        % store
+        eta_low(i,1) = a10_harmonic_i(ind,2);
+        % plot
+        scatter(st_dmax(low(i)),eta_low(i,1),'kv','filled')
+    else if alpha_low(i,1) == 10
+            ind = nearest(a10_sawtooth_i(:,1),st_dmax(low(i)));
+            eta_low(i,1) = a10_sawtooth_i(ind,2);
+            scatter(st_dmax(low(i)),eta_low(i,1),'kv','filled')
+        end
+    end
+end
+
+% ascent
+for i = 1:length(low)
+    if alpha_low(i,2) == 10
+        ind = nearest(a10_sawtooth_i(:,1),st_amax(low(i)));
+        eta_low(i,2) = a10_sawtooth_i(ind,2);
+        scatter(st_amax(low(i)),eta_low(i,2),'b^')
+    else if alpha_low(i,2) == 109
+            ind = nearest(a10_harmonic_i(:,1),st_amax(low(i)));
+            eta_low(i,2) = a10_harmonic_i(ind,2);
+            scatter(st_amax(low(i)),eta_low(i,2),'b^')
+        end
+    end
+end
+
+return
+
+%%
+
+
+
+eta10(:,1) = interp(a10_harmonic(:,1),5);
+eta10(:,2) = interp(a10_harmonic(:,2),5);
+eta15(:,1) = interp(a15_harmonic(:,1),5);
+eta15(:,2) = interp(a15_harmonic(:,2),5);
 
 % for all values of St_d, find nearest value of eta for angle 10 and 15
-for i = 1:length(St_dm)
-    ind = nearest(eta10(:,1),St_dm(i));
-    St_dm(i,2) = eta10(ind,2); % put efficiency 10 in vector
-    ind = nearest(eta15(:,1),St_dm(i));
-    St_dm(i,3) = eta15(ind,2); % put efficiency 15 in vector
+for i = 1:length(st_dmax)
+    ind = nearest(eta10(:,1),st_dmax(i));
+    st_dmax(i,2) = eta10(ind,2); % put efficiency 10 in vector
+    ind = nearest(eta15(:,1),st_dmax(i));
+    st_dmax(i,3) = eta15(ind,2); % put efficiency 15 in vector
 end
 
-for i = 1:length(St_am)
-    ind = nearest(eta10(:,1),St_am(i));
-    St_am(i,2) = eta10(ind,2); % put efficiency 10 in vector
-    ind = nearest(eta15(:,1),St_am(i));
-    St_am(i,3) = eta15(ind,2); % put efficiency 15 in vector
+for i = 1:length(st_amax)
+    ind = nearest(eta10(:,1),st_amax(i));
+    st_amax(i,2) = eta10(ind,2); % put efficiency 10 in vector
+    ind = nearest(eta15(:,1),st_amax(i));
+    st_amax(i,3) = eta15(ind,2); % put efficiency 15 in vector
 end
-St_am = abs(St_am); St_dm = abs(St_dm);
+st_amax = abs(st_amax); st_dmax = abs(st_dmax);
 
 % plot
 figure(5); clf;
 subplot(121); hold on
-scatter(zeros(length(low),1)+rand(length(low),1)/2,St_dm(low,2),[],'v')
-scatter(ones(length(high),1)+rand(length(high),1)/2,St_dm(high,2),[],'v')
+scatter(zeros(length(low),1)+rand(length(low),1)/2,st_dmax(low,2),[],'v')
+scatter(ones(length(high),1)+rand(length(high),1)/2,st_dmax(high,2),[],'v')
 
-scatter(zeros(length(low),1)+rand(length(low),1)/2,St_am(low,2),[],'^')
-scatter(ones(length(high),1)+rand(length(high),1)/2,St_am(high,2),[],'^')
+scatter(zeros(length(low),1)+rand(length(low),1)/2,st_amax(low,2),[],'^')
+scatter(ones(length(high),1)+rand(length(high),1)/2,st_amax(high,2),[],'^')
 set(gca,'xtick',[0.25 1.25],'xticklabels',{'Low Drag','High Drag'})
 ylabel('Measured Efficiency,n')
 
 subplot(122); hold on
-scatter(zeros(length(low),1)+rand(length(low),1)/2,St_dm(low,3),[],'v')
-scatter(ones(length(high),1)+rand(length(high),1)/2,St_dm(high,3),[],'v')
+scatter(zeros(length(low),1)+rand(length(low),1)/2,st_dmax(low,3),[],'v')
+scatter(ones(length(high),1)+rand(length(high),1)/2,st_dmax(high,3),[],'v')
 
-scatter(zeros(length(low),1)+rand(length(low),1)/2,St_am(low,3),[],'^')
-scatter(ones(length(high),1)+rand(length(high),1)/2,St_am(high,3),[],'^')
+scatter(zeros(length(low),1)+rand(length(low),1)/2,st_amax(low,3),[],'^')
+scatter(ones(length(high),1)+rand(length(high),1)/2,st_amax(high,3),[],'^')
 set(gca,'xtick',[0.25 1.25],'xticklabels',{'Low Drag','High Drag'})
 
 adjustfigurefont
