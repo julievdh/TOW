@@ -1,11 +1,11 @@
 % Plot drag with depth and speed column means based on clusters
 warning off
-
+clear all
 % Run CdRe
 GearCdRe; close all
 
 % set up cluster info from R:
-cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 
 % dry weight information
 wt= [15.7,4.6,25.80,0.7,0.7,3.75,2.95,9.65,2.9,8.85,13.45,0.9,9.50,10.55,2.6];
@@ -50,9 +50,9 @@ for cl = 1:5
     
     % change y lim based on panel
     if cl <=3
-        ylim([0 0.45])
+        ylim([0 0.65])
         % insert panel label
-        text(2.25,0.4,letter(cl),'FontSize',14,'FontWeight','Bold')
+        text(2.25,0.56,letter(cl),'FontSize',14,'FontWeight','Bold')
     else
         ylim([0 0.14])
         text(2.25,0.12,letter(cl),'FontSize',14,'FontWeight','Bold')
@@ -68,6 +68,11 @@ end
 set(h2,'FontSize',16)
 set(h2,'position',[0;0.5])
 adjustfigurefont
+
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('DepthSpeedCd_Cluster.eps','-depsc','-r300')
+
+return
 
 %% some descriptions of clusters
 l = nan(2,5); w = nan(2,5);

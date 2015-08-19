@@ -7,6 +7,7 @@ load('TOWDRAG')
 cd /Users/julievanderhoop/Documents/MATLAB/TOW
 
 % from MasterDataTable, but NaN where are still missing dimension info
+% Aw updated after MMSCI revisions ** 
 % set up Aw
 Aw = [0.9385;2.427822803;12.26791931;0.452389342;0.5730265;1.293993711
     1.085734421;4.121769562;2.136283004;3.923124487;4.963893421;0.035185838;6.323;5.2326;
