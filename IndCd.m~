@@ -367,9 +367,7 @@ bardata(3,:) = mean(yfit);
 % set(gca,'xticklabels',whales)
 % xticklabel_rotate
 
-% CHANGE THESE CLUSTERS BECAUSE C AND B ARE NOW SWITCHED IN THE OTHER
-% PLOTS.
-% ALSO CLUSTERS MAY CHANGE WITH ADCP DATA 
+% CHANGE THESE CLUSTERS B
 cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
 bardata(5,:) = cluster(1:15); % assign clusters
 [B,I] = sort(bardata(5,:)); % sort by cluster

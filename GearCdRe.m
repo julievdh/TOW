@@ -19,6 +19,9 @@ for i = 1:length(TOWDRAG)
     % Calculate drag coefficient
     % gearCd = 2D/(rho*Aw*U^2)
     gearCd(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*TOWDRAG(i).mn_speed'.^2);
+    min_speed = TOWDRAG(i).mn_speed' - 0.25; 
+    gearCd_max(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*(TOWDRAG(i).mn_speed'-0.25).^2);
+    gearCd_min(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*(TOWDRAG(i).mn_speed'+0.25).^2);
     
     % Calculate Reynolds number
     % Re = (l*u)/v
@@ -30,6 +33,29 @@ for i = 1:length(TOWDRAG)
     speed(:,i) = TOWDRAG(i).mn_speed';
     depth(:,i) = TOWDRAG(i).mn_depth;
 end
+
+
+figure(1); clf; hold on
+for i = 1:length(TOWDRAG)
+errorbar(TOWDRAG(i).mn_speed,gearCd(:,i),abs(gearCd_min(:,i)-gearCd(:,i)),gearCd_max(:,i)-gearCd(:,i),'o')
+end
+xlabel('Speed (m/s)'); ylabel('Drag Coefficient')
+
+figure(2); clf; hold on
+for i = 1:length(TOWDRAG)
+errorbar(gearRe(:,i),gearCd(:,i),abs(gearCd_min(:,i)-gearCd(:,i)),gearCd_max(:,i)-gearCd(:,i),'o')
+end
+xlabel('Reynolds Number (Re)'); ylabel('Drag Coefficient')
+
+%% calculate difference in Cd?
+for i = 1:length(TOWDRAG)
+pdiff_min(:,i) = (abs(gearCd(:,i) - gearCd_min(:,i))./((gearCd(:,i)+gearCd_min(:,i))/2))*100;
+pdiff_max(:,i) = (abs(gearCd(:,i) - gearCd_max(:,i))./((gearCd(:,i)+gearCd_max(:,i))/2))*100;
+end
+
+mean([mean(pdiff_min([1 4 7],:)),mean(pdiff_max([1 4 7]))]);
+mean([mean(pdiff_min([2 5 8],:)),mean(pdiff_max([2 5 8]))]);
+mean([mean(pdiff_min([3 6 9],:)),mean(pdiff_max([3 6 9]))]);
 
 return
 
