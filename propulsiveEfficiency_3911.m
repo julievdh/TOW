@@ -40,6 +40,8 @@ k = 1.5;
 % appendages
 g = 1.3;
 % submergence
+% keep submergence effect in for this because we know that this is THIS
+% animal, this deployment, its behaviour. 
 load('gamma.mat')
 p = polyfit(gamma(:,1),gamma(:,2),8);
 f = polyval(p,gamma(:,1));
@@ -415,63 +417,159 @@ for i = 1:length(low)
     if alpha_low(i,2) == 10
         ind = nearest(a10_sawtooth_i(:,1),st_amax(low(i)));
         eta_low(i,2) = a10_sawtooth_i(ind,2);
-        scatter(st_amax(low(i)),eta_low(i,2),'b^')
+        scatter(st_amax(low(i)),eta_low(i,2),'k^')
     else if alpha_low(i,2) == 109
             ind = nearest(a10_harmonic_i(:,1),st_amax(low(i)));
             eta_low(i,2) = a10_harmonic_i(ind,2);
-            scatter(st_amax(low(i)),eta_low(i,2),'b^')
+            scatter(st_amax(low(i)),eta_low(i,2),'k^')
         end
     end
 end
 
-return
+print('Eg3911_eta_est.eps','-depsc','-r300')
 
-%%
+%% Take efficiency and look at change in efficiency with entanglement
+warning off
 
-
-
-eta10(:,1) = interp(a10_harmonic(:,1),5);
-eta10(:,2) = interp(a10_harmonic(:,2),5);
-eta15(:,1) = interp(a15_harmonic(:,1),5);
-eta15(:,2) = interp(a15_harmonic(:,2),5);
-
-% for all values of St_d, find nearest value of eta for angle 10 and 15
-for i = 1:length(st_dmax)
-    ind = nearest(eta10(:,1),st_dmax(i));
-    st_dmax(i,2) = eta10(ind,2); % put efficiency 10 in vector
-    ind = nearest(eta15(:,1),st_dmax(i));
-    st_dmax(i,3) = eta15(ind,2); % put efficiency 15 in vector
-end
-
-for i = 1:length(st_amax)
-    ind = nearest(eta10(:,1),st_amax(i));
-    st_amax(i,2) = eta10(ind,2); % put efficiency 10 in vector
-    ind = nearest(eta15(:,1),st_amax(i));
-    st_amax(i,3) = eta15(ind,2); % put efficiency 15 in vector
-end
-st_amax = abs(st_amax); st_dmax = abs(st_dmax);
+% replace zeros with NaNs
+eta_high(eta_high == 0) = NaN; eta_low(eta_low == 0) = NaN;
+% remove St outliers 
+st_dmax(st_dmax > 1.6) = NaN; st_amax(st_amax > 1.6) = NaN;
 
 % plot
 figure(5); clf;
 subplot(121); hold on
-scatter(zeros(length(low),1)+rand(length(low),1)/2,st_dmax(low,2),[],'v')
-scatter(ones(length(high),1)+rand(length(high),1)/2,st_dmax(high,2),[],'v')
+scatter(zeros(length(low),1)-rand(length(low),1)/4,st_dmax(low),[],'kv','filled')
+scatter(ones(length(high),1)-rand(length(high),1)/4,st_dmax(high),[],'bv','filled')
 
-scatter(zeros(length(low),1)+rand(length(low),1)/2,st_amax(low,2),[],'^')
-scatter(ones(length(high),1)+rand(length(high),1)/2,st_amax(high,2),[],'^')
-set(gca,'xtick',[0.25 1.25],'xticklabels',{'Low Drag','High Drag'})
-ylabel('Measured Efficiency,n')
+scatter(zeros(length(low),1)+rand(length(low),1)/4,st_amax(low),[],'k^')
+scatter(ones(length(high),1)+rand(length(high),1)/4,st_amax(high),[],'b^')
+set(gca,'xtick',[0 1],'xticklabels',{'Low Drag','High Drag'})
+ylabel('Strouhal Number, St')
+box on
 
+% plot efficiencies 
 subplot(122); hold on
-scatter(zeros(length(low),1)+rand(length(low),1)/2,st_dmax(low,3),[],'v')
-scatter(ones(length(high),1)+rand(length(high),1)/2,st_dmax(high,3),[],'v')
-
-scatter(zeros(length(low),1)+rand(length(low),1)/2,st_amax(low,3),[],'^')
-scatter(ones(length(high),1)+rand(length(high),1)/2,st_amax(high,3),[],'^')
-set(gca,'xtick',[0.25 1.25],'xticklabels',{'Low Drag','High Drag'})
-
+% low drag descent
+setjit4 = rand(length(low),1)/4;
+scatter(zeros(length(low),1)-setjit4,eta_low(:,1),[],'kv','filled')
+ii = find(alpha_low(:,1) == 109 | alpha_low(:,1) == 159); % find harmonic
+scatter(zeros(length(ii),1)-setjit4(ii),eta_low(ii,1),[],'rv')
+% high drag descent
+setjit4 = rand(length(high),1)/4;
+scatter(ones(length(high),1)-setjit4,eta_high(:,1),[],'bv','filled')
+ii = find(alpha_high(:,1) == 109 | alpha_high(:,1) == 159); % find harmonic
+scatter(ones(length(ii),1)-setjit4(ii),eta_high(ii,1),[],'rv')
+% low drag ascent
+setjit4 = rand(length(low),1)/4;
+scatter(zeros(length(low),1)+setjit4,eta_low(:,2),[],'k^')
+ii = find(alpha_low(:,2) == 109 | alpha_low(:,2) == 159);
+scatter(zeros(length(ii),1)+setjit4(ii),eta_low(ii,2),[],'r^')
+% high drag ascent
+scatter(ones(length(high),1)+rand(length(high),1)/4,eta_high(:,2),[],'b^') % no harmonic ones here
+set(gca,'xtick',[0 1],'xticklabels',{'Low Drag','High Drag'})
+ylabel('Propulsive Efficiency,\eta')
+box on
 adjustfigurefont
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+
 print('3911_EfficiencyChange.eps','-depsc','-r300')
-print('Lono_AllDist.eps','-depsc','-r300')
+
+%% Compute Power
+% power = D*U/efficiency
+
+% ascent high
+P_ah = (Dtot_highdrag(ind_a(high)).*U(ind_a(high)))'./eta_high(:,2);
+P_ah_lower = (Dtot_high_lower(ind_a(high)).*U(ind_a(high)))'./eta_high(:,2);
+P_ah_upper = (Dtot_high_upper(ind_a(high)).*U(ind_a(high)))'./eta_high(:,2);
+
+% descent high
+P_dh = (Dtot_highdrag(ind_a(high)).*U(ind_a(high)))'./eta_high(:,1);
+P_dh_lower = (Dtot_high_lower(ind_a(high)).*U(ind_a(high)))'./eta_high(:,1);
+P_dh_upper = (Dtot_high_upper(ind_a(high)).*U(ind_a(high)))'./eta_high(:,1);
+
+% ascent low
+P_al = (Dtot_lowdrag(ind_a(low)).*U(ind_a(low)))'./eta_low(:,2);
+P_al_lower = (Dtot_low_lower(ind_a(low)).*U(ind_a(low)))'./eta_low(:,2);
+P_al_upper = (Dtot_low_upper(ind_a(low)).*U(ind_a(low)))'./eta_low(:,2);
+
+% descent low
+P_dl = (Dtot_lowdrag(ind_a(low)).*U(ind_a(low)))'./eta_low(:,1);
+P_dl_lower = (Dtot_low_lower(ind_a(low)).*U(ind_a(low)))'./eta_low(:,1);
+P_dl_upper = (Dtot_low_upper(ind_a(low)).*U(ind_a(low)))'./eta_low(:,1);
+
+
+% figure(6); clf
+% subplot(221); hold on
+% histogram(P_ah)
+% histogram(P_ah_lower)
+% histogram(P_ah_upper)
+% title('Ascent High')
+% 
+% subplot(222); hold on
+% histogram(P_dh)
+% histogram(P_dh_lower)
+% histogram(P_dh_upper)
+% title('Descent High')
+% 
+% subplot(223); hold on
+% histogram(P_al)
+% histogram(P_al_lower)
+% histogram(P_al_upper)
+% title('Ascent High')
+% 
+% subplot(224); hold on
+% histogram(P_dl)
+% histogram(P_dl_lower)
+% histogram(P_dl_upper)
+% title('Descent High')
+
+figure(7); clf
+subplot(121); hold on
+setjit1 = rand(length(low),1)/4; setjit2 = rand(length(low),1)/4;
+setjit3 = rand(length(high),1)/4; setjit4 = rand(length(high),1)/4;
+% error bars?
+for i = 1:length(low)
+plot([0+setjit1(i) 0+setjit1(i)],[P_al_lower(i) P_al_upper(i)],'k')
+plot([0-setjit2(i) 0-setjit2(i)],[P_dl_lower(i) P_dl_upper(i)],'k')
+end
+for i = 1:length(high)
+plot([1+setjit3(i) 1+setjit3(i)],[P_ah_lower(i) P_ah_upper(i)],'b')
+plot([1-setjit4(i) 1-setjit4(i)],[P_dh_lower(i) P_dh_upper(i)],'b')
+end
+% plot triangles
+scatter(zeros(length(low),1)+setjit1,P_al,[],'k^','MarkerFaceColor','w')
+scatter(zeros(length(low),1)-setjit2,P_dl,[],'kv','Filled')
+scatter(ones(length(high),1)+setjit3,P_ah,[],'b^','MarkerFaceColor','w')
+scatter(ones(length(high),1)-setjit4,P_dh,[],'bv','Filled')
+
+xlim([-0.5 1.5])
+set(gca,'xtick',[0 1],'xticklabels',{'Low Drag','High Drag'})
+ylabel('Estimated Thrust Power (W), P = (D*U)/\eta')
+box on
+adjustfigurefont
+
+subplot(122); hold on
+setjit1 = rand(length(low),1)/4; setjit2 = rand(length(low),1)/4;
+setjit3 = rand(length(high),1)/4; setjit4 = rand(length(high),1)/4;
+% error bars?
+for i = 1:length(low)
+plot([0+setjit1(i) 0+setjit1(i)],[P_al_lower(i)/0.25 P_al_upper(i)/0.25],'k')
+plot([0-setjit2(i) 0-setjit2(i)],[P_dl_lower(i)/0.25 P_dl_upper(i)/0.25],'k')
+end
+for i = 1:length(high)
+plot([1+setjit3(i) 1+setjit3(i)],[P_ah_lower(i)/0.25 P_ah_upper(i)/0.25],'b')
+plot([1-setjit4(i) 1-setjit4(i)],[P_dh_lower(i)/0.25 P_dh_upper(i)/0.25],'b')
+end
+% plot triangles
+scatter(zeros(length(low),1)+setjit1,P_al/0.25,[],'k^','MarkerFaceColor','w')
+scatter(zeros(length(low),1)-setjit2,P_dl/0.25,[],'kv','Filled')
+scatter(ones(length(high),1)+setjit3,P_ah/0.25,[],'b^','MarkerFaceColor','w')
+scatter(ones(length(high),1)-setjit4,P_dh/0.25,[],'bv','Filled')
+
+xlim([-0.5 1.5])
+set(gca,'xtick',[0 1],'xticklabels',{'Low Drag','High Drag'})
+ylabel('Estimated Power (W), P = (D*U)/(\eta*\eta_a)')
+box on
+adjustfigurefont
+
