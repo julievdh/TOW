@@ -14,8 +14,9 @@ set(gcf,'Position',[2530 0 420 580],'PaperPositionMode','auto'); box on
 choose = [1:21];
 colormap = jet;
 colormap = colormap(1:3:end,:);
+colormap(21,:) = [0 0 0];
 
-for n = 1:length(choose)
+for n = 1:21
     i = choose(n);
     TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
     errorbar(TOWDRAG(i).mn_speedTW(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
@@ -45,7 +46,6 @@ end
 % cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 % print('-depsc','SelectCases')
 
-return
 
 %% lowest speed drag range
 [val,ind] = min(min_drag);
@@ -107,6 +107,9 @@ TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
 [yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speed(1:3)' TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
     plot(speed,yfit(:,n),'color','k','LineWidth',2)
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
+print('-depsc','GearDrag_Fig1')
+    
 return  
     
 %% plot reference lines
