@@ -3,7 +3,7 @@
 close all; clear all; clc
 
 % load data
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
 warning off
 
@@ -18,7 +18,7 @@ colormap = colormap(1:3:end,:);
 for n = 1:length(choose)
     i = choose(n);
     TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
-    errorbar(TOWDRAG(i).mn_speed(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
+    errorbar(TOWDRAG(i).mn_speedTW(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
         TOWDRAG(i).sd_dragN(1:9),'.','color',colormap(n,:),'MarkerSize',20)
     axis([0 2.5 0 750])
     set(gca,'FontSize',18)
@@ -38,12 +38,14 @@ legend(TOWDRAG(choose).filename,'Location','NW')
 % calculate curves and plot
 for n = 1:length(choose)
     i = choose(n);
-    [yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speed(1:3)' TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
+    [yfit(:,n),speed,coeffs(:,n)] = towfit([TOWDRAG(i).mn_speedTW(1:3) TOWDRAG(i).mn_dragN(1:3)],[0.5:0.1:2.5]);
     plot(speed,yfit(:,n),'color',colormap(n,:))
 end
 
 % cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 % print('-depsc','SelectCases')
+
+return
 
 %% lowest speed drag range
 [val,ind] = min(min_drag);
