@@ -1,8 +1,10 @@
 % Calculate drag coefficient and Re to non-dimensionalize for better comparison
 % Nov 14 2014
 
+clear all
+
 % load tow data
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
 cd /Users/julievanderhoop/Documents/MATLAB/TOW
 
@@ -18,34 +20,33 @@ lnth = [24;69;275;15;19;37;27;82;85;122;150;1.4;243;68;10;200;150;100;50;25;19];
 for i = 1:length(TOWDRAG)
     % Calculate drag coefficient
     % gearCd = 2D/(rho*Aw*U^2)
-    gearCd(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*TOWDRAG(i).mn_speed'.^2);
-    min_speed = TOWDRAG(i).mn_speed' - 0.25; 
-    gearCd_max(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*(TOWDRAG(i).mn_speed'-0.25).^2);
-    gearCd_min(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*(TOWDRAG(i).mn_speed'+0.25).^2);
+    gearCd(:,i) = (2*abs(TOWDRAG(i).mn_dragN))./(1025*Aw(i)*TOWDRAG(i).mn_speedTW.^2);
     
     % Calculate Reynolds number
     % Re = (l*u)/v
     % v for 60F seawater = 1.17e-6 [http://www.lmnoeng.com/fluids.htm]
     % mean september water temp buzzards bay = 65F
-    gearRe(:,i) = (lnth(i)*TOWDRAG(i).mn_speed')/1.17E-6;
+    gearRe(:,i) = (lnth(i)*TOWDRAG(i).mn_speedTW)/1.17E-6;
     
     % Make same matrix for speed for plotting ease
-    speed(:,i) = TOWDRAG(i).mn_speed';
+    speed(:,i) = TOWDRAG(i).mn_speedTW;
     depth(:,i) = TOWDRAG(i).mn_depth;
 end
 
 
 figure(1); clf; hold on
 for i = 1:length(TOWDRAG)
-errorbar(TOWDRAG(i).mn_speed,gearCd(:,i),abs(gearCd_min(:,i)-gearCd(:,i)),gearCd_max(:,i)-gearCd(:,i),'o')
+scatter(TOWDRAG(i).mn_speedTW,gearCd(:,i),'o')
 end
 xlabel('Speed (m/s)'); ylabel('Drag Coefficient')
 
 figure(2); clf; hold on
 for i = 1:length(TOWDRAG)
-errorbar(gearRe(:,i),gearCd(:,i),abs(gearCd_min(:,i)-gearCd(:,i)),gearCd_max(:,i)-gearCd(:,i),'o')
+scatter(gearRe(:,i),gearCd(:,i),'o')
 end
 xlabel('Reynolds Number (Re)'); ylabel('Drag Coefficient')
+
+return
 
 %% calculate difference in Cd?
 for i = 1:length(TOWDRAG)
