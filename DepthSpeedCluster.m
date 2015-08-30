@@ -50,9 +50,9 @@ for cl = 1:5
     
     % change y lim based on panel
     if cl <=3
-        ylim([0 0.65])
+        ylim([0 0.75])
         % insert panel label
-        text(2.25,0.56,letter(cl),'FontSize',14,'FontWeight','Bold')
+        text(2.25,0.64,letter(cl),'FontSize',14,'FontWeight','Bold')
     else
         ylim([0 0.14])
         text(2.25,0.12,letter(cl),'FontSize',14,'FontWeight','Bold')
@@ -69,8 +69,8 @@ set(h2,'FontSize',16)
 set(h2,'position',[0;0.5])
 adjustfigurefont
 
-% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-% print('DepthSpeedCd_Cluster.eps','-depsc','-r300')
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
+print('DepthSpeedCd_Cluster.eps','-depsc','-r300')
 
 return
 

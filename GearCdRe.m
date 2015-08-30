@@ -1,12 +1,10 @@
 % Calculate drag coefficient and Re to non-dimensionalize for better comparison
 % Nov 14 2014
 
-clear all
-
 % load tow data
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
-cd /Users/julievanderhoop/Documents/MATLAB/TOW
+    cd /Users/julievanderhoop/Documents/MATLAB/TOW
 
 % from MasterDataTable, but NaN where are still missing dimension info
 % Aw updated after MMSCI revisions ** 
@@ -40,13 +38,19 @@ scatter(TOWDRAG(i).mn_speedTW,gearCd(:,i),'o')
 end
 xlabel('Speed (m/s)'); ylabel('Drag Coefficient')
 
-figure(2); clf; hold on
-for i = 1:length(TOWDRAG)
-scatter(gearRe(:,i),gearCd(:,i),'o')
-end
+figure(2); clf;
+semilogx(gearRe,gearCd,'.','MarkerSize',25); hold on
+
 xlabel('Reynolds Number (Re)'); ylabel('Drag Coefficient')
 
 return
+
+%% descriptive statistics reported in paper
+% mean(SD) for lowest for and for highest Cd
+[val,ind] = min(mean(gearCd));
+[mean(gearCd(:,ind)) std(gearCd(:,ind))]
+[val,ind] = max(mean(gearCd));
+[mean(gearCd(:,ind)) std(gearCd(:,ind))]
 
 %% calculate difference in Cd?
 for i = 1:length(TOWDRAG)

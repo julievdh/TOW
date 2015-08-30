@@ -6,7 +6,7 @@ clear all; close all
 GearCdRe; close all
 
 % set up cluster info from R:
-cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 
 % dry weight information
 wt= [15.7,4.6,25.80,0.7,0.7,3.75,2.95,9.65,2.9,8.85,13.45,0.9,9.50,10.55,2.6];

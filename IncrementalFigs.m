@@ -6,14 +6,14 @@
 close all
 
 % load data
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
 cd /Users/julievanderhoop/Documents/MATLAB/
 
 %     % calculate curves for each set
-speed = [0.5:0.1:2.2];
+clear speed
 for n = 16:20
-[yfit(:,n-15),speed,coeffs(:,n-15)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)]);
+    [yfit(:,n-15),speed,coeffs(:,n-15)] = towfit([TOWDRAG(n).mn_speedTW(1:3) TOWDRAG(n).mn_dragN(1:3)]);
 end
 %
 c = [0 0 0; 0.8 0 0; 0 0 0.8; 0 0.4 0; 1 0.35 0];
@@ -22,7 +22,7 @@ figure(1); clf; hold on; box on
 
 % plot surface tow with SD
 for i = 1:5
-    errorbar(TOWDRAG(i+15).mn_speed(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
+    errorbar(TOWDRAG(i+15).mn_speedTW(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
 end
 
 % add legend
@@ -42,7 +42,7 @@ end
 
 % plot surface points again so are on top
 for i = 1:5
-    errorbar(TOWDRAG(i+15).mn_speed(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
+    errorbar(TOWDRAG(i+15).mn_speedTW(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
 end
 
 
@@ -57,20 +57,20 @@ ylim([0 250])
 
 figure(2); clf; hold on; box on
 
-plot(TOWDRAG(16).mn_speed(4:end),TOWDRAG(16).mn_dragN(4:end),'.','color',[0.75 0.75 0.75],'MarkerSize',20)
-plot(TOWDRAG(16).mn_speed(1:3),TOWDRAG(16).mn_dragN(1:3),'.',speed,yfit(:,1),'color','k','MarkerSize',20)
+plot(TOWDRAG(16).mn_speedTW(4:end),TOWDRAG(16).mn_dragN(4:end),'.','color',[0.75 0.75 0.75],'MarkerSize',20)
+plot(TOWDRAG(16).mn_speedTW(1:3),TOWDRAG(16).mn_dragN(1:3),'.',speed,yfit(:,1),'color','k','MarkerSize',20)
 
-plot(TOWDRAG(17).mn_speed(4:end),TOWDRAG(17).mn_dragN(4:end),'.','color',[1 0.65 0.65],'MarkerSize',20)
-plot(TOWDRAG(17).mn_speed(1:3),TOWDRAG(17).mn_dragN(1:3),'.',speed,yfit(:,2),'color',[0.8 0 0],'MarkerSize',20)
+plot(TOWDRAG(17).mn_speedTW(4:end),TOWDRAG(17).mn_dragN(4:end),'.','color',[1 0.65 0.65],'MarkerSize',20)
+plot(TOWDRAG(17).mn_speedTW(1:3),TOWDRAG(17).mn_dragN(1:3),'.',speed,yfit(:,2),'color',[0.8 0 0],'MarkerSize',20)
 
-plot(TOWDRAG(18).mn_speed(4:end),TOWDRAG(18).mn_dragN(4:end),'.','color',[0.4 0.6 1],'MarkerSize',20)
-plot(TOWDRAG(18).mn_speed(1:3),TOWDRAG(18).mn_dragN(1:3),'.',speed,yfit(:,3),'color',[0 0 0.8],'MarkerSize',20)
+plot(TOWDRAG(18).mn_speedTW(4:end),TOWDRAG(18).mn_dragN(4:end),'.','color',[0.4 0.6 1],'MarkerSize',20)
+plot(TOWDRAG(18).mn_speedTW(1:3),TOWDRAG(18).mn_dragN(1:3),'.',speed,yfit(:,3),'color',[0 0 0.8],'MarkerSize',20)
 
-plot(TOWDRAG(19).mn_speed(4:end),TOWDRAG(19).mn_dragN(4:end),'.','color',[0.04 0.85 0.31],'MarkerSize',20)
-plot(TOWDRAG(19).mn_speed(1:3),TOWDRAG(19).mn_dragN(1:3),'.',speed,yfit(:,4),'color',[0 0.4 0],'MarkerSize',20)
+plot(TOWDRAG(19).mn_speedTW(4:end),TOWDRAG(19).mn_dragN(4:end),'.','color',[0.04 0.85 0.31],'MarkerSize',20)
+plot(TOWDRAG(19).mn_speedTW(1:3),TOWDRAG(19).mn_dragN(1:3),'.',speed,yfit(:,4),'color',[0 0.4 0],'MarkerSize',20)
 
-plot(TOWDRAG(20).mn_speed(4:end),TOWDRAG(20).mn_dragN(4:end),'.','color',[1 .68 .26],'MarkerSize',20)
-plot(TOWDRAG(20).mn_speed(1:3),TOWDRAG(20).mn_dragN(1:3),'.',speed,yfit(:,5),'color',[1 .35 0],'MarkerSize',20)
+plot(TOWDRAG(20).mn_speedTW(4:end),TOWDRAG(20).mn_dragN(4:end),'.','color',[1 .68 .26],'MarkerSize',20)
+plot(TOWDRAG(20).mn_speedTW(1:3),TOWDRAG(20).mn_dragN(1:3),'.',speed,yfit(:,5),'color',[1 .35 0],'MarkerSize',20)
 
 legend('200 m','150 m','100 m','50 m','25 m','Location','NW')
 xlabel('Speed (m/s)'); ylabel('Drag (N)')

@@ -27,7 +27,7 @@ sdiff(i) = mean((max(mat)-min(mat))./max(mat));
 end
 
 % add cluster information
-cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 
 % histogram of percent differences in with depth and with speed
 figure(1)

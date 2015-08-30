@@ -3,8 +3,8 @@
 % shortened
 % Dec 15 2014
 
-% Run GearCdRe
-Nainoa13_284_A_BOAT
+% Run 
+GearCdRe
 close all
 warning off
 %%

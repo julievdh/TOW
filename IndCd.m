@@ -143,7 +143,7 @@ c = colormap(lines);
 figure(20); clf; hold on
 for i = 1:15;
     plot(U,whaleDf(i,:),'color',c(i,:))
-    plot(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,'.','MarkerSize',20,'color',c(i,:))
+    plot(TOWDRAG(i).mn_speedTW,TOWDRAG(i).mn_dragN,'.','MarkerSize',20,'color',c(i,:))
 end
 box on
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
