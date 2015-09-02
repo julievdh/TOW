@@ -226,10 +226,8 @@ adjustfigurefont
 set(objh,'linewidth',2);
 ylim([0 2500])
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('WhaleGearDrag_bounds.eps','-depsc','-r300')
-
-return
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
+print('GearDrag_Fig7.eps','-depsc','-r300')
 
 %% What is the percent increase
 % for all cases
@@ -361,7 +359,7 @@ xlabel('Speed (m/s)'); ylabel('Freq')
 text(0.60,2.8,'C','FontWeight','bold','FontSize',18)
 adjustfigurefont
 
-%% What is relative contribution of whale vs gear vs interference vs diving changes?
+%% What is relative contribution of whale vs gear vs interference?
 clear bardata
 bardata(1,:) = mean(whaleDf');
 bardata(2,:) = mean(DI');
@@ -377,21 +375,28 @@ bardata(3,:) = mean(yfit);
 % CHANGE THESE CLUSTERS BECAUSE C AND B ARE NOW SWITCHED IN THE OTHER
 % PLOTS.
 % ALSO CLUSTERS MAY CHANGE WITH ADCP DATA 
-cluster = [2,5,5,5,5,4,4,5,5,5,5,3,5,5,4,4,5,5,5,5,1];
+cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 bardata(5,:) = cluster(1:15); % assign clusters
 [B,I] = sort(bardata(5,:)); % sort by cluster
 bardata = bardata(:,I); % reform data matrix
 figure(98); clf; hold on
-bar(bardata(1:4,:)','stacked')
-legend('Whale Body','Interference Drag','Gear Drag')
-ylabel('Drag (N)')
+H = bar(bardata(1:3,:)','stacked');
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1]; % colours
+for z=1:3
+  set(H(z),'facecolor',myC(z,:)) % set colours
+end
+legend('Whale Body','Interference Drag','Gear Drag','Location','NE')
+ylabel('Drag (N)','FontSize',14)
 % set(gca,'xticklabel',whales(I))
-xticklabel_rotate(1:15,90,whales(I))
+xticklabel_rotate(1:15,90,whales(I),'FontSize',14)
 set(legend,'Position',[0.22, 0.79, 0.25, 0.1])
 
 % add cluster information to the plot
-text(0.9,65,'B','color','w')
-text(1.9,65,'C','color','w')
-text(3.9,65,'D','color','w'); plot([3 5],[40 40],'color','w')
-text(9.9,65,'E','color','w'); plot([6 15],[40 40],'color','w')
+text(0.8,65,'B','color','w','FontSize',14)
+text(1.8,65,'C','color','w','FontSize',14)
+text(3.8,65,'D','color','w','FontSize',14); plot([3 5],[40 40],'color','w')
+text(9.8,65,'E','color','w','FontSize',14); plot([6 15],[40 40],'color','w')
 box on
+legend('Whale Body','Interference Drag','Gear Drag','Location','NE')
+
+print('GearDrag_Fig9.eps','-depsc','-r300')
