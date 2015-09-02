@@ -79,5 +79,5 @@ text(0.0032,1.47,{'Wave Drag';'    Effect'},'FontSize',12)
 adjustfigurefont; box on
 legend(names,'Location','SE','FontSize',12)
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('Froude.eps','-depsc','-r300')
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
+print('A3_Froude.eps','-depsc','-r300')
