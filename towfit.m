@@ -4,7 +4,7 @@ function [yfit,speeds,coeffs,lower,upper] = towfit(set,speeds)
 %   set = 2 x n matrix of [speeds (m/s) drag (N)] of a gear tow
 
 if nargin == 1
-speeds = [0.35:0.1:2.55]';
+speeds = [0.3:0.1:2.5]';
 
 end
 

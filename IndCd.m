@@ -134,7 +134,6 @@ xlim([0 2.5])
 % WhaleCd = CD0(:,7);
 % WhaleDf = Df(:,7);
 
-
 %% Plot whales and their gears ****(not whale + gear)
 
 GearCdRe
@@ -238,6 +237,7 @@ for i = 1:15
     % for all speeds
     for j = 1:21
         foldinc(i,j) = Dtot(i,j)/whaleDf(i,j);
+        pinc(i,j) = (Dtot(i,j) - whaleDf(i,j))./whaleDf(i,j);
     end
 end
 
@@ -265,7 +265,18 @@ st_atspeed_E = std(Dtot(:,8));
 [val,ind] = max(foldinc);
 [mean(val) std(val)];
 
-
+%% values and stats in paper
+% nonentangled whale drag 0.5 m/s
+[mean(whaleDf(:,1)) std(whaleDf(:,1))];
+% nonentagneld whale drag 2.5 m/s
+[mean(whaleDf(:,21)) std(whaleDf(:,21))];
+% nonentangled whale 95% CI speed 1.2 m/s
+[mean(whaleDf(:,8)) std(whaleDf(:,8))];
+% entangled whale 95% CI speed 1.2 m/s
+[mean(Dtot(:,8)) std(Dtot(:,8))];
+% significantly different when entangled
+[h,p,ci,stats] = ttest(Dtot(:,8),whaleDf(:,8));
+%% 
 
 figure(12); clf; hold on
 plot(U,foldinc')
@@ -298,13 +309,9 @@ text(0.60,3.7,'A','FontWeight','bold','FontSize',18)
 % overall what proportion is it?
 [mean(mean(bodyprop')) mean(std(bodyprop'))];
 
-% when it is exceeded, by how much?
-% for the 5 cases at low speeds:
-[r,c] = find(bodyprop >= 1 & bodyprop <1.9);
-[mean(diag(bodyprop(r,c))) std(diag(bodyprop(r,c)))];
-
 % for J091298
 [mean(bodyprop(1,:)) std(bodyprop(1,:))];
+[min(bodyprop(1,:)) max(bodyprop(1,:))]
 
 %% What is the speed at minimum gear drag: whale drag?
 for i = 1:15

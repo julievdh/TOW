@@ -13,6 +13,8 @@ cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
 cd /Users/julievanderhoop/Documents/MATLAB/
 
+warning off
+
 %% METHOD 1: COMPARE FIT TO FIT
 for n = 16:20;
     % calculate curves for each set
@@ -159,6 +161,18 @@ return
 
 %% VALUES REPORTED IN PAPER
 % trimming 200m line to 50m
-[mean(p_dec200(:,3)) std(p_dec200(:,3))]
-% removing 75% of a line's original length
-[mean([p_dec200(:,3); p_dec100(:,1)]) 
+[mean(p_dec200(3:22,3)) std(p_dec200(3:22,3))]
+% removing 75% of a line's original length across 0.5-2.5 m/s
+[mean([p_dec200(3:22,3); p_dec100(3:22,2)]) std([p_dec200(3:22,3); p_dec100(3:22,2)])]
+% removing 75% of a line's length at 0.5 m/s
+[mean([p_dec200(3,3); p_dec100(3,2)]) std([p_dec200(3,3); p_dec100(3,2)])]
+% removing 75% of a line's length at 2.0 m/s
+[mean([p_dec200(18,3); p_dec100(18,2)]) std([p_dec200(18,3); p_dec100(18,2)])]
+
+figure(9); clf; hold on
+for i = 1:2
+    plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(i,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
+    plot([0 50/150 100/150 125/150], [0 p_dec150(i,:)]','.--','MarkerSize',20,'color',[237/255 177/255 32/255])
+    plot([0 50/100 75/100], [0 p_dec100(i,:)]','.:','MarkerSize',20,'color',[55/255 126/255 184/255])
+end
+plot([0 1],[0 100],'k')

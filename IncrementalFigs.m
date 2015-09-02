@@ -4,6 +4,7 @@
 % 27 May 2014
 
 close all
+warning off
 
 % load data
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/
