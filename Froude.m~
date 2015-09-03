@@ -71,8 +71,8 @@ data = [0.08572856	0.011090072;
 0.61083025	0.7534386]; 
 
 figure(1); clf; hold on
-for i = 1:size(Fn,1)
-h = plot(U,Fn(i,:),'color',c(cluster(i),:));
+for i = 1:length(Fn)
+plot(U,Fn,'color',c(cluster(i,:))
 end
 
 plot(U,ones(length(U),1),'k--')

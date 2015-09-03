@@ -16,18 +16,16 @@ cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 lineonly = [0,1,1,1,1,0,1,1,1,0,0,1,1,0,1,1,1,1,1,1,0];
 
 c = colormap(lines);
-choose = [1:15 21];
 
 for cl = 1:5
-    ii = find(cluster(choose) == cl);
+    ii = find(cluster == cl);
     for n = 1:length(ii)
-        i = choose(ii(n));
-        if lineonly(i) == 0;
-            h1(cl) = errorbar(TOWDRAG(i).mn_speedTW(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
-                TOWDRAG(i).sd_dragN(1:9),'^','color',c(cl,:),'MarkerFaceColor',c(cl,:));
+        if lineonly(ii(n)) == 0;
+            h = errorbar(TOWDRAG(ii(n)).mn_speedTW(1:9),TOWDRAG(ii(n)).mn_dragN(1:9),TOWDRAG(ii(n)).sd_dragN(1:9),...
+                TOWDRAG(ii(n)).sd_dragN(1:9),'^','color',c(cl,:),'MarkerFaceColor',c(cl,:))
         else
-            h2(cl) = errorbar(TOWDRAG(i).mn_speedTW(1:9),TOWDRAG(i).mn_dragN(1:9),TOWDRAG(i).sd_dragN(1:9),...
-                TOWDRAG(i).sd_dragN(1:9),'.','color',c(cl,:),'MarkerSize',20);
+            errorbar(TOWDRAG(ii(n)).mn_speedTW(1:9),TOWDRAG(ii(n)).mn_dragN(1:9),TOWDRAG(ii(n)).sd_dragN(1:9),...
+                TOWDRAG(ii(n)).sd_dragN(1:9),'.','color',c(cl,:),'MarkerSize',20)
         end
     end
 end
@@ -35,7 +33,7 @@ end
 axis([0 2.5 0 750])
 set(gca,'FontSize',16)
 xlabel('Speed (m/s)'); ylabel('Drag Force (N)')
-hleg = legend([h1(1) h2(2) h1(3) h1(4) h1(5)],'A','B','C','D','E','Location','NW');
+hleg = legend('A','B','C','D','E','Location','NW');
 
 for i = 1:21
     % store mean and STD, lowest and highest values
@@ -56,8 +54,8 @@ end
 %     end
 % end
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
-print('-depsc','AllDragSpeed_wCluster')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('-depsc','SelectCases')
 return
 
 
