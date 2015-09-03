@@ -46,11 +46,11 @@ load('gamma.mat')
 p = polyfit(gamma(:,1),gamma(:,2),8);
 f = polyval(p,gamma(:,1));
 
-hn = 11.24; % median submergence depth not entangled (Eg 3911 tag)
+hn = 10.38; % median submergence depth not entangled (Eg 3911 tag)
 xn = hn./d; % h/d values based on the mean submergence depth while not entangled
 yn = 1;
 
-he = 5.4; % median submergence depth while entangled (mean of Eg 3911 and Eg 4057)
+he = 3.68; % median submergence depth while entangled Eg 3911 
 xe = he./d; % calculated h/d values based on the mean SD submergence depth while entangled
 ye = interp1(gamma(:,1),f,xe); % interpolates gamma to find value for calculated h/d
 

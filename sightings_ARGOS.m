@@ -98,7 +98,7 @@ for i = 1:length(use)
         circle(long(ii(j)),lat(ii(j)),km2deg(qual{ii(j),2}));
         dist(ii(j)) = deg2km(distance([lat(ii(j)) long(ii(j))],[lat(ii(j+1)) long(ii(j+1))]));
         dtime(ii(j)) = date(ii(j+1),4)-date(ii(j),4);
-        pause
+        % pause
     end
 end
 

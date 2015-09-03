@@ -11,12 +11,10 @@ for i = 1:15
 end
 
 % establish minimum duration - from excel master table
-mindur = [ 1; NaN; 51; 32; 6; 57; 68; 422; 335;...
-    9; 25; 119; 11; 163; 100];
+mindur = [1;263;51;12;5;57;68;5;332;9;25;119;11;163;100];
 
 % establish maximum duration - from excel master table
-maxdur = [24; NaN; 392; 206; 39; 266; 100; 485; 705; 296;...
-    96; 433; 249; 768; 1136];
+maxdur = [23;300;2510;352;64;297;397;487;346;2459;98;435;293;769;3328];
 
 % establish fate - from excel master table
 fate = [1; 0; 1; 0; 0; 1; 0; 0; 1; 1; 0; 0; 0; 1; 1];
@@ -73,3 +71,25 @@ text(5628,4.3,'B','FontWeight','Bold','FontSize',20)
 xlabel('Minimum Distance Traveled (Km)')
 adjustfigurefont
 
+%% plot duration vs. distance
+
+figure(2); clf; hold on
+plot(mindur(fate == 0),mindis(fate == 0),'ko')
+hold on; plot(mindur(fate == 1),mindis(fate == 1),'ro')
+plot(maxdur(fate == 0),mindis(fate == 0),'ko','MarkerFaceColor','k')
+plot(maxdur(fate == 1),mindis(fate == 1),'ro','MarkerFaceColor','r')
+
+for i = 1:15
+    % conditional colors based on fate
+    if fate(i) == 1
+        c = [1 0 0];
+    end
+    if fate (i) == 0
+        c = [0 0 0];
+    end
+    plot([mindur(i) maxdur(i)],[mindis(i) mindis(i)],'color',c)
+end
+
+ylabel('Minimum Distance Traveled (Km)')
+xlabel('Entanglement Duration (days)')
+adjustfigurefont

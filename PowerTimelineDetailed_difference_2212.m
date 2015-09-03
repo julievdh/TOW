@@ -4,13 +4,14 @@
 PowerIncrease
 
 %% load data
+cd /Users/julievanderhoop/Documents/MATLAB/TOW
 load('EntTimelines')
 
 
 %%
 close all
 
-for i = 1:15;
+i = 9; % Eg 2212
     n = length(Timelines(i).dpower);
     clear minTimeline
     
@@ -89,13 +90,8 @@ for i = 1:15;
             end
         end
     end
-
-    if i == 1
-        % figure('paperunits','in','paperposition',[1 1 9 3.5]); hold on
-        figure(1); clf; hold on
-        set(gcf,'position',[1 17 740 600])
-        subplot('position',[0.1 0.1 0.85 0.4]); hold on       
-    end
+    
+    figure(1); hold on
     
     if ismember(i,[3 10 15]) == 1
         plot(minTimeline(:,1),minTimeline(:,2),'k')
@@ -114,38 +110,10 @@ for i = 1:15;
         text(maxTimeline(end,1),maxTimeline(end,2),'>','FontSize',14)
     end
        
-end
 
-text(-1470,3300,'B','FontSize',18,'FontWeight','Bold')
-xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Power (W)')
-% ax1 = gca; % current axes
-% ax1_pos = ax1.Position; % position of first axes
-% ax2 = axes('Position',ax1_pos,...
-%     'XAxisLocation','top',...
-%     'Color','none');
-% set(gca,'xtick',flip([1:-0.1043:0]),'xticklabel',{'-9';'-8';'-7';'-6';'-5';'-4';'-3';'-2';'-1';'0'})
-% xlabel('Years Before End of Entanglement')
-% title(strcat(regexprep(TOWDRAG(i).filename,'20120912_',' '),';',whales(i)),'FontSize',14,'FontWeight','bold')
+xlabel('Days Relative to Disentanglement','Fontsize',18); ylabel('Additional Power (W)','Fontsize',18)
+set(gca,'ytick',[0 900],'fontsize',16)
 
-%% zoom in on transition
-subplot('position',[0.1 0.55 0.85 0.4]); hold on
-
-% create colour matrix
-cmat = zeros(15,3);
-cmat(fate == 1) = 1;
-
-for i = 1:15
-    % plot transition to entangled
-    plot([-0.5 1.5],[power(i,8) power_E(i,8)],'color',cmat(i,:))
-    plot([-0.5 1.5],[power(i,8) power_E(i,8)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
-end
-ylabel('Propulsive Power (W)')
-set(gca,'Xtick',[-0.25 1.5])
-set(gca,'XtickLabel',{'Not Entangled','Entangled'})
-ylim([900 5000]); xlim([-1 2])
-text(-0.9,4750,'A','FontSize',18,'FontWeight','Bold')
-
-adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print -depsc -r300 PowerTimeline_DetailedAligned
+print -depsc -r300 PowerTimeline_2212

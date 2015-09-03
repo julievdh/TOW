@@ -4,6 +4,7 @@
 PowerIncrease
 
 %% load data
+cd /Users/julievanderhoop/Documents/MATLAB/TOW
 load('EntTimelines')
 
 
@@ -128,7 +129,7 @@ xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Pow
 % title(strcat(regexprep(TOWDRAG(i).filename,'20120912_',' '),';',whales(i)),'FontSize',14,'FontWeight','bold')
 
 %% zoom in on transition
-subplot('position',[0.1 0.55 0.85 0.4]); hold on
+subplot('position',[0.1 0.55 0.4 0.4]); hold on
 
 % create colour matrix
 cmat = zeros(15,3);

@@ -3,16 +3,15 @@
 clear all; close all
 
 % load data
-whaleID = 2212;
+whaleID = 3294;
 filename = sprintf('sightings%d',whaleID);
 load(filename)
 
 %%
-exist post; 
-p = ans;
+p = exist('post'); 
 
 % find max lat of all sightings
-maxlat(1,1) = max(pre(:,2));
+% maxlat(1,1) = max(pre(:,2));
 maxlat(1,2) = max(entang(:,2));
 if p > 0
 maxlat(1,3) = max(post(:,2));
@@ -20,7 +19,7 @@ end
 maxlat = max(maxlat)+1;
 
 % find minlat of all sightings
-minlat(1,1) = min(pre(:,2));
+% minlat(1,1) = min(pre(:,2));
 minlat(1,2) = min(entang(:,2));
 if p > 0
 minlat(1,3) = min(post(:,2));
@@ -36,7 +35,7 @@ end
 maxlong = max(maxlong)+1;
 
 % find minlong of all sightings
-minlong(1,1) = min(-pre(:,3));
+% minlong(1,1) = min(-pre(:,3));
 minlong(1,2) = min(-entang(:,3));
 if p > 0
 minlong(1,3) = min(-post(:,3));
@@ -59,13 +58,13 @@ set(gcf, 'color', 'white')
 for i = 1:length(pre)-1
     m_line(pre(i:i+1,3),pre(i:i+1,2),'color',[0 .5 0],'Linewidth',1.5)
     title(i)
-    pause
+    % pause
 end
 
 for i = 1:length(entang)-1
     m_line(entang(i:i+1,3),entang(i:i+1,2),'color','r','Linewidth',1.5)
     title(i)
-    pause
+    % pause
 end
 
 for i = 1:length(post)-1
