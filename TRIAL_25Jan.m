@@ -1,8 +1,7 @@
-%  close all;
+% close all;
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/ExportFiles
 
-% filename = '20120912_J081800'; % first example always running through
 load(filename)
 
 %%
@@ -17,15 +16,15 @@ xlim([min(min(towtime), min(TDRtime)),max(max(towtime), max(TDRtime))])
 set(gca,'FontSize',12)
 
 % import GPS data for filename
-cd /Volumes/TOW/MATLAB
-[shipGPS,colheaders] = GPSimport(TDRtime,towtime);
-shipGPS(:,13) = shipGPS(:,13)./1.94384; % convert Tioga SOG to m/s from knots
-cd /Volumes/TOW/MATLAB
-[handGPS] = handGPSimport(TDRtime,towtime);
+% cd /Volumes/TOW/MATLAB
+% [shipGPS,colheaders] = GPSimport(TDRtime,towtime);
+% shipGPS(:,13) = shipGPS(:,13)./1.94384; % convert Tioga SOG to m/s from knots
+% cd /Volumes/TOW/MATLAB
+% [handGPS] = handGPSimport(TDRtime,towtime);
 
 % plot speed over ground from Tioga and handheld GPS (m/s)
-plot(shipGPS(:,1),shipGPS(:,13),'k',shipGPS(:,1),shipGPS(:,13),'k.')
-plot(handGPS(:,4),handGPS(:,3),'r',handGPS(:,4),handGPS(:,3),'r.')
+% plot(shipGPS(:,1),shipGPS(:,13),'k',shipGPS(:,1),shipGPS(:,13),'k.')
+% plot(handGPS(:,4),handGPS(:,3),'r',handGPS(:,4),handGPS(:,3),'r.')
 
 
 % find different depths/speeds
@@ -68,23 +67,40 @@ for i = 1:9
     plot(towtime(ind(i,1):ind(i,2)),tow(ind(i,1):ind(i,2),2),'g')
 end
 
-% calculate midpoints of each time bin
-mid = ((ind(:,2) - ind(:,1))/2) + ind(:,1);
+%% Find 30 s with min variability within each bin
 
-% add 15 sec ( = 900 samples) to either side of midpoint
-ind30(:,1) = mid - 900;
-ind30(:,2) = mid + 900;
-ind30 = round(ind30);
-
-% check where midpoints are
-figure(10); hold on
+% for each bin
 for i = 1:9
-    line([ind(i,1) ind(i,2)],[i i]) % plot full period
-    line([ind30(i,1) ind30(i,2)],[i i],'color','r') % plot middle 30s
-    plot(mid(i),i,'k.') % plot midpoint
+    
+    clear mn vr
+    
+    % plot period
+    figure(2); hold on
+    plot(ind(i,1):ind(i,2),tow(ind(i,1):ind(i,2),2))
+    
+    % find 30 s -- sampling @ 60 Hz = 1800
+    for w = 1:(ind(i,2)-ind(i,1)-1800)
+        win = [ind(i,1)+w-1 ind(i,1)+w+1799];
+        
+        plot(win(1):win(2),tow(win(1):win(2),2))
+        
+        % calculate mean and variance
+        mn(:,w) = mean(tow(win(1):win(2),2));
+        vr(:,w) = var(tow(win(1):win(2),2));
+    end
+    
+    % find the window with minimum variance
+    minvr = find(vr == min(vr));
+    
+    % find find window incdices for this 30 s portion
+    ind30(i,1) = ind(i,1)+minvr(1)-1;
+    ind30(i,2) = ind(i,1)+minvr(1)+1799;
+    
 end
 
-% plot on main figure
+return
+
+%% plot on main figure
 figure(1)
 ind30 = round(ind30);
 for i = 1:9
@@ -130,11 +146,9 @@ end
 % replace zeros with NaNs
 handSOG(~handSOG) = NaN;
 
-% calculate mean speed based on both hand and shipboard GPS 
+% calculate mean speed based on both hand and shipboard GPS
 mn_speed = nanmean(vertcat(handSOG,shipSOG));
 
-
-% STOPPED HERE IN REDOING! HOORAY!! 
 return
 
 %%
@@ -155,5 +169,5 @@ legend('Surface','3m','6m','Location','NW')
 % % save figure
 % cd /Volumes/TOW/MATLAB/AnalysisFigs
 % savename = strcat(filename,'_ForceSpeed');
-% 
+%
 % print('-depsc',savename)

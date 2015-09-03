@@ -79,68 +79,22 @@ end
 % [1 5 6 9 10 16 18 21]
 
 
-%% 5. For those where Ho is rejected, do pairwise comparisons
+%% 5. For those where Ho is rejected, plot
 
 reject = [1 5 6 9 10 16 18 21];
 
 for i = 1:length(reject)
-    
     n = reject(i);
-    %%
-    % 0 and 3
-    % pool data
-    %     [yfit03(:,i),speed,coeffs03(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(1:6)' TOWDRAG(reject(i)).mn_dragN(1:6)]);
-    %
-    %     % RSSo = rss of pooled data
-    %
-    %     % compute RSS if fit separately
-    %     RSS1 = sse0(:,reject(i)) + sse3(:,reject(i));
-    %
-    %     % compute F statistic
-    %     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
-    %
-    %     % calculate critical value w/ bonferroni correction
-    %     crit = finv((1-(0.05/3)),2,2);
-    %
-    %     % does F exceed critical value?
-    %     h03(i) = F>crit;
-    %
-    %     % 3 and 6
-    %     % pool data
-    %     [yfit36(:,i),speed,coeffs36(:,i),RSSo] = towfit_power([TOWDRAG(reject(i)).mn_speed(4:9)' TOWDRAG(reject(i)).mn_dragN(4:9)]);
-    %
-    %     % compute RSS if fit separately
-    %     RSS1 = sse3(:,reject(i)) + sse6(:,reject(i));
-    %
-    %     % compute F statistic
-    %     F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
-    %
-    %     h36(i) = F>crit;
-    %
-    
-    % compare only 0m and 6m as these are shallowest and deepest, minimizes
-    % number of pairwise comparisons, increases power.
-    
-    % 0 and 6
-    % pool data
-    [yfit06(:,n),speed,coeffs06(:,n),RSSo] = towfit_power([[TOWDRAG(n).mn_speed(1:3) TOWDRAG(n).mn_speed(7:9)]' [TOWDRAG(n).mn_dragN(1:3); TOWDRAG(n).mn_dragN(7:9)]]);
-    
-    % compute pooled RSS
-    RSS1 = sse0(:,n) + sse6(:,n);
-    
-    % compute F statistic
-    F = ((RSSo - RSS1)/2) / (RSS1/(6-4));
-    
-    % critical value with NO BONFERRONI CORRECTION
-    crit = finv((1-0.05),2,2);
-    
-    h06(i) = F>crit;
-    
-    p06(i) = 1-fcdf(F,2,2);
-    
-    % pause
-    
+    [yfit0(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(1:3)' TOWDRAG(n).mn_dragN(1:3)],i);
+    [yfit6(:,i),speed,coeffs0(:,i),sse0(:,i)] = towfit_power([TOWDRAG(n).mn_speed(7:9)' TOWDRAG(n).mn_dragN(7:9)],i);
+    title(regexprep(TOWDRAG(n).filename,'_','  '))
+    text(2,35,'slope   intercept')
+    text(2,20,num2str([coeffs0(:,n)'; coeffs6(:,n)']))
+    xlim([0 2.5])
+    legend off
 end
+
+return
 
 %% plot these ones where significant pairwise difference between 0 and 6 m
 

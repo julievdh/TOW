@@ -20,6 +20,8 @@ for i = 1:15
     low6drag(:,i) = TOWDRAG(i).mn_dragN(7);
     med6drag(:,i) = TOWDRAG(i).mn_dragN(8);
     top6drag(:,i) = TOWDRAG(i).mn_dragN(9);
+    
+    mndrag(:,i) = mean(TOWDRAG(i).mn_dragN);
 end
 
 % establish gear weight
@@ -29,6 +31,7 @@ weight = [15.7; 4.6; 25.80105; 0.7; 0.7; 3.75; 2.95; 9.65; 2.9; 8.85;...
 % plot weight vs drag
 figure(2); hold on
 plot(weight,topsurfdrag,'.')
+plot(weight,mndrag,'o')
 
 
 %% fit robust and non-robust linear models
@@ -87,6 +90,8 @@ mdlr_ts = fitlm(weight,topsurfdrag,'RobustOpts','on','exclude',outlier);
 mdlr_t3 = fitlm(weight,top3drag,'RobustOpts','on','exclude',outlier);
 mdlr_t6 = fitlm(weight,top6drag,'RobustOpts','on','exclude',outlier);
 
+mdlr_all = fitlm(weight,mndrag,'RobustOpts','on','exclude',outlier);
+
 %% Make a table of models and Adjusted R^2 
 
 R2 = [mdlr_ls.Rsquared.Adjusted; mdlr_l3.Rsquared.Adjusted; 
@@ -101,5 +106,5 @@ pval = [mdlr_ls.Coefficients.pValue(2); mdlr_l3.Coefficients.pValue(2);
     mdlr_t6.Coefficients.pValue(2)];
 speeds = [1 1 1 2 2 2 3 3 3]';
 depths = [0 3 6 0 3 6 0 3 6]';
-table = horzcat(speeds, depths, R2,pval)
+table = horzcat(speeds, depths, R2,pval);
     

@@ -19,8 +19,8 @@ colormap = colormap(1:15:end,:);
 for n = 1:length(choose)
     i = choose(n);
     TOWDRAG(i).filename = regexprep(TOWDRAG(i).filename,'20120912_','');
-    errorbar(TOWDRAG(i).mn_speed(1:3),TOWDRAG(i).mn_dragN(1:3),TOWDRAG(i).sd_dragN(1:3),...
-        TOWDRAG(i).sd_dragN(1:3),'.','color',colormap(n,:),'MarkerSize',20)
+    errorbar(TOWDRAG(i).mn_speed,TOWDRAG(i).mn_dragN,TOWDRAG(i).sd_dragN,...
+        TOWDRAG(i).sd_dragN,'.','color',colormap(n,:),'MarkerSize',20)
     axis([0 2.5 0 750])
     set(gca,'FontSize',18)
     % title('Surface')
@@ -38,4 +38,4 @@ for n = 1:length(choose)
 end
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-% print('-depsc','SelectCases')
+print('-depsc','SelectCases')
