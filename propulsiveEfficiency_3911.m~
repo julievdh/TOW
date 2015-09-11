@@ -170,8 +170,8 @@ for i = 54:154 % low drag
     CT_DE_d_atspeed(i) = CT_DE_d(i,ind_d(i));
 end
 
-figure(3); clf
-subplot(121); hold on
+figure(3); clf; hold on
+subplot(121)
 h = plot(U(1:13),CT_NE_a(1:13),U(1:13),CT_NE_a_lower(1:13),':',U(1:13),CT_NE_a_upper(1:13),':',...
     U(1:13),CT_NE_d(1:13),U(1:13),CT_NE_d_lower(1:13),':',U(1:13),CT_NE_d_upper(1:13),':');
 set(h,'color',[0.5 0.5 0.5])
@@ -243,8 +243,7 @@ for i = 54:154 % low drag
     ni_DE_d_atspeed(i) = ni_DE_d(i,ind_d(i));
 end
 
-figure(3); 
-subplot(122); hold on
+figure(5); clf; hold on
 h = plot(U(1:13),ni_NE_a(1:13),U(1:13),ni_NE_a_lower(1:13),':',U(1:13),ni_NE_a_upper(1:13),':',...
     U(1:13),ni_NE_d(1:13),U(1:13),ni_NE_d_lower(1:13),':',U(1:13),ni_NE_d_upper(1:13),':');
 set(h,'color',[0.5 0.5 0.5])
