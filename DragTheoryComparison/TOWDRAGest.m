@@ -9,12 +9,12 @@ function Rx = TOWDRAGest(gearset,L,D)
 
 load('TOWDRAG')
 
-% Fridman 2986 Equation 3.17
+% Fridman 1986 Equation 3.17
 % Rx = Cx*L*D*q where Cx = drag coefficient, L = length, D = diameter and 
 % q = rho*V^2/2 = hydrodynamic stagnation pressure
 
 rho = 105; % have these parameters be input in function
-V = TOWDRAG(gearset).mn_speed';
+V = TOWDRAG(gearset).mn_speedTW';
 depth = TOWDRAG(gearset).mn_depth;
 
 q = (rho*V.^2)/2;
