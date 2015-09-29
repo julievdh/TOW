@@ -14,8 +14,8 @@ age = [5,8,7,5,2,1,3,18,6,2,2,3,6,12,21];
 
 
 % length, m
-l = [1170;1237;1217;1170;1076;1032;1111;1345;1195;1076;1076;1111;1195;...
-    1296;1358]/100;
+% Moore et al. 2005 length at age relationship (NOT FORTUNE)
+l = [[1235;1300;1282;1235;1108;1011;1164;1413;1260;1108;1108;1164;1260;1357;1435]]/100;
 
 % speed, ms-1
 U = 0.5:0.1:2.5;
@@ -33,14 +33,16 @@ Cf = 0.072*Re.^(-1/5);
 rho = 1025;
 
 % estimated whale mass
-M = [19213;22510;21501;19213;15147;13460;16577;28566;20402;15147;15147;...
-    16577;20402;25708;29415];
+% Moore et al. 2005 weight at age relationship (NOT FORTUNE)
+M = [12038;17359;15585;12038;6717;4943;8490;35096;13811;6717;6717;8490;13811;24453;40416];
 
 % estimated wetted surface area
 Sw = 0.08*M.^0.65;
 
 % max diameter of body, m
-d = [284;298;294;284;265;255;272;321;290;265;265;272;290;311;324]/100;
+% Fortune et al. 2012, width to length relationship from photogrammetry
+% (NOT NECROPSY)
+d = (38.63+0.21*l*100)/100;
 
 % Fineness Ratio
 FR = l./d;
@@ -372,9 +374,7 @@ bardata(3,:) = mean(yfit);
 % set(gca,'xticklabels',whales)
 % xticklabel_rotate
 
-% CHANGE THESE CLUSTERS BECAUSE C AND B ARE NOW SWITCHED IN THE OTHER
-% PLOTS.
-% ALSO CLUSTERS MAY CHANGE WITH ADCP DATA 
+% Clusters after ADCP data included
 cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
 bardata(5,:) = cluster(1:15); % assign clusters
 [B,I] = sort(bardata(5,:)); % sort by cluster
@@ -397,6 +397,20 @@ text(1.8,65,'C','color','w','FontSize',14)
 text(3.8,65,'D','color','w','FontSize',14); plot([3 5],[40 40],'color','w')
 text(9.8,65,'E','color','w','FontSize',14); plot([6 15],[40 40],'color','w')
 box on
-legend('Whale Body','Interference Drag','Gear Drag','Location','NE')
+h = legend('Whale Body','Interference Drag','Gear Drag');
+set(h,'position',[0.645 0.81 0.23 0.10])
 
 print('GearDrag_Fig9.eps','-depsc','-r300')
+
+% values for paper
+% gear / whale drag 
+[mean(bardata(3,:)./bardata(1,:)) std(bardata(3,:)./bardata(1,:))];
+% body proportion for J091298
+[min(bodyprop(1,:)) max(bodyprop(1,:))];
+% interference drag range
+[min(bardata(2,:)) max(bardata(2,:))];
+% percent interference to gear
+mean(bardata(2,:)./bardata(3,:))
+% greater than woodward values? 
+[r1,c1] = find(DI'+yfit > 173);
+[r2,c2] = find(DI'+yfit > 267);
