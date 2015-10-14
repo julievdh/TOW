@@ -2,16 +2,16 @@
 
 IndCd; close all
 
-%% Power = (D*U)/0.15
+%% Power = (D*U)/eta 
 for i = 1:15
-power(i,:) = (whaleDf(i,:).*speed)./0.15;
-power_E(i,:) = (Dtot(i,:).*speed)./0.15;
+    power(i,:) = (whaleDf(i,:).*speed)./0.10; % low drag efficiency 3911
+    power_E(i,:) = (Dtot(i,:).*speed)./0.08; % high drag efficiency 3911
 end
 
 % fold increase in power
 for i = 1:15
     for j = 1:21
-power_foldinc(i,j) = power_E(i,j)/power(i,j);
+        power_foldinc(i,j) = power_E(i,j)/power(i,j);
     end
 end
 
@@ -36,7 +36,7 @@ Tpower_E = power_E+repmat(BMR,[1,21]);
 % calculate fold increase in total power
 for i = 1:15
     for j = 1:21
-Tpower_foldinc(i,j) = Tpower_E(i,j)/Tpower(i,j);
+        Tpower_foldinc(i,j) = Tpower_E(i,j)/Tpower(i,j);
     end
 end
 
@@ -44,9 +44,10 @@ end
 figure(1); clf; hold on
 plot(speed,Tpower,'b')
 plot(speed,Tpower_E,'r')
+xlabel('Speed (m/s)'); ylabel('Thrust Power')
 
 %% minimum distance (km) while entangled
-mindist = [10; 2524; 5232; 1506; 169; 128; 119; 962; 492; 1213; 659; 
+mindist = [10; 2524; 5232; 1506; 169; 128; 119; 962; 492; 1213; 659;
     2619; 53; 1839; 5504];
 % time to complete this distance at 1.23 m/s (upper 95% CI Baumgartner and
 % Mate)
@@ -68,7 +69,7 @@ diff_min = (minWork_E - minWork); % IN J
 diff_max = (maxWork_E - maxWork); % IN J
 
 % plot
-figure(1); clf
+figure(2); clf
 subplot(211); hold on
 plot(minWork_E,'o')
 plot(minWork,'o')
@@ -87,15 +88,15 @@ legend('Entangled','Not Entangled','Location','SW')
 %% incorporate fate
 fate = [0; 0; 1; 0; 0; 1; 0; 0; 1; 1; 0; 0; 0; 1; 1]; % 0 = alive, 1 = died
 
-figure(2); clf; hold on
+figure(3); clf; hold on
 h1 = histogram(diff_min(fate == 1));
 h2 = histogram(diff_min(fate == 0));
-h1.BinWidth = 25000;
-h2.BinWidth = 25000;
+h1.BinWidth = 2.5E9;
+h2.BinWidth = 2.5E9;
 xlabel('Minimum difference in work between entangled and non-entangled')
 legend('Dead','Alive','Location','NE')
 
-figure(3)
+figure(4)
 boxplot(diff_min,fate)
 set(gca,'Xticklabels',{'Alive','Dead'})
 ylabel('Minimum difference in work (J) between entangled and non-entangled')
@@ -105,6 +106,7 @@ ylabel('Minimum difference in work (J) between entangled and non-entangled')
 [h,p,ci,stats] = ttest2(diff_min(fate == 0),diff_min(fate == 1))
 
 %% Detailed Timelines
+% HOW DID I GET THESE? 
 % minimum additional work required (J)
 minaddwork = [1.3597E+08; 2.2977E+10;7.6473E+09;1.2036E+09;2.8166E+08;
     2.8219E+09;4.9594E+09;1.0498E+09;2.6152E+10;3.2797E+09;2.8529E+09;
