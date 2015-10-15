@@ -135,7 +135,7 @@ subplot('position',[0.1 0.55 0.4 0.4]); hold on
 
 % create colour matrix
 cmat = zeros(15,3);
-cmat(fate == 1) = 1;
+cmat(fate == 1) = 1; % 1 = dead
 
 for i = 1:15
     % plot transition to entangled

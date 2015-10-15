@@ -18,7 +18,7 @@ close all
 [yfit_telem,speed,coeffs(:,21)] = towfit([TOWDRAG(21).mn_speedTW abs(TOWDRAG(21).mn_dragN)],U);
 
 %% gear number (so you don't keep making the same mistakes, Julie.
-i = 15;
+i = 10;
 TOWDRAG(i).filename % just to check
 power(i,8)
 power_E(i,8)
@@ -46,7 +46,7 @@ legend('Entangled with Telemetry','Entangled','Not Entangled','Location','NW')
 xlabel('Speed (m/s)'); ylabel('Power (W)')
 %%
 % calculate power for gear minus 134m
-Ddiff = (EstDrag(lnth(i),0))-EstDrag(lnth(i)-6,0); % difference in drag with removal of gear
+Ddiff = (EstDrag(lnth(i),0))-EstDrag(lnth(i)-100,0); % difference in drag with removal of gear
 Dnew = Dtot(i,:)-Ddiff;
 Dnew2 = Dnew-Ddiff;
 
@@ -61,9 +61,9 @@ Pnew(8)
 % TPnew = Pnew+repmat(BMR(i),[1,21]);
 
 figure(91); clf; hold on
-plot(power_E(i,:))
-plot(power(i,:))
-plot(Pnew)
+plot(speed,power_E(i,:))
+plot(speed,power(i,:))
+plot(speed,Pnew)
 xlabel('Speed (m/s)'); ylabel('Power (W)')
 legend('Entangled','Not Entangled','Change in Entanglement configuration')
 
