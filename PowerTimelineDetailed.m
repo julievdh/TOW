@@ -15,10 +15,11 @@ close all
 %                           1-Feb-09	293		44		CGF
 
 % calculate yfit for telemetry buoy
-[yfit_telem,speed,coeffs(:,21)] = towfit([TOWDRAG(21).mn_speed' abs(TOWDRAG(21).mn_dragN)],U);
+[yfit_telem,speed,coeffs(:,21)] = towfit([TOWDRAG(21).mn_speedTW abs(TOWDRAG(21).mn_dragN)],U);
 
 %% gear number (so you don't keep making the same mistakes, Julie.
-i = 7;
+i = 15;
+TOWDRAG(i).filename % just to check
 power(i,8)
 power_E(i,8)
 
@@ -33,7 +34,7 @@ xlabel('Speed (m/s)'); ylabel('Drag (N)')
 legend('Entangled','Entangled with Telemetry')
 
 %% calculate power with telemetry
-power_E_wtelem = (D_wtelem.*speed)./0.15;
+power_E_wtelem = (D_wtelem.*speed)./0.08;
 % Tpower_E_wtelem = power_E_wtelem+repmat(BMR(i),[1,21]);
 
 % plot to check
@@ -45,15 +46,19 @@ legend('Entangled with Telemetry','Entangled','Not Entangled','Location','NW')
 xlabel('Speed (m/s)'); ylabel('Power (W)')
 %%
 % calculate power for gear minus 134m
-Ddiff = (EstDrag(10,0))-EstDrag(lnth(i),0); % difference in drag with removal of gear
-Dnew = Dtot(i,:)+Ddiff;
+Ddiff = (EstDrag(lnth(i),0))-EstDrag(lnth(i)-6,0); % difference in drag with removal of gear
+Dnew = Dtot(i,:)-Ddiff;
+Dnew2 = Dnew-Ddiff;
 
 % added telemetry
-% Dnew = Dnew + yfit_telem;
+Dnew2 = Dnew + yfit_telem;
 
 % recalculate power
-Pnew = (Dnew.*speed)./0.15;
-TPnew = Pnew+repmat(BMR(i),[1,21]);
+Pnew = (Dnew.*speed)./0.08;
+Pnew(8)
+% Pnew2 = (Dnew2.*speed)./0.08;
+% Pnew2(8)
+% TPnew = Pnew+repmat(BMR(i),[1,21]);
 
 figure(91); clf; hold on
 plot(power_E(i,:))

@@ -1,7 +1,7 @@
 % DETAILED TIMELINES
 
-%% load power info
-PowerIncrease
+% %% load power info
+% PowerIncrease
 
 %% load data
 cd /Users/julievanderhoop/Documents/MATLAB/TOW
@@ -11,7 +11,7 @@ load('EntTimelines')
 %%
 close all
 
-for i = 1:15;
+for i = 1:15
     n = length(Timelines(i).dpower);
     clear minTimeline
     
@@ -115,9 +115,11 @@ for i = 1:15;
         text(maxTimeline(end,1),maxTimeline(end,2),'>','FontSize',14)
     end
        
+    [min_Wa(i),max_Wa(i)] = PowerIncrease_Detailed(minTimeline,maxTimeline);
+    
 end
 
-text(-1450,3200,'B','FontSize',18,'FontWeight','Bold')
+text(-1450,5600,'B','FontSize',18,'FontWeight','Bold')
 xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Power (W)')
 % ax1 = gca; % current axes
 % ax1_pos = ax1.Position; % position of first axes
@@ -143,8 +145,8 @@ end
 ylabel('Propulsive Power (W)')
 set(gca,'Xtick',[-0.25 1.25])
 set(gca,'XtickLabel',{'Not Entangled','Entangled'})
-ylim([900 5000]); xlim([-1 2])
-text(-0.926,4700,'A','FontSize',18,'FontWeight','Bold')
+ylim([900 8000]); xlim([-1 2])
+text(-0.926,7500,'A','FontSize',18,'FontWeight','Bold')
 
 adjustfigurefont
 

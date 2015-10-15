@@ -106,17 +106,21 @@ ylabel('Minimum difference in work (J) between entangled and non-entangled')
 [h,p,ci,stats] = ttest2(diff_min(fate == 0),diff_min(fate == 1))
 
 %% Detailed Timelines
-% HOW DID I GET THESE? 
-% minimum additional work required (J)
-minaddwork = [1.3597E+08; 2.2977E+10;7.6473E+09;1.2036E+09;2.8166E+08;
-    2.8219E+09;4.9594E+09;1.0498E+09;2.6152E+10;3.2797E+09;2.8529E+09;
-    4.7788E+09;1.2678E+09;2.7832E+10;1.5835E+10];
-
-% maximum additional work required (J)6.2547E+09
-maxaddwork = [6.2547E+09;2.4313E+10;2.7920E+11;2.0486E+10;2.0779E+09;
-    1.2923E+10;2.5645E+10;6.9492E+10;2.7005E+10;4.0779E+10;9.9170E+09;
-    1.6439E+10;3.2452E+10;1.5288E+11;4.8754E+11];
+PowerTimelineDetailed_all_aligned_difference
+% minimum additional work required (J) = min_Wa
+% maximum additional work required (J) = max_Wa
 
 %% stats
-[h,p,ci,stats] = ttest2(maxaddwork(fate == 0),maxaddwork(fate == 1))
-[h,p,ci,stats] = ttest2(minaddwork(fate == 0),minaddwork(fate == 1))
+[h,p,ci,stats] = ttest2(max_Wa(fate == 0),max_Wa(fate == 1))
+[h,p,ci,stats] = ttest2(min_Wa(fate == 0),min_Wa(fate == 1))
+
+figure; 
+subplot(121)
+boxplot(min_Wa,fate)
+set(gca,'Xticklabels',{'Alive','Dead'})
+ylabel('Minimum difference in work (J) between entangled and non-entangled')
+subplot(122)
+boxplot(max_Wa,fate)
+set(gca,'Xticklabels',{'Alive','Dead'})
+
+
