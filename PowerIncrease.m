@@ -130,14 +130,14 @@ boxplot(max_Wa,fate)
 set(gca,'Xticklabels',{'Alive','Dead'})
 
 %% values reported in paper
-disp('meanSD min Wa (kJ)'); [mean(min_Wa)/1000 std(min_Wa)/1000]
-disp('meanSD max Wa (kJ)'); [mean(max_Wa)/1000 std(max_Wa)/1000]
+disp('meanSD min Wa (J)'); [mean(min_Wa)/1000 std(min_Wa)]
+disp('meanSD max Wa (J)'); [mean(max_Wa)/1000 std(max_Wa)]
 
-disp('meanSD min Wa (kJ) Fate == 0'); [mean(min_Wa(fate == 0))/1000 std(min_Wa(fate == 0))/1000]
-disp('meanSD min Wa (kJ) Fate == 1'); [mean(min_Wa(fate == 1))/1000 std(min_Wa(fate == 1))/1000]
+disp('meanSD min Wa (J) Fate == 0'); [mean(min_Wa(fate == 0)) std(min_Wa(fate == 0))]
+disp('meanSD min Wa (J) Fate == 1'); [mean(min_Wa(fate == 1)) std(min_Wa(fate == 1))]
 
-disp('meanSD max Wa (kJ) Fate == 0'); [mean(max_Wa(fate == 0))/1000 std(max_Wa(fate == 0))/1000]
-disp('meanSD max Wa (kJ) Fate == 1'); [mean(max_Wa(fate == 1))/1000 std(max_Wa(fate == 1))/1000]
+disp('meanSD max Wa (J) Fate == 0'); [mean(max_Wa(fate == 0)) std(max_Wa(fate == 0))]
+disp('meanSD max Wa (J) Fate == 1'); [mean(max_Wa(fate == 1)) std(max_Wa(fate == 1))]
 
 disp('meanSD power increase (W) Fate == 0'); [mean(pdiff(fate == 0)) std(pdiff(fate == 0))]
 disp('meanSD power increase (W) Fate == 1'); [mean(pdiff(fate == 1)) std(pdiff(fate == 1))]
