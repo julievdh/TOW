@@ -70,9 +70,10 @@ plot(maxTimeline(:,1),maxTimeline(:,2),'k:')
     text(maxTimeline(end,1),maxTimeline(end,2),'>','FontSize',14)
 
 % set x, y limits
-set(gca,'xlim',[-120 30],'ylim',[0 2000])
+set(gca,'xlim',[-120 30],'ylim',[0 2500])
+ylabel('Additional Power (W)')
 
-text(-115,1810,'A: EG 2710 J072199','FontSize',18,'FontWeight','Bold')
+text(-115,2300,'A: EG 2710 J072199','FontSize',18,'FontWeight','Bold')
 % ax1 = gca; % current axes
 % ax1_pos = ax1.Position; % position of first axes
 % ax2 = axes('Position',ax1_pos,...
@@ -83,7 +84,7 @@ text(-115,1810,'A: EG 2710 J072199','FontSize',18,'FontWeight','Bold')
 % title(strcat(regexprep(TOWDRAG(i).filename,'20120912_',' '),';',whales(i)),'FontSize',14,'FontWeight','bold')
 %% Plot EG 1102, J060801 Panel B
 
-subplot('position',[0.08 0.05 0.9 0.4]); hold on
+subplot('position',[0.08 0.08 0.9 0.4]); hold on
 
 i = 15;
 n = length(Timelines(i).dpower);
@@ -129,7 +130,7 @@ maxTimeline(1:3,:) = [Timelines(i).day(1)-20 Timelines(i).dpower(1); % baseline 
 % plot death or continuation
 text(maxTimeline(end,1),maxTimeline(end,2),'x','FontSize',14)
 
-text(-1130,1810,'B: EG 1102 J060801','FontSize',18,'FontWeight','Bold')
+text(-1130,2300,'B: EG 1102 J060801','FontSize',18,'FontWeight','Bold')
 xlabel('Days Relative to Disentanglement'); ylabel('Additional Power (W)')
 
 adjustfigurefont
