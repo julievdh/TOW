@@ -100,8 +100,8 @@ c = colormap(lines);
 for cl = 1:5
     ii = find(cluster(1:15) == cl);
     for i = 1:length(ii)
-        figure(1); set(gcf,'position',[110 290 890 380])
-        subplot('position',[0.05,0.1,0.425,0.8]); hold on
+        figure(1); set(gcf,'position',[110     7   350   500],'paperpositionmode','auto')
+        subplot('position',[0.18,0.58,0.8,0.42]); hold on
                 if lineonly(ii(i)) == 0;
             plot(wt(ii(i)),mean(TOWDRAG(ii(i)).mn_dragN),'^','MarkerFacecolor',c(cl,:),'color',c(cl,:))
                 else
@@ -123,12 +123,12 @@ end
 plot(wt,mdlr_wt.Fitted,'k')
 box on
 text(28,325,'A','FontWeight','Bold','FontSize',18)
-adjustfigurefont
+%% 
 
 for cl = 1:5
     ii = find(cluster == cl);
     for i = 1:length(ii)
-        subplot('position',[0.55,0.1,0.425,0.8]); hold on
+        subplot('position',[0.18,0.08,0.8,0.42]); hold on
                 if lineonly(ii(i)) == 0;
             plot(lnth(ii(i)),mean(TOWDRAG(ii(i)).mn_dragN),'^','MarkerFacecolor',c(cl,:),'color',c(cl,:))
                 else
@@ -143,6 +143,7 @@ xlabel('Length (m)'); ylabel('Mean Drag (N)')
 box on
 text(278,325,'B','FontWeight','Bold','FontSize',18)
 adjustfigurefont
+
 
 
 
@@ -172,4 +173,8 @@ line(w,feval(fit,w,'0'),'Color','k')
 w = linspace(min(lnth),max(lnth(flt)));
 line(w,feval(fit,w,'1'),'Color','k','LineStyle','--')
 
-anova(fit)
+anova(fit);
+
+
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
+print('4069_Fig5.eps','-depsc','-r300')

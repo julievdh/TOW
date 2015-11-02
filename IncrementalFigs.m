@@ -139,9 +139,9 @@ axis([0 1 0 100])
 %% Figure 4 -- ABC Figure
 
 figure (4); clf
-set(gcf,'Position',[72 240 1200 340],'paperpositionmode','auto')
+set(gcf,'Position',[10     5   315   575],'paperpositionmode','auto')
 
-subplot('Position',[0.035,0.1,0.3,0.85]); hold on; box on
+subplot('Position',[0.17,0.72,0.8,0.27]); hold on; box on
 % plot surface tow with SD
 for i = 1:5
     errorbar(TOWDRAG(i+15).mn_speed(1:3),TOWDRAG(i+15).mn_dragN(1:3),TOWDRAG(i+15).sd_dragN(1:3),'.','color',c(i,:),'MarkerSize',20)
@@ -168,10 +168,9 @@ end
 
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 axis([0 2.5 0 270])
-text(0.09,190,'A','FontSize',18,'FontWeight','bold')
+text(2.3,240,'A','FontSize',18,'FontWeight','bold')
 
-
-subplot('Position',[0.37,0.1,0.3,0.85]); hold on; box on
+subplot('Position',[0.17,0.385,0.8,0.27]); hold on; box on
 plot([200 150 100 50 25], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
 plot([200 150 100 50 25], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
 plot([200 150 100 50 25], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
@@ -189,11 +188,11 @@ set(gca,'xdir','reverse')
 xlabel('Length of line (m)'); ylabel('Percent Decrease in Drag')
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 set(gca,'xtick',[0 25 50 100 150 200])
-text(192,78,'B','FontSize',18,'FontWeight','bold')
+text(15,90,'B','FontSize',18,'FontWeight','bold')
 axis([0 200 0 100])
 
 
-subplot('Position',[0.692,0.1,0.3,0.85]); hold on; box on
+subplot('Position',[0.17,0.05,0.8,0.27]); hold on; box on
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(3,:)]','.-','MarkerSize',20,'color',[202/255 0 32/255])
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(8,:)]','.-','MarkerSize',20,'color',[55/255 126/255 184/255])
 plot([0 50/200 100/200 150/200 175/200], [0 p_dec200(13,:)]','.-','MarkerSize',20,'color',[237/255 177/255 32/255])
@@ -209,12 +208,12 @@ plot([0 50/100 75/100], [0 p_dec100(13,:)]','.:','MarkerSize',20,'color',[237/25
 
 
 % plot(25/50, p_dec50(3:5:end,:)','.','MarkerSize',20)
-xlabel('Proportion of line removed');
+xlabel('Proportion of line removed'); ylabel('Percent Decrease in Drag')
 set(gca,'xtick',[0 0.25 0.50 0.75 1.00])
 legend('0.50 m/s','1.25 m/s','2.00 m/s','Location','NW')
 axis([0 1 0 100])
-text(0.04,78,'C','FontSize',18,'FontWeight','bold')
+text(0.92,90,'C','FontSize',18,'FontWeight','bold')
 adjustfigurefont
 
-% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Incremental
-% print('-depsc','IncrementalABC')
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Incremental
+print('-depsc','IncrementalABC')
