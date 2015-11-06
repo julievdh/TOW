@@ -13,13 +13,13 @@ lineonly = [0,1,1,1,1,0,1,1,1,0,0,1,1,0,1,1,1,1,1,1,0];
 
 %% plot effect of depth
 figure(1); clf
-set(gcf,'position',[400 290 850 380])
+set(gcf,'position',[400 290 600 380],'paperpositionmode','auto')
 letter = ['A','B','C','D','E'];
-pos(:,1) = [0.06;0.55;0.27;0.4];
-pos(:,2) = [0.38;0.55;0.27;0.4];
-pos(:,3) = [0.7;0.55;0.27;0.4];
-pos(:,4) = [0.06;0.1;0.27;0.4];
-pos(:,5) = [0.38;0.1;0.27;0.4];
+pos(:,1) = [0.08;0.55;0.27;0.4];
+pos(:,2) = [0.40;0.55;0.27;0.4];
+pos(:,3) = [0.72;0.55;0.27;0.4];
+pos(:,4) = [0.08;0.1;0.27;0.4];
+pos(:,5) = [0.40;0.1;0.27;0.4];
 for cl = 1:5
     subplot('position',pos(:,cl)); hold on
     ii = find(cluster == cl);
@@ -52,10 +52,10 @@ for cl = 1:5
     if cl <=3
         ylim([0 0.75])
         % insert panel label
-        text(2.25,0.64,letter(cl),'FontSize',14,'FontWeight','Bold')
+        text(2.25,0.68,letter(cl),'FontSize',14,'FontWeight','Bold')
     else
         ylim([0 0.14])
-        text(2.25,0.12,letter(cl),'FontSize',14,'FontWeight','Bold')
+        text(2.25,0.125,letter(cl),'FontSize',14,'FontWeight','Bold')
     end
     
     if cl >= 3
@@ -64,13 +64,13 @@ for cl = 1:5
     
 end
 
-[ax2,h2]=suplabel('Drag Coefficient, Cd','y');
+[ax2,h2]=suplabel('Drag Coefficient, \itC_d','y');
 set(h2,'FontSize',16)
 set(h2,'position',[0;0.5])
 adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
-print('DepthSpeedCd_Cluster.eps','-depsc','-r300')
+print('4069_FigS2.tiff','-dtiff','-r300')
 
 return
 
@@ -141,7 +141,7 @@ adjustfigurefont
 
 %% COMBINE ALL THE SUBPLOTS! WHY NOT!?
 figure(28); clf
-set(gcf,'Position',[2257 -61 1022 384])
+set(gcf,'Position',[2257 -61 1022 384],'paperpositionmode','auto')
 for i = 1:5
     xbins = 0:10:275;
     ii = find(cluster == i);
