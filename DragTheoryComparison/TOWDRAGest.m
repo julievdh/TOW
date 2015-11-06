@@ -7,22 +7,23 @@ function Rx = TOWDRAGest(gearset,L,D)
     % D = diameter of line
 %    
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 load('TOWDRAG')
 
 % Fridman 1986 Equation 3.17
 % Rx = Cx*L*D*q where Cx = drag coefficient, L = length, D = diameter and 
-% q = rho*V^2/2 = hydrodynamic stagnation pressure
+% q = rho*V^2/2 = hydrodynamic stagnation pressure (N)
 
-rho = 105; % have these parameters be input in function
+rho = 1025; % seawater density, kg m^-3
 V = TOWDRAG(gearset).mn_speedTW';
 depth = TOWDRAG(gearset).mn_depth;
 
-q = (rho*V.^2)/2;
+q = (rho*V.^2)/2; 
 
 for i = 1:9
 Cx(i) = getCx(depth(i),L); % compute Cx based on alpha from depth from TOWDRAG
 
-Rx(i) = (Cx(i)*L*D*q(i))*9.8066; % output from function
+Rx(i) = (Cx(i)*L*D*q(i));
 end
 
 % plot to check

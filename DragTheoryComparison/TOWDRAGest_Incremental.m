@@ -71,6 +71,7 @@ end
     h2 = plot(x,y);
     set(h2,'color',get(h,'color'));
     
+foldinc(gearset) = mean(x./y);
 
 end
 
@@ -79,6 +80,8 @@ adjustfigurefont
 % legend(TOWDRAG(1:21).filename)
 ylim([0 180])
 print('IncrementalMeasuredExpected.eps','-depsc','-r300')
+
+[mean(foldinc(16:20)) std(foldinc(16:20))]
 
 %% histogram of slopes
 figure(4);
