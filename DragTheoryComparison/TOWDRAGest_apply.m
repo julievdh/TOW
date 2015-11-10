@@ -9,9 +9,9 @@ function Rx = TOWDRAGest_apply(ecase,L,D)
 
 % Fridman 1986 Equation 3.17
 % Rx = Cx*L*D*q where Cx = drag coefficient, L = length, D = diameter and 
-% q = rho*V^2/2 = hydrodynamic stagnation pressure
+% q = rho*V^2/2 = hydrodynamic stagnation pressure (N)
 
-rho = 105; % 
+rho = 1025; % 
 V = 1.23; % 95% upper CI right whale swimming speed
 depth = 0; % for minimum estimate, assume depth = 0; 
 
@@ -19,7 +19,7 @@ q = (rho*V.^2)/2;
 
 Cx = getCx(depth,L); % compute Cx based on alpha from depth from TOWDRAG
 
-Rx = (Cx*L*D*q)*9.8066; % output from function
+Rx = (Cx*L*D*q); % output from function
 
 % plot to check
 % figure(2); hold on

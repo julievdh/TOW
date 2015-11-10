@@ -14,6 +14,7 @@ data = xlsread('ARK_CaseStudiestoUse.xlsx');
 L = data(:,4); % gear length
 D = data(:,5); % line diameter
 flt = data(:,6); % float Y/N
+lobs([11 13]) = 1; % LOBSTER TRAPS
 
 % Calculate expected theoretical drag for all gear sets
 clear Rx
@@ -21,7 +22,7 @@ for ecase = 1:13
     Rx(ecase) =  TOWDRAGest_apply(ecase,L(ecase),D(ecase));
 end
 
-% Auxiliary wetted areas: 
+% Auxiliary wetted areas:
 A = data(:,7);
 
 % drag coefficients of auxiliaries
@@ -40,10 +41,13 @@ Rx_aux(isnan(Rx_aux)) = 0; % replace NaN with zero
 Rx_tot = Rx' + Rx_aux;
 
 %% correct them to be comparable to measured drag
-% relationship between measured and estimated drag
-meas = 8.83 + 0.35*Rx_tot + 84.948*flt - 0.18*Rx_tot.*flt;
-
 figure(5); hold on
+% relationship between measured and estimated drag
+meas(flt == 0) = feval(fit,Rx_tot(flt == 0),'0');
+meas(flt == 1) = feval(fit,Rx_tot(flt == 1),'1');
+
+% for lobster cases
+meas(lobs == 1) = 50.808 + 0.418*Rx_tot(lobs == 1);
 plot(Rx_tot,meas,'r*')
 
 adjustfigurefont

@@ -1,7 +1,6 @@
 % TOWDRAGEst_All
 % Estimate expected theoretical drag for all TOWDRAG gear sets
 
-clear all; close all;
 load('TOWDRAG')
 
 % gear sets with line only == 1
@@ -93,6 +92,7 @@ print('MeasExpected_Slopes.eps','-depsc','-r300')
 for gearset = [2:13,15:20]
     towmatrix(gearset,:) = abs(TOWDRAG(gearset).mn_dragN);
 end
+% remove outliers (lobster, telemetry and gillnet)
 towmatrix(21,:) = NaN;
 towmatrix(towmatrix == 0) = NaN;
 
@@ -117,7 +117,7 @@ h = gscatter(expected,measured,float,'bg','o^');
 % set(h(2),'MarkerFaceColor','g');
 w = linspace(min(expected),max(expected(float == 0)));
 line(w,feval(fit,w,'0'),'Color','k')
-w = linspace(min(expected),max(expected(float == 1)));
+w = linspace(min(expected),1200);
 line(w,feval(fit,w,'1'),'Color','k','LineStyle','--')
 % plot lobster trap, telemetry, gillnet
 for gearset = [1,14,21,14];
@@ -131,6 +131,7 @@ for gearset = [1,14,21,14];
     set(h2,'color',get(h,'color'));
 end
 xlabel('Estimated Drag (N)'); ylabel('Measured Drag (N)')
+xlim([0 2000])
 legend off
 % legend('Line Only','Floats','Lobster Trap; J091298','Gillnet; J051099','Telemetry Buoy')
 adjustfigurefont
