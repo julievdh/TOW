@@ -40,11 +40,16 @@ for i = 1:15
     end
 end
 
-% plot all
+%% plot all
 figure(1); clf; hold on
-plot(speed,Tpower,'b')
-plot(speed,Tpower_E,'r')
-xlabel('Speed (m/s)'); ylabel('Thrust Power')
+plot(speed,Tpower,'k.')
+plot(speed,mean(Tpower),'k','LineWidth',2)
+plot(speed,Tpower_E,'b.')
+plot(speed,mean(Tpower_E),'b','LineWidth',2)
+xlabel('Speed (m/s)'); ylabel('Thrust Power (W)')
+adjustfigurefont
+
+print('ThrustPower.eps','-dtiff','-r300')
 
 %% minimum distance (km) while entangled
 mindist = [10; 2524; 5232; 1506; 169; 128; 119; 962; 492; 1213; 659;

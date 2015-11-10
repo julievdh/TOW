@@ -25,6 +25,7 @@ for i = 1:length(pt)
     [c, index] = min(abs(X-pt(i))); % find index of point of attachment
     BL_pt(i) = Y(index); % boundary layer at the point of attachment
 end
+BL_pt(BL_pt == 0) = 1E-20;
 
 % p = [0.2 0.0044]; % height of protuberance at each attachment
 CDI_n = (p./BL_pt).^(1/3); % interference drag coefficient for each attachment

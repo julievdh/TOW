@@ -7,7 +7,7 @@ function q = getq(gearset,TOWDRAG)
     % q: hydrodynamic stagnation pressure
 
 load('TOWDRAG')
-rho = 105;
+rho = 1025;
 V = TOWDRAG(gearset).mn_speed';
 depth = TOWDRAG(gearset).mn_depth;
 
