@@ -9,26 +9,50 @@ IndCd_ARKcases
 Pe = (Dtot*1.23)./0.08;
 Pn = (whaleDf*1.23)./0.10;
 
-d = 1:10:1200; % days
+d = 1:1:4000; % days
 
 % how much energy for one day?
 Wn = Pn*d*24*60*60; % J required for one day, not entangled
 We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
+%% find days til minwork 
+for i = 1:13;
+    daysmin(i) = min(find(Wa(i,:) > 1.86E10));
+    days_max = min(find(Wa(i,:) > 2.27E11));
+    if isempty(days_max) == 1
+        daysmax(i) = NaN;
+    else daysmax(i) = days_max;
+    end
+end
+
+
 %% plot
 figure(1); clf
-subplot('position',[0.1 0.1 0.2; hold on
+subplot('position',[0.05 0.1 0.2,0.85]); hold on
 plot(0,Wn(:,1),'ko',0.5,We(:,1),'bo')
 plot(1,Wa(:,1),'bo')
+ylabel('Work (J)')
+xlim([-0.25 1.25])
+set(gca,'xticklabel',{'W_n','W_e','W_a'})
 
+subplot('position',[0.3 0.55 0.65 0.4]); hold on
 plot(d,Wa,'b')
 % plot death threshold
 plot([0 1200],[1.86E10 1.86E10],'r--')
 plot([0 1200],[2.27E11 2.27E11],'r-')
-ylabel('Work (J)')
+plot(1.86E10,mindays)
+ylim([0 2.5E11]); xlim([0 400])
+%xlabel('Days')
 
-% find days til minwork 
+subplot('position',[0.3 0.1 0.65 0.4]); hold on
+plot(d,Wa,'b')
+% plot death threshold
+plot([0 4000],[1.86E10 1.86E10],'r--')
+plot([0 4000],[2.27E11 2.27E11],'r-')
+plot(2.27E11,daysma)
+ylim([0 2.5E11]); xlim([0 4000])
+xlabel('Days')
 
-
-% find days til max work
+adjustfigurefont
+print('DaystoDeath_1.tif','-dtiff','-r300')
