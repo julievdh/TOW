@@ -1,0 +1,34 @@
+% DAYS TIL DEATH
+
+%% calculate drag on entangled and nonentangled whales
+% get drag of entangled and nonentangled whales from Amy's cases
+IndCd_ARKcases
+
+%% power = (drag x speed)/efficiency
+% entangled efficiency = 0.08
+Pe = (Dtot*1.23)./0.08;
+Pn = (whaleDf*1.23)./0.10;
+
+d = 1:10:1200; % days
+
+% how much energy for one day?
+Wn = Pn*d*24*60*60; % J required for one day, not entangled
+We = Pe*d*24*60*60; % J required for one day, entangled
+Wa = We-Wn;
+
+%% plot
+figure(1); clf
+subplot('position',[0.1 0.1 0.2; hold on
+plot(0,Wn(:,1),'ko',0.5,We(:,1),'bo')
+plot(1,Wa(:,1),'bo')
+
+plot(d,Wa,'b')
+% plot death threshold
+plot([0 1200],[1.86E10 1.86E10],'r--')
+plot([0 1200],[2.27E11 2.27E11],'r-')
+ylabel('Work (J)')
+
+% find days til minwork 
+
+
+% find days til max work
