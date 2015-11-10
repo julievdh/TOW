@@ -41,6 +41,7 @@ ylim([0 2.5E11]); xlim([0 4000])
 xlabel('Days')
 
 adjustfigurefont
+print('DaystoDeath_1.eps','-depsc','-r300')
 
 %% find days til minwork 
 
