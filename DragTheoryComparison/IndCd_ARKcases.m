@@ -125,23 +125,35 @@ clear bardata
 bardata(1,:) = whaleDf;
 bardata(2,:) = DI(:,8);
 bardata(3,:) = meas;
+[B,I] = sort(Age); % sort by Age
+sort_bardata = bardata(:,I); % reform data matrix
+
 
 figure(98); clf; hold on
-H = bar(bardata(1:3,:)','stacked');
+H = bar(sort_bardata(1:3,:)','stacked');
 myC= [0 0 0; 0.5 0.5 0.5; 1 1 1]; % colours
 for z=1:3
     set(H(z),'facecolor',myC(z,:)) % set colours
 end
-legend('Whale Body','Interference Drag','Gear Drag','Location','NE')
 ylabel({'Drag (N)',''},'FontSize',14)
-whales = {'EG 1238  ','EG 1427  ','EG 1971  ','EG 2027  ','EG 2151  ',...
-    'EG 2223  ','EG 2427  ','EG 2470  ','EG 2753  ','EG 3120  ','EG 3392  ',...
-    'EG 3420  ','EG 3821  '};
-xticklabel_rotate(1:13,90,whales,'FontSize',14)
+whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
+    'Eg 2223  ','Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ',...
+    'Eg 3420  ','Eg 3821  '};
+xticklabel_rotate(1:13,90,whales(I),'FontSize',14)
 set(legend,'Position',[0.22, 0.79, 0.25, 0.1])
 adjustfigurefont
 box on
-h = legend('Whale Body','Interference Drag','Gear Drag');
+h = legend('Whale Body','Interference Drag','Gear Drag','Location','NW');
 
 print('DragContribution_ARK.eps','-depsc','-r300')
+
+%% How much do they contribute?
+% gear to total body
+contrib = sum(sort_bardata(2:3,:))./sort_bardata(1,:);
+mean(contrib)
+figure(99)
+plot(sort(Age),contrib,'o')
+% fitcontrib =  fit(Age,contrib,'exp1')
+% w = linspace(min(Age),max(Age));
+% line(w,feval(fitcontrib,w),'Color','k')
 

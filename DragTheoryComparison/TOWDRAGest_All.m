@@ -130,7 +130,7 @@ for gearset = [1,14,21,14];
     h2 = plot(x,y);
     set(h2,'color',get(h,'color'));
 end
-xlabel('Estimated Drag (N)'); ylabel('Measured Drag (N)')
+xlabel('Theoretical Drag (N)'); ylabel('Measured Drag (N)')
 xlim([0 2000])
 legend off
 % legend('Line Only','Floats','Lobster Trap; J091298','Gillnet; J051099','Telemetry Buoy')
@@ -138,3 +138,9 @@ adjustfigurefont
 
 anova(fit);
 print('MeasExpected_All.eps','-depsc','-r300')
+
+%% fit lobster separately
+lobsfit = fitlm(Rx(1,:),TOWDRAG(1).mn_dragN);
+
+%% telem fit separately
+telemfit = fitlm(Rx(21,:),TOWDRAG(21).mn_dragN)
