@@ -128,23 +128,22 @@ bardata(3,:) = meas;
 [B,I] = sort(Age); % sort by Age
 sort_bardata = bardata(:,I); % reform data matrix
 
+%% How much do they contribute?
 % gear to total body
 contrib = sum(sort_bardata(2:3,:))./sort_bardata(1,:);
 whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
     'Eg 2223  ','Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ',...
     'Eg 3420  ','Eg 3821  '};
 
-% set up anonymous functions
 stackedbar = @(x, A) bar(x, A, 'stack');
 dots = @(x, y) plot(x, y, 'bo', 'Markersize', 15,'MarkerFaceColor','b');
 
-% plot
 figure(99); clf; hold on
 [ax, h1, h2] = plotyy(1:13, sort_bardata', 1:13, contrib,stackedbar,dots);
 xticklabel_rotate(1:13,90,whales(I),'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
-plot([0 14],[0.3 0.3],'r--') % 0.3 threshold suggested in discussion
+plot([0 14],[0.3 0.3],'r--')
 colormap(myC)
 ylabel('Gear Drag Contribution to Total')
 adjustfigurefont
