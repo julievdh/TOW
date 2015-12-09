@@ -110,15 +110,15 @@ nanmean(measured./expected)
 gear = table(measured,expected,float);
 gear.float = nominal(gear.float);
 
-fit = fitlm(gear,'measured~expected*float')
+FIT = fitlm(gear,'measured~expected*float')
 figure(5); hold on
 h = gscatter(expected,measured,float,'bg','o^');
 % set(h(1),'MarkerFaceColor','b');
 % set(h(2),'MarkerFaceColor','g');
 w = linspace(min(expected),max(expected(float == 0)));
-line(w,feval(fit,w,'0'),'Color','k')
+line(w,feval(FIT,w,'0'),'Color','k')
 w = linspace(min(expected),1200);
-line(w,feval(fit,w,'1'),'Color','k','LineStyle','--')
+line(w,feval(FIT,w,'1'),'Color','k','LineStyle','--')
 % plot lobster trap, telemetry, gillnet
 for gearset = [1,14,21,14];
     h = plot(Rx(gearset,:),abs(TOWDRAG(gearset).mn_dragN),'^');
@@ -136,7 +136,7 @@ legend off
 % legend('Line Only','Floats','Lobster Trap; J091298','Gillnet; J051099','Telemetry Buoy')
 adjustfigurefont
 
-anova(fit);
+anova(FIT);
 print('MeasExpected_All.eps','-depsc','-r300')
 
 %% fit lobster separately

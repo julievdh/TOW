@@ -5,7 +5,8 @@ function Rx = TOWDRAGest_apply(ecase,L,D)
     % ecase = entanglement case index from ARK_CaseStudiestoUse.xlsx
     % L = length
     % D = diameter of line
-%    
+% outputs: 
+    % Rx = theoretical drag force (N)
 
 % Fridman 1986 Equation 3.17
 % Rx = Cx*L*D*q where Cx = drag coefficient, L = length, D = diameter and 

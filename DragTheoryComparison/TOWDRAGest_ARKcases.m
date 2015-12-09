@@ -43,8 +43,8 @@ Rx_tot = Rx' + Rx_aux;
 %% correct them to be comparable to measured drag
 figure(5); hold on
 % relationship between measured and estimated drag
-meas(flt == 0) = feval(fit,Rx_tot(flt == 0),'0');
-meas(flt == 1) = feval(fit,Rx_tot(flt == 1),'1');
+meas(flt == 0) = feval(FIT,Rx_tot(flt == 0),'0');
+meas(flt == 1) = feval(FIT,Rx_tot(flt == 1),'1');
 
 % for lobster cases
 meas(lobs == 1) = 50.808 + 0.418*Rx_tot(lobs == 1);
