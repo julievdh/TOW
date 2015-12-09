@@ -59,8 +59,8 @@ whaleCD = (2*whaleDf)./(rho*(U.^2)*Sw);
 % plot on figure
 figure(2); clf
 subplot(211); hold on
-plot(repmat(U,13,1),whaleDf,'o')
-errorbar(repmat(1.23,13,1),whaleDf,whaleDf-whaleDf_upper,whaleDf-whaleDf_lower)
+plot(repmat(U,length(Age),1),whaleDf,'o')
+errorbar(repmat(1.23,length(Age),1),whaleDf,whaleDf-whaleDf_upper,whaleDf-whaleDf_lower)
 ylabel('Drag Force (N)')
 
 subplot(212); hold on
@@ -138,31 +138,23 @@ whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
 stackedbar = @(x, A) bar(x, A, 'stack');
 dots = @(x, y) plot(x, y, 'bo', 'Markersize', 15,'MarkerFaceColor','b');
 
+fate = [0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1]; % 0 alive; 1 died. Sorted in this order. Whales that died are 2151 and 1238
+
 % plot
 figure(99); clf; hold on
 [ax, h1, h2] = plotyy(1:13, sort_bardata', 1:13, contrib,stackedbar,dots);
 xticklabel_rotate(1:13,90,whales(I),'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
-plot([0 14],[0.3 0.3],'r--') % 0.3 threshold suggested in discussion
+plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1];
 colormap(myC)
 ylabel('Gear Drag Contribution to Total')
 adjustfigurefont
 
-print('DragContribution_ARK.eps','-depsc','-r300')
+print('DragContribution_ARK.tif','-dtiff','-r300')
 
 %%
-% set up second axis on right side
-get(ax1,'Position'); hold on
-ax2 = axes('Position',get(ax1,'Position'),...
-           'XAxisLocation','bottom',...
-           'YAxisLocation','right',...
-           'Color','none',...
-           'XColor','k',...
-           'YColor','k',...
-           'YLim',[0,3],...
-           'XTick',[],'XTickLabel',[]);
-plot(contrib,'o','Parent',ax2)
 
 % figure(99)
 % plot(sort(Age),contrib,'o')
