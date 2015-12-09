@@ -89,10 +89,10 @@ for i = 1:13
     plot([actualmin(i) actualmax(i)],[i i],'b-','Linewidth',4)
     % plot fate
     if fate(i) == 1
-        scatter(4200,i,'ro','filled')
+        plot(4200,i,'rs','MarkerFaceColor','r','MarkerSize',10)
     end
     if disentangled(i) == 1
-        scatter(4400,i,'ko','filled')
+        plot(4400,i,'ko','MarkerFaceColor','k','MarkerSize',10)
     end
 end
 
