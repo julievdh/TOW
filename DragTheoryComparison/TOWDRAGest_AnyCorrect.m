@@ -28,7 +28,7 @@ if flt == 1
 end
 
 % correct theoretical to measured
-TOWDRAGest_All % gets fit
+load('TOWDRAGfit') % gets fit
 
 if flt == 1
     Dcorr = feval(FIT,Dtheor,'1');
