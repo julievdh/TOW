@@ -1,4 +1,23 @@
-function [daysmin,daysmax] = CriticalEstimate(whaleAge,whaleLength,gearLength,gearDiam,flt,pt,A,p)
+function [critDur,daysmax] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+% estimate minimum critical entanglement duration based on whale and gear
+% dimensions
+% inputs
+    % whaleAge: age of whale [years]
+    % whaleLength: length of whale [m]
+    % gearLength: length of gear (total) [m]
+    % flt: array of information for floats.
+        % 0 = no floats
+        % 1 = floats
+        % if 1, should enter also wetted area [m^2] and drag coefficient []
+        % of floats, so should be [1 __ __];
+    % gearDiam: diameter of line [m]
+    % attachment: array of information for attachment points [pt A p]
+        % pt = location of attachment point [m]
+        % A = frontal area of attachment points [m^2]
+        % p = height of protuberance at each attachment [m]
+% outputs:
+    % daysmin: minimum critical duration [days]
+    % daysmax: maximum critical duration [days]
 
 %% Estimate other morphometrics from age
 % if input age, estimate length
@@ -24,26 +43,40 @@ else
     Drag = -0.2227*whaleAge.^2 + 18.51*whaleAge + 93.694;
 end
 
-%% Get corrected gear drag
-[Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt);
+%% if only length and float, use van der Hoop equation
+if isempty(gearDiam)
+    load('LENGTHfit')
+    Dcorr = feval(lnthFIT,gearLength,flt(1));
+else
+    %% Get corrected gear drag
+    if flt == 0 % if there are no floats
+        [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1));
+    else % use information for the floats (area, drag coefficient)
+        [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1),flt(2),flt(3));
+    end
+end
+
 
 %% Calculate Interference Drag if input
-if isempty([pt A pt]) ~= 1
-% get parameters for entangling gear attachment points
-% pt = location of attachment point [m]
-% A = frontal area of attachment points [m^2]
-% p = height of protuberance at each attachment [m]
-
-% calculate width
-[width,stations] = bodywidth(l);
-
-% obtain boundary layer dimensions
-BL = bndry_layer(width,d_max,stations);
-
-% calculate interference drag
-DI = interferenceDrag(pt,A,p,BL,stations);
-DI = DI(8); % interference drag at 1.2 m/s
-else 
+if isempty(attachment) ~= 1
+    % get parameters for entangling gear attachment points
+    % pt = location of attachment point [m]
+    % A = frontal area of attachment points [m^2]
+    % p = height of protuberance at each attachment [m]
+    pt = attachment(1);
+    A = attachment(2);
+    p = attachment(3);
+    
+    % calculate width
+    [width,stations] = bodywidth(l);
+    
+    % obtain boundary layer dimensions
+    BL = bndry_layer(width,d_max,stations);
+    
+    % calculate interference drag
+    DI = interferenceDrag(pt,A,p,BL,stations);
+    DI = DI(8); % interference drag at 1.2 m/s
+else
     DI = NaN;
 end
 
@@ -64,8 +97,8 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 %% find days til minwork
-
-daysmin = min(find(Wa > 1.86E10));
+Wc = 1.86E10; % J, average additional energy expenditure of whales who died
+critDur = min(find(Wa > Wc)); 
 days_max = min(find(Wa > 2.27E11));
 if isempty(days_max) == 1
     daysmax = 4000;
