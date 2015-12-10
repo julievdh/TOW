@@ -18,7 +18,7 @@ yWidth = 30;                      %# y axes spacing, in pixels
 figure(2); clf; hold on
 set(gca,'Position',axesPosition)
 h1 = axes('Color','w','XColor','k','YColor',[123/255 50/255 148/255],...
-          'YLim',[0 24],'Xlim',[100 400],'NextPlot','add');
+          'YLim',[0 25],'Xlim',[100 400],'NextPlot','add');
 h2 = axes('Color','none','XColor','k','YColor',[0/255 136/255 55/255],...
           'YLim',[10 15],'Xlim',[100 400],...
           'XTick',[],'XTickLabel',[],...
@@ -48,6 +48,8 @@ text(120,14.5,'Drag = 16.693xLength^2 - 345.59xLength + 1902.5',...
 
 adjustfigurefont
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison
+print -dtiff whaledragCurves.tiff
 
 return
 
