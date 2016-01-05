@@ -12,7 +12,6 @@ l = l/100; d_max = d_max/100; % convert to m
 
 % speed, ms-1 % ONLY ESTIMATING AT 1.23 M/S
 U = 1.23;
-
 % kinematic viscosity of seawater, m2s-1
 v = 10^-6;
 
@@ -120,16 +119,17 @@ ylim([0 2500])
 
 % cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
 % print('GearDrag_Fig7.eps','-depsc','-r300')
+
 %% drag contribution of each case
 clear bardata
 bardata(1,:) = whaleDf;
 bardata(2,:) = DI(:,8);
 bardata(3,:) = meas;
 [B,I] = sort(Age); % sort by Age
-sort_bardata = bardata(:,I); % reform data matrix
+% sort_bardata = bardata(:,I); % reform data matrix
 
 % gear to total body
-contrib = sum(sort_bardata(2:3,:))./sort_bardata(1,:);
+contrib = sum(bardata(2:3,:))./bardata(1,:);
 whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
     'Eg 2223  ','Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ',...
     'Eg 3420  ','Eg 3821  '};
@@ -137,19 +137,21 @@ whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
 % set up anonymous functions
 stackedbar = @(x, A) bar(x, A, 'stack');
 dots = @(x, y) plot(x, y, 'bo', 'Markersize', 15,'MarkerFaceColor','b');
+triangles = @(x, y) plot(x, y, 'b^', 'Markersize', 15,'Markerfacecolor','b');
 
-fate = [0; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 1]; % 0 alive; 1 died. Sorted in this order. Whales that died are 2151 and 1238
+fate = [1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 1 died. Sorted in this order. Whales that died are 2151 and 1238
 
 % plot
 figure(99); clf; hold on
-[ax, h1, h2] = plotyy(1:13, sort_bardata', 1:13, contrib,stackedbar,dots);
-xticklabel_rotate(1:13,90,whales(I),'FontSize',14)
+[ax, h1, h2] = plotyy(1:13, bardata', 1:13, L,stackedbar,dots);
+% [ax, h1, h2] = plotyy(find(flt == 1), bardata(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
+xticklabel_rotate(1:13,90,whales,'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
 plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
 myC= [0 0 0; 0.5 0.5 0.5; 1 1 1];
 colormap(myC)
-ylabel('Gear Drag Contribution to Total')
+ylabel('Total Line on Animal (m)')
 adjustfigurefont
 
 print('DragContribution_ARK.tif','-dtiff','-r300')
