@@ -38,6 +38,8 @@ for i = 1:length(meas)
     plot([0 1],[meas(i) meas_short(i)],'k--')
 end
 
+text(-0.4,280,'A','FontWeight','Bold','FontSize',18)
+
 xlim([-0.5 1.5])
 ylabel('Dcorr; Corrected Drag Force (N)'); 
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
@@ -53,10 +55,14 @@ for i = 1:length(Dtot)
     plot([0 1],[Dtot(i) Dtot_short(i)],'k--')
 end
 
+text(-0.4,475,'B','FontWeight','Bold','FontSize',18)
+
 xlim([-0.5 1.5])
 ylabel('Total Whale Drag Force (N)'); 
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
+[mean((Dtot_short-Dtot)./Dtot) std((Dtot_short-Dtot)./Dtot)];
+    
 
 %% power = (drag x speed)/efficiency
 % entangled efficiency = 0.08
@@ -97,6 +103,8 @@ plot(ones(length(daysmin),1),daysmin_short,'ko','markerfacecolor','k')
 for i = 1:length(daysmin)
     plot([0 1],[daysmin(i) daysmin_short(i)],'k--')
 end
+
+text(-0.4,420,'C','FontWeight','Bold','FontSize',18)
 
 xlim([-0.5 1.5])
 ylabel('Critical Duration (days)'); 
