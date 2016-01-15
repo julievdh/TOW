@@ -38,8 +38,9 @@ for i = 1:length(meas)
     plot([0 1],[meas(i) meas_short(i)],'k--')
 end
 
-xlim([-1 2])
-ylabel('Dcorr; Corrected Drag Force (N)'); xlabel('Removal of most gear')
+xlim([-0.5 1.5])
+ylabel('Dcorr; Corrected Drag Force (N)'); 
+xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 %% calculate shortened Dtot
 Dtot_short = whaleDf + DI(:,8) + meas_short'; 
@@ -52,8 +53,9 @@ for i = 1:length(Dtot)
     plot([0 1],[Dtot(i) Dtot_short(i)],'k--')
 end
 
-xlim([-1 2])
-ylabel('Total Whale Drag Force (N)'); xlabel('Removal of most gear')
+xlim([-0.5 1.5])
+ylabel('Total Whale Drag Force (N)'); 
+xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 
 %% power = (drag x speed)/efficiency
@@ -96,9 +98,11 @@ for i = 1:length(daysmin)
     plot([0 1],[daysmin(i) daysmin_short(i)],'k--')
 end
 
-xlim([-0.5 0.5])
+xlim([-0.5 1.5])
 ylabel('Critical Duration (days)'); 
-set(gca,'Xticklabels',{'All Gear','One Body Length'})
+xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
+adjustfigurefont
 
 %% OK BUT DO THIS WITH 15 MEASURED CASES AND 13 AMY CASES 
+

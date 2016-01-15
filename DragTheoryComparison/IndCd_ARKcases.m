@@ -154,6 +154,7 @@ colormap(myC)
 ylabel('Total Line on Animal (m)')
 adjustfigurefont
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('DragContribution_ARK.tif','-dtiff','-r300')
 
 %%
