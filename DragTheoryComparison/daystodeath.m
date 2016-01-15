@@ -34,8 +34,8 @@ end
 [f_max,xi_max] = ksdensity(daysmax,'bandwidth',250);
 
 %% plot
-figure(1); clf
-subplot('position',[0.05 0.1 0.2,0.85]); hold on
+figure(1); clf 
+subplot('position',[0.05 0.1 0.4,0.85]); hold on
 scatter(zeros(13,1),Wn(:,1),'ko','filled')
 scatter(repmat(0.5,13,1),We(:,1),'bo','filled')
 plot([0 0.5],[Wn(:,1) We(:,1)],'k:')
@@ -45,29 +45,16 @@ xlim([-0.25 1.25])
 set(gca,'xticklabel',{'W_n','W_e','W_a'})
 text(-0.15,6.6E8,'A','FontSize',20,'FontWeight','Bold')
 
-subplot('position',[0.275 0.1 0.325 0.85]); hold on
+subplot('position',[0.475 0.1 0.425 0.85]); hold on
 plot(d,Wa,'b')
 % plot death threshold
 plot([0 1200],[1.86E10 1.86E10],'r--')
-plot([0 1200],[2.27E11 2.27E11],'r-')
 %plot(daysmin,repmat(1.86E10,13,1),'r*')
-plot(xi_min,f_min*4E12+1.86E10,'k')
-ylim([0 2.5E11]); xlim([0 400])
-text(15,2.35E11,'B','FontSize',20,'FontWeight','Bold')
+plot(xi_min,f_min*1.5E12+1.86E10,'k')
+ylim([0 3.5E10]); xlim([0 400])
+text(15,3.3E10,'B','FontSize',20,'FontWeight','Bold')
+set(gca,'ytick',[0E10 1E10 2E10 3E10])
 xlabel('Days')
-
-subplot('position',[0.65 0.1 0.325 0.85]); hold on
-plot(d,Wa,'b')
-% plot death threshold
-plot([0 4000],[1.86E10 1.86E10],'r--')
-plot([0 4000],[2.27E11 2.27E11],'r-')
-%plot(daysmax,repmat(2.27E11,13,11),'r*')
-%plot(daysmin,repmat(1.86E10,13,1),'r*')
-plot(xi_max,f_max*4E13+2.27E11,'k')
-ylim([0 2.5E11]); xlim([0 4000])
-xlabel('Years')
-set(gca,'Xtick',[365.25*2 365.25*4 365.25*6 365.25*8 365.25*10],'xticklabel',2:2:10)
-text(150,2.35E11,'C','FontSize',20,'FontWeight','Bold')
 
 adjustfigurefont
 print('DaystoDeath_2.tif','-dtiff','-r300')
@@ -78,6 +65,53 @@ actualmin = [1; 9; 22; 1; 1; 280; 1; 1; 1; 433; 1; 12; 1];
 actualmax = [121; 485; 346; 16; 99; 425; 211; 106; 289; 808; NaN; 347; 76]; % 3392 NAN because don't know birth date, never seen before entanglement
 fate = [1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 1 died
 disentangled = [0; 0; 1; 1; 0; 1; 1; 1; 1; 1; 1; 0; 1]; % yes = 1 no = 0
+disdate = [NaN; NaN; 0; 0; NaN; 247; 0; 0; 0; 51; 0; NaN; 0];
+
+%%
+figure(3); clf; hold on
+barh([actualmin actualmax-actualmin],'stacked')
+for i = 1:13
+plot([daysmin(i) daysmin(i)],[i-0.5 i+0.5],'r','LineWidth',1.5)
+if disentangled(i) == 1
+    if flt(i) == 0
+    plot(830,i,'ko','MarkerFaceColor','k','MarkerSize',15)
+    else if flt(i) == 1
+        plot(830,i,'k^','MarkerFaceColor','k','MarkerSize',15)
+        end
+    end
+    plot([disdate(i) disdate(i)],[i-0.5 i+0.5],'k','LineWidth',1.5)
+end
+end
+
+
+% add disentanglement dates
+% add fates (color labels)
+
+xlabel('Days Entangled'); 
+set(gca,'ytick',[1:13],'yticklabel',whales)
+xlim([0 850])
+myC= [0.75 0.75 0.75; 1 1 1];
+colormap(myC)
+
+% make two separate axes
+ax1 = gca; % current axes
+ax1_pos = ax1.Position; % position of first axes
+ax2 = axes('Position',ax1_pos,...
+    'XAxisLocation','top',...
+    'Ytick',[],...
+    'Color','none');
+xlim([0 850/365.25]); set(gca,'xtick',0:1:2)
+xlabel('Years Entangled')
+
+box on
+
+adjustfigurefont
+
+print('EntDuration2.tif','-dtiff','-r300')
+
+return
+
+%%
 
 figure(2); clf; hold on
 % days we predict to die
