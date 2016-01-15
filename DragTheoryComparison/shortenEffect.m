@@ -6,7 +6,7 @@ warning off
 IndCd_ARKcases % run this to get amy's whales, their dimensions, their gear, everything else
 
 % then change gear dimensions to be one body length
-L = l;
+L = min([l L]')'; % in case gear length is already less than a body length
 lobs = []; % remove all lobster pots
 flt = zeros(length(flt),1); % remove all floats
 
@@ -88,7 +88,7 @@ for i = 1:13;
 end
 
 % is shortened gear critical duration significantly longer than non-shortened?
-[h,p,ci,stats] = ttest2(daysmin,daysmin_short); % YES
+[h,p,ci,stats] = ttest2(daysmin_short,daysmin); % YES
 
 figure(4); 
 subplot(133); hold on
@@ -104,5 +104,7 @@ xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 adjustfigurefont
 
-%% OK BUT DO THIS WITH 15 MEASURED CASES AND 13 AMY CASES 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
+print -dtiff BodyLengthShorten
 
+[mean(daysmin_short-daysmin) std(daysmin_short-daysmin)]

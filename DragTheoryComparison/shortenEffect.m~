@@ -38,8 +38,9 @@ for i = 1:length(meas)
     plot([0 1],[meas(i) meas_short(i)],'k--')
 end
 
-xlim([-0.5 2])
-ylabel('Dcorr; Corrected Drag Force (N)'); xlabel('Removal of most gear')
+xlim([-0.5 1.5])
+ylabel('Dcorr; Corrected Drag Force (N)'); 
+xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 %% calculate shortened Dtot
 Dtot_short = whaleDf + DI(:,8) + meas_short'; 
@@ -89,7 +90,7 @@ end
 % is shortened gear critical duration significantly longer than non-shortened?
 [h,p,ci,stats] = ttest2(daysmin,daysmin_short); % YES
 
-figure(4); clf
+figure(4); 
 subplot(133); hold on
 plot(zeros(length(daysmin),1),daysmin,'bo','markerfacecolor','b')
 plot(ones(length(daysmin),1),daysmin_short,'ko','markerfacecolor','k')
@@ -101,5 +102,8 @@ xlim([-0.5 1.5])
 ylabel('Critical Duration (days)'); 
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
+adjustfigurefont
 
-%% OK BUT DO THIS WITH 15 MEASURED CASES AND 13 AMY CASES 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
+print -dtiff BodyLengthShorten
+
