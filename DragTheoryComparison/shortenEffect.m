@@ -8,7 +8,7 @@ IndCd_ARKcases % run this to get amy's whales, their dimensions, their gear, eve
 % then change gear dimensions to be one body length
 L = min([l L]')'; % in case gear length is already less than a body length
 lobs = []; % remove all lobster pots
-flt = zeros(length(flt),1); % remove all floats
+flt_short = zeros(length(flt),1); % remove all floats
 
 % get new expected gear
 clear Rx
@@ -24,7 +24,7 @@ Rx_tot_short = Rx';
 close all
 %% correct to measured drag
 % relationship between measured and estimated drag
-meas_short(flt == 0) = feval(FIT,Rx_tot_short(flt == 0),'0');
+meas_short(flt_short == 0) = feval(FIT,Rx_tot_short(flt_short == 0),'0');
 
 % figure(1); clf; hold on
 % histogram(meas,[0:10:300])
@@ -32,7 +32,8 @@ meas_short(flt == 0) = feval(FIT,Rx_tot_short(flt == 0),'0');
 
 figure(4); clf
 subplot(131); hold on
-plot(zeros(length(meas),1),meas,'bo','markerfacecolor','b')
+plot(zeros(length(meas(flt == 0)),1),meas(flt == 0),'bo','MarkerFaceColor','b')
+plot(zeros(length(meas(flt == 1)),1),meas(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(meas),1),meas_short,'ko','markerfacecolor','k')
 for i = 1:length(meas)
     plot([0 1],[meas(i) meas_short(i)],'k--')
@@ -49,7 +50,8 @@ Dtot_short = whaleDf + DI(:,8) + meas_short';
 
 figure(4); 
 subplot(132); hold on
-plot(zeros(length(Dtot),1),Dtot,'bo','markerfacecolor','b')
+plot(zeros(length(Dtot(flt == 0)),1),Dtot(flt == 0),'bo','MarkerFaceColor','b')
+plot(zeros(length(Dtot(flt == 1)),1),Dtot(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(Dtot),1),Dtot_short,'ko','markerfacecolor','k')
 for i = 1:length(Dtot)
     plot([0 1],[Dtot(i) Dtot_short(i)],'k--')
@@ -98,7 +100,8 @@ end
 
 figure(4); 
 subplot(133); hold on
-plot(zeros(length(daysmin),1),daysmin,'bo','markerfacecolor','b')
+plot(zeros(length(daysmin(flt == 0)),1),daysmin(flt == 0),'bo','MarkerFaceColor','b')
+plot(zeros(length(daysmin(flt == 1)),1),daysmin(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(daysmin),1),daysmin_short,'ko','markerfacecolor','k')
 for i = 1:length(daysmin)
     plot([0 1],[daysmin(i) daysmin_short(i)],'k--')
