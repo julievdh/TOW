@@ -147,5 +147,6 @@ xlim([0 4500/365.25]); set(gca,'xtick',0:2:10)
 xlabel('Years')
 
 adjustfigurefont
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('EntDuration.tif','-dtiff','-r300')
 
