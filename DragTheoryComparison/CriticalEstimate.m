@@ -46,7 +46,7 @@ end
 %% if only length and float, use van der Hoop equation
 if isempty(gearDiam)
     load('LENGTHfit')
-    Dcorr = feval(lnthFIT,gearLength,flt(1));
+    Dcorr = feval(lnthFIT,gearLength,num2str(flt(1)));
 else
     %% Get corrected gear drag
     if flt == 0 % if there are no floats
@@ -77,7 +77,7 @@ if isempty(attachment) ~= 1
     DI = interferenceDrag(pt,A,p,BL,stations);
     DI = DI(8); % interference drag at 1.2 m/s
 else
-    DI = NaN;
+    DI = 0;
 end
 
 %% calculate total

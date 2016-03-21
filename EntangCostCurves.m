@@ -90,6 +90,7 @@ end
 xlim([1 24]); ylim([0 1.7])
 set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
     'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+plot([13 13],[0 2.5],'k:')
 ylabel('Relative Energetic Cost')
 
 % plot female budget
@@ -116,6 +117,7 @@ adjustfigurefont
 
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
+ct = 0;
 for i = 1:length(entang); % let's use case 3 as an example
     
     % get relative costs of things
@@ -135,10 +137,10 @@ for i = 1:length(entang); % let's use case 3 as an example
         % make indices for minimum = 0 for maximum duration (so don't pile on top
         % of each other)
         data_male(mn_ind,6) = 0;
-    end
     
-    
-    figure(i); clf; hold on
+    ct = ct+1;     
+    figure(1)
+    subplot(4,2,ct); hold on
     h = area(data_male);
     h(1).FaceColor = [152/255 78/255 163/255];
     h(2).FaceColor = [228/255 26/255 28/255];
@@ -151,11 +153,14 @@ for i = 1:length(entang); % let's use case 3 as an example
     xlim([1 24]);
     set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
         'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+    plot([13 13],[0 1.5],'k:')
     ylabel('Relative Energetic Cost')
     title(whales(i))
     adjustfigurefont
+    end
     
     % clear data male for next whale
     data_male(:,6:7) = 0;
-    % pause
 end
+
+%% ADD AMY'S CASES TO THIS

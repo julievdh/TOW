@@ -22,3 +22,13 @@ $ cat .gitignore
 /ExportFiles
 /Sightings
 /DragTheoryComparison/Figures
+
+DragTheoryComparison/shortenEffect.m~
+
+DragTheoryComparison/shortenEffect.m~
+
+*.m~
+
+*.m~
+
+*.m~
