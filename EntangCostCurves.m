@@ -94,7 +94,8 @@ ylabel('Relative Energetic Cost')
 
 % plot female budget
 subplot('position',[0.4 0.1 0.58 0.4]); hold on; box on
-h = area(data_female);
+prerepro = data_female(49:60,:); % pre reproductive females
+h = area([repmat(prerepro,3,1); data_female]);
 h(1).FaceColor = [152/255 78/255 163/255];
 h(2).FaceColor = [228/255 26/255 28/255];
 h(3).FaceColor = [247/255 129/255 121/255];
@@ -106,18 +107,33 @@ h(7).FaceColor = [166/255 206/255 227/255];
 % ALL THE FEMALES WE MEASURED AND ESTIMATED WERE PRE-REPRODUCTIVE
 entang_fem = [0,0,0,0;8.4,18.27,8.6,17.27;0,0,0,0;9.43,20.93,13.98,14.4;...
     0,0,0,0;12.27,22.03,18.2,21.03;6.63,18.67,6.7,9.9;0,0,0,0;0,0,0,0;...
-    9.63,50,12.1,18.43;9.8,12.98,12.2,12.98;0,0,0,0;...
+    9.63,36,12.1,18.43;9.8,12.98,12.2,12.98;0,0,0,0;...
     4.467,14.03,12.267,12.63;0,22.7,5.33,22.7;0,0,0,0]; % 8 females MEASURED
-entangARK_Fem = [9.1 18.67 18.17 18.17]; % 1 female ESTIMATED
+entangARK_fem = [9.1 18.67 18.17 18.17]; % 1 female ESTIMATED
 
-xlim([1 36]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
-    'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...667
-    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:36)
+xlim([1 72]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
+    'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...
+    'D','J','F','M','A','M','J','J','A','S','O','N',...
+    'D','J','F','M','A','M','J','J','A','S','O','N',...
+    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:72)
 plot([13 13],[0 2.5],'k:')
 plot([25 25],[0 2.5],'k:')
+plot([37 37],[0 2.5],'k:')
+plot([49 49],[0 2.5],'k:')
+plot([61 61],[0 2.5],'k:')
 xlabel('Time'); ylabel('Relative Energetic Cost')
 adjustfigurefont
 
+for i = 1:size(entang_fem,1)
+    jitter = rand*0.1;
+    plot(entang_fem(i,1:2)+1,[2.2+jitter 2.2+jitter],':','color',[55/255 126/255 184/255]) % +1 is becuase Dec = month 1 on plot
+    plot(entang_fem(i,3:4)+1,[2.2+jitter 2.2+jitter],'color',[55/255 126/255 184/255])
+end
+for i = 1:size(entangARK_fem,1)
+    jitter = rand*0.1;
+    plot(entangARK_fem(i,1:2)+1,[2.3+jitter 2.3+jitter],':','color',[77/255 175/255 74/255]) % +1 is becuase Dec = month 1 on plot
+    plot(entangARK_fem(i,3:4)+1,[2.3+jitter 2.3+jitter],'color',[77/255 175/255 74/255])
+end
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
@@ -212,3 +228,5 @@ for i = 1:length(entangARK);
 end
 
 %% FEMALES
+% which were reproductive after?
+% case-by-case plotting likely
