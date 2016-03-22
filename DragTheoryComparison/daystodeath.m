@@ -5,10 +5,10 @@
 IndCd_ARKcases
 
 %% power = (drag x speed)/efficiency
-% entangled efficiency = 0.08
-% nonentangled efficiency = 0.10
-Pe = (Dtot*1.23)./0.08;
-Pn = (whaleDf*1.23)./0.10;
+% entangled efficiency = 0.05
+% nonentangled efficiency = 0.065
+Pe = (Dtot*1.23)./0.05;
+Pn = (whaleDf*1.23)./0.065;
 
 [h,p,ci,stats] = ttest2(Pe,Pn);
 
@@ -20,7 +20,7 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 %% find days til minwork
-for i = 1:13;
+for i = 1:11;
     daysmin(i) = min(find(Wa(i,:) > 1.86E10));
     days_max = min(find(Wa(i,:) > 2.27E11));
     if isempty(days_max) == 1
@@ -36,8 +36,8 @@ end
 %% plot
 figure(1); clf 
 subplot('position',[0.05 0.1 0.4,0.85]); hold on
-scatter(zeros(13,1),Wn(:,1),'ko','filled')
-scatter(repmat(0.5,13,1),We(:,1),'bo','filled')
+scatter(zeros(11,1),Wn(:,1),'ko','filled')
+scatter(repmat(0.5,11,1),We(:,1),'bo','filled')
 plot([0 0.5],[Wn(:,1) We(:,1)],'k:')
 plot(1,Wa(:,1),'bo')
 ylabel('Work (J)')
@@ -61,16 +61,16 @@ print('DaystoDeath_2.tif','-dtiff','-r300')
 
 %% range of days
 % time carrying gear from Amy's cases
-actualmin = [1; 9; 22; 1; 1; 280; 1; 1; 1; 433; 1; 12; 1];
-actualmax = [121; 485; 346; 16; 99; 425; 211; 106; 289; 808; NaN; 347; 76]; % 3392 NAN because don't know birth date, never seen before entanglement
-fate = [1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 1 died
-disentangled = [0; 0; 1; 1; 0; 1; 1; 1; 1; 1; 1; 0; 1]; % yes = 1 no = 0
-disdate = [NaN; NaN; 0; 0; NaN; 247; 0; 0; 0; 51; 0; NaN; 0];
+actualmin = data(:,20);
+actualmax = data(:,21); % 3392 NAN because don't know birth date, never seen before entanglement
+fate = data(:,19); % 0 alive; 1 died
+disentangled = [0; 0; 1; 1; 0; 1; 1; 1; 1; 1; 1]; % yes = 1 no = 0
+disdate = [NaN; NaN; 0; 0; NaN; 0; 0; 0; 51; 0; 0];
 
 %%
 figure(3); clf; hold on
 barh([actualmin actualmax-actualmin],'stacked')
-for i = 1:13
+for i = 1:11
 plot([daysmin(i) daysmin(i)],[i-0.5 i+0.5],'r','LineWidth',1.5)
 if disentangled(i) == 1
     if flt(i) == 0
@@ -88,7 +88,7 @@ end
 % add fates (color labels)
 
 xlabel('Days Entangled'); 
-set(gca,'ytick',[1:13],'yticklabel',whales)
+set(gca,'ytick',[1:11],'yticklabel',whales)
 xlim([0 850])
 myC= [0.75 0.75 0.75; 1 1 1];
 colormap(myC)
@@ -115,7 +115,7 @@ return
 
 figure(2); clf; hold on
 % days we predict to die
-for i = 1:13
+for i = 1:11
     plot([daysmin(i) daysmax(i)],[i i],'k','Linewidth',6)
     % available days
     plot([0 4000],[i i],'k:')
@@ -132,8 +132,8 @@ end
 
 xlabel('Days'); set(gca,'xtick',[0:500:4000 4200 4400],...
     'xticklabel',{'0','500 ','1000 ','1500 ','2000 ','2500 ','3000 ','3500 ','4000  ','F','D'})
-set(gca,'ytick',[1:13],'yticklabel',whales)
-plot([4500 4500],[0 14],'k') % line for y axis side
+set(gca,'ytick',[1:11],'yticklabel',whales)
+plot([4500 4500],[0 12],'k') % line for y axis side
 xlim([0 4500])
 
 % make two separate axes
