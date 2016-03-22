@@ -2,10 +2,14 @@
 % cases
 % Age at first entanglement gives length and weight (Moore et al 2004)
 % width-to-length ratios from Fortune et al 2012.
+clear all
 
 % length, m
 % Moore et al. 2005 length at age relationship (NOT FORTUNE)
-Age = [20; 18; 8; 7; 3; 8; 7; 17; 2; 1; 1; 5; 1];
+% load ARK cases
+% [whale ID; NMFS ID; GearID; Gear Length; Gear Diameter; Float Y/N]
+data = xlsread('ARK_CaseStudiestoUse.xlsx');
+Age = data(:,10); 
 l = 1011.033+320.501*log10(Age); % MOORE ET AL 2004
 d_max=0.21*l+38.63;
 l = l/100; d_max = d_max/100; % convert to m
@@ -74,7 +78,7 @@ adjustfigurefont
 % p = height of protuberance at each attachment [m]
 load('ARKcase_pApt')
 
-for i = 1:13;
+for i = 1:11;
     % calculate width
     [width,stations] = bodywidth(l(i));
     
@@ -131,8 +135,7 @@ bardata(3,:) = meas;
 % gear to total body
 contrib = sum(bardata(2:3,:))./bardata(1,:);
 whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
-    'Eg 2223  ','Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ',...
-    'Eg 3420  ','Eg 3821  '};
+    'Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ','Eg 3821  '};
 
 % set up anonymous functions
 stackedbar = @(x, A) bar(x, A, 'stack');
@@ -143,9 +146,9 @@ fate = [1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 1 died. Sorted in thi
 
 % plot
 figure(99); clf; hold on
-[ax, h1, h2] = plotyy(1:13, bardata', 1:13, L,stackedbar,dots);
+[ax, h1, h2] = plotyy(1:11, bardata', 1:11, L,stackedbar,dots);
 % [ax, h1, h2] = plotyy(find(flt == 1), bardata(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
-xticklabel_rotate(1:13,90,whales,'FontSize',14)
+xticklabel_rotate(1:11,90,whales,'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
 plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate

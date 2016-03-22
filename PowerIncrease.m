@@ -4,8 +4,8 @@ IndCd; close all
 
 %% Power = (D*U)/eta 
 for i = 1:15
-    power(i,:) = (whaleDf(i,:).*speed)./0.10; % low drag efficiency 3911
-    power_E(i,:) = (Dtot(i,:).*speed)./0.08; % high drag efficiency 3911
+    power(i,:) = (whaleDf(i,:).*speed)./0.065; % low drag efficiency 3911
+    power_E(i,:) = (Dtot(i,:).*speed)./0.05; % high drag efficiency 3911
 end
 
 % fold increase in power

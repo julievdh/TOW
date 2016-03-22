@@ -14,11 +14,11 @@ data = xlsread('ARK_CaseStudiestoUse.xlsx');
 L = data(:,4); % gear length
 D = data(:,5); % line diameter
 flt = data(:,6); % float Y/N
-lobs([11 13]) = 1; % LOBSTER TRAPS
+lobs([10 11]) = 1; % LOBSTER TRAPS
 
 % Calculate expected theoretical drag for all gear sets
 clear Rx
-for ecase = 1:13
+for ecase = 1:11
     Rx(ecase) =  TOWDRAGest_apply(ecase,L(ecase),D(ecase));
 end
 
