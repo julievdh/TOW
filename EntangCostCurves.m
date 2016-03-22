@@ -7,30 +7,29 @@ load('EntangCost') % data from 15 towed cases, Amy's 13 cases.
 whales = {'EG 2212  ','EG 2223  ','EG 3311  ','EG 3420  ','EG 3714  ',...
     'EG 3107  ','EG 2710  ','EG 1427  ','EG 2212  ','EG 3445  ','EG 3314  ',...
     'EG 3610  ','EG 3294  ','EG 2030  ','EG 1102  '};
+whalesARK = {'EG 1238','EG 1427','EG 1971','EG 2027','EG 2427',...
+    'EG 2470','EG 3120','EG 2753','EG 2151','EG 3392','EG 3821'};
 warning off
 
 rightwhaleMigrate = 7.3E9/22; % van der Hoop et al. 2013 (non-entangled, one-way migration in 22 days) = cost per day
 rightwhaleRepro = 5.8E11/(365*2); % Klanjscek et al 2007: 5.8E11 J over 2 years
 rightwhalePreg = (2090-1906)*10^6; % Fortune et al 2013 (1906 = resting female costs/day)
 rightwhaleLac = (4120-1906)*10^6; % Fortune et al 2013 (1906 = resting female costs/day)'
-rightwhaleFor = 500E6; % Foraging cost per day McGregor et al 2013
+rightwhaleFor = 500E6; % Foraging cost J per day McGregor et al 2013
 t = 1:365*10;
 
 figure(109); clf; set(gcf,'Position',[48 5 1315 668])
 subplot('position',[0.05 0.1 0.3 0.85]); hold on
 for i = 1:length(mindur);
-    plot(t(1:mindur(i)),power_E(i,8)*(1:mindur(i))*60*60*24,'color',[55/255 126/255 184/255],'LineWidth',1.5)
-    plot(t(1:maxdur(i)),power_E(i,8)*(1:maxdur(i))*60*60*24,':','color',[55/255 126/255 184/255],'LineWidth',1.5)
+    plot(t(1:mindur(i)),Wa_meas(i)*(1:mindur(i)),'color',[55/255 126/255 184/255],'LineWidth',1.5)
+    plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),':','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
 
 % for Amy's whales:
-actualmin = [1; 9; 22; 1; 1; 280; 1; 1; 1; 433; 1; 12; 1];
-actualmax = [121; 485; 346; 16; 99; 425; 211; 106; 289; 808; NaN; 347; 76]; % 3392 NAN because don't know birth date, never seen before entanglement
-
-for i = 1:13
-    plot(d(1:actualmin(i)),Wa(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
-    if i ~= 11
-        plot(d(1:actualmax(i)),Wa(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
+for i = 1:11
+    plot(d(1:actualmin(i)),Wa_ARK(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
+    if i ~= 10
+        plot(d(1:actualmax(i)),Wa_ARK(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
     else continue
     end
 end
@@ -83,7 +82,7 @@ entangARK = [6.83 10.83 10.83 10.83; 5.27 21.23 7.4 7.87; ...
     7.33 9.87 9.87 9.87]; % 7 males, 2 unknown sex ESTIMATED [1 unknown sex (3392 has insuff sightings info)
 for i = 1:size(entangARK,1)
     jitter = rand*0.1;
-    plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255])
+    plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255]) % +1 is becuase Dec = month 1 on plot
     plot(entangARK(i,3:4)+1,[1.5+jitter 1.5+jitter],'color',[77/255 175/255 74/255])
 end
 
@@ -104,8 +103,12 @@ h(5).FaceColor = [77/255 175/255 74/255];
 h(6).FaceColor = [255/255 255/255 51/255];
 h(7).FaceColor = [166/255 206/255 227/255];
 
-% ALL THE FEMALES WE MEASURED WERE PRE-REPRODUCTIVE
-% WHAT ABOUT THE FEMALES IN AMY'S CASES?
+% ALL THE FEMALES WE MEASURED AND ESTIMATED WERE PRE-REPRODUCTIVE
+entang_fem = [0,0,0,0;8.4,18.27,8.6,17.27;0,0,0,0;9.43,20.93,13.98,14.4;...
+    0,0,0,0;12.27,22.03,18.2,21.03;6.63,18.67,6.7,9.9;0,0,0,0;0,0,0,0;...
+    9.63,50,12.1,18.43;9.8,12.98,12.2,12.98;0,0,0,0;...
+    4.467,14.03,12.267,12.63;0,22.7,5.33,22.7;0,0,0,0]; % 8 females MEASURED
+entangARK_Fem = [9.1 18.67 18.17 18.17]; % 1 female ESTIMATED
 
 xlim([1 36]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
     'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...667
@@ -118,11 +121,10 @@ adjustfigurefont
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
-for i = 1:length(entang); % let's use case 3 as an example
-    
+for i = 1:length(entang);
     % get relative costs of things
-    rel1 = Wa(i)/rightwhaleMigrate;
-    rel2 = Wa(i)/rightwhaleFor;
+    rel1 = Wa_meas(i,1)/rightwhaleMigrate;
+    rel2 = Wa_meas(i,1)/rightwhaleFor;
     
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
@@ -137,26 +139,26 @@ for i = 1:length(entang); % let's use case 3 as an example
         % make indices for minimum = 0 for maximum duration (so don't pile on top
         % of each other)
         data_male(mn_ind,6) = 0;
-    
-    ct = ct+1;     
-    figure(1)
-    subplot(4,2,ct); hold on
-    h = area(data_male);
-    h(1).FaceColor = [152/255 78/255 163/255];
-    h(2).FaceColor = [228/255 26/255 28/255];
-    h(3).FaceColor = [247/255 129/255 121/255];
-    h(4).FaceColor = [255/255 127/255 0/255];
-    h(5).FaceColor = [77/255 175/255 74/255];
-    h(6).FaceColor = 'w';
-    h(7).FaceColor = [55/255 126/255 184/255];
-    
-    xlim([1 24]);
-    set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-        'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
-    plot([13 13],[0 1.5],'k:')
-    ylabel('Relative Energetic Cost')
-    title(whales(i))
-    adjustfigurefont
+        
+        ct = ct+1;
+        figure(1)
+        subplot(4,2,ct); hold on
+        h = area(data_male);
+        h(1).FaceColor = [152/255 78/255 163/255];
+        h(2).FaceColor = [228/255 26/255 28/255];
+        h(3).FaceColor = [247/255 129/255 121/255];
+        h(4).FaceColor = [255/255 127/255 0/255];
+        h(5).FaceColor = [77/255 175/255 74/255];
+        h(6).FaceColor = 'w';
+        h(7).FaceColor = [55/255 126/255 184/255];
+        
+        xlim([1 24]);
+        set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+            'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        plot([13 13],[0 1.5],'k:')
+        ylabel('Relative Energetic Cost')
+        title(whales(i))
+        adjustfigurefont
     end
     
     % clear data male for next whale
@@ -164,3 +166,49 @@ for i = 1:length(entang); % let's use case 3 as an example
 end
 
 %% ADD AMY'S CASES TO THIS
+ct = 0;
+for i = 1:length(entangARK);
+    % get relative costs of things
+    rel1 = Wa_ARK(i)/rightwhaleMigrate;
+    rel2 = Wa_ARK(i)/rightwhaleFor;
+    
+    % add to data_male % MAKE THIS MORE SMOOTH?
+    % add maximum duration
+    % get indices
+    mx_ind = floor(entangARK(i,1)):ceil(entangARK(i,2));
+    if mx_ind > 0
+        data_male(mx_ind,6) = mean([rel1*mean(data_male(mx_ind,2)) rel2*mean(data_male(mx_ind,5))]);
+    end
+    mn_ind = floor(entang(i,3)):ceil(entang(i,4));
+    if mn_ind > 0
+        data_male(mn_ind,7) = mean([rel1*mean(data_male(mn_ind,2)) rel2*mean(data_male(mn_ind,5))]);
+        % make indices for minimum = 0 for maximum duration (so don't pile on top
+        % of each other)
+        data_male(mn_ind,6) = 0;
+        
+        ct = ct+1;
+        figure(2)
+        subplot(3,2,ct); hold on
+        h = area(data_male);
+        h(1).FaceColor = [152/255 78/255 163/255];
+        h(2).FaceColor = [228/255 26/255 28/255];
+        h(3).FaceColor = [247/255 129/255 121/255];
+        h(4).FaceColor = [255/255 127/255 0/255];
+        h(5).FaceColor = [77/255 175/255 74/255];
+        h(6).FaceColor = 'w';
+        h(7).FaceColor = [55/255 126/255 184/255];
+        
+        xlim([1 24]);
+        set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+            'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        plot([13 13],[0 1.5],'k:')
+        ylabel('Relative Energetic Cost')
+        title(whalesARK(i))
+        adjustfigurefont
+    end
+    
+    % clear data male for next whale
+    data_male(:,6:7) = 0;
+end
+
+%% FEMALES
