@@ -78,7 +78,7 @@ adjustfigurefont
 % p = height of protuberance at each attachment [m]
 load('ARKcase_pApt')
 
-for i = 1:11;
+for i = 1:10;
     % calculate width
     [width,stations] = bodywidth(l(i));
     
@@ -134,27 +134,29 @@ bardata(3,:) = meas;
 
 % gear to total body
 contrib = sum(bardata(2:3,:))./bardata(1,:);
-whales = {'Eg 1238  ','Eg 1427  ','Eg 1971  ','Eg 2027  ','Eg 2151  ',...
-    'Eg 2427  ','Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ','Eg 3821  '};
+whales = {'Eg 1238  ','Eg 1971  ','Eg 2027  ','Eg 2151  ','Eg 2427  ',...
+    'Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ','Eg 3821  '};
 
 % set up anonymous functions
 stackedbar = @(x, A) bar(x, A, 'stack');
 dots = @(x, y) plot(x, y, 'bo', 'Markersize', 15,'MarkerFaceColor','b');
 triangles = @(x, y) plot(x, y, 'b^', 'Markersize', 15,'Markerfacecolor','b');
 
-fate = [1; 0; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 1 died. Sorted in this order. Whales that died are 2151 and 1238
+fate = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 2 died. Sorted in this order. Whales that died are 2151 and 1238
 
 % plot
 figure(99); clf; hold on
-[ax, h1, h2] = plotyy(1:11, bardata', 1:11, L,stackedbar,dots);
+[ax, h1, h2] = plotyy(1:10, bardata', 1:10, L,stackedbar,dots);
 % [ax, h1, h2] = plotyy(find(flt == 1), bardata(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
-xticklabel_rotate(1:11,90,whales,'FontSize',14)
+xlim([0.5 10.5])
+xticklabel_rotate(1:10,90,whales,'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
 plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
 myC= [0 0 0; 0.5 0.5 0.5; 1 1 1];
 colormap(myC)
 ylabel('Total Line on Animal (m)')
+xlim([0.5 10.5])
 adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
