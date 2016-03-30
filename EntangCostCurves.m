@@ -134,6 +134,9 @@ for i = 1:size(entangARK_fem,1)
     plot(entangARK_fem(i,3:4),[2.3+jitter 2.3+jitter],'color',[77/255 175/255 74/255])
 end
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+print('CostCurves_AllMaleFemale','-dpng','-r300')
+
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
 for i = 1:length(entang);
@@ -180,6 +183,8 @@ for i = 1:length(entang);
     data_male(:,6:7) = 0;
 end
 
+print('CostCurves_AllMaleMeasured','-dpng','-r300')
+
 %% ADD AMY'S CASES TO THIS
 ct = 0;
 for i = 1:length(entangARK);
@@ -203,7 +208,7 @@ for i = 1:length(entangARK);
         
         ct = ct+1;
         figure(2)
-        subplot(5,2,ct); hold on
+        subplot(4,2,ct); hold on
         h = area(data_male);
         h(1).FaceColor = [152/255 78/255 163/255];
         h(2).FaceColor = [228/255 26/255 28/255];
@@ -225,6 +230,8 @@ for i = 1:length(entangARK);
     % clear data male for next whale
     data_male(:,6:7) = 0;
 end
+
+print('CostCurves_AllMaleARK','-dpng','-r300')
 
 %% FEMALES
 % which were reproductive after?
@@ -282,8 +289,7 @@ for i = [2 7 13] %:length(entang_fem);
         % make two separate axes
         ax1 = gca; % current axes
         set(ax1,'xlim',[1 size([prerepro_case;repro_case],1)],'xaxislocation','bottom')
-        set(ax1,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-            'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:180)
+        set(ax1,'xticklabels',{'D','M','J','S'},'xtick',1:3:190)
         % plot([13 13],[0 1.5],'k:')
         ylabel('Relative Energetic Cost')
         % title(whales(i))
@@ -297,13 +303,10 @@ for i = [2 7 13] %:length(entang_fem);
         if ct == 1;
             xlabel('Calendar Year')
         end
-        
-        adjustfigurefont
-        
-        
-        
+        adjustfigurefont   
     end
-    
     % clear data male for next whale
     % data_male(:,6:7) = 0;
 end
+
+print('CostCurves_ReproFemale','-dpng','-r300')
