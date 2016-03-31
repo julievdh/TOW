@@ -8,7 +8,7 @@ load('EntangCost') % data from 15 towed cases, Amy's 13 cases.
 whales = {'EG 2212  ','EG 2223  ','EG 3311  ','EG 3420  ','EG 3714  ',...
     'EG 3107  ','EG 2710  ','EG 1427  ','EG 2212  ','EG 3445  ','EG 3314  ',...
     'EG 3610  ','EG 3294  ','EG 2030  ','EG 1102  '};
-whalesARK = {'EG 1238','EG 1427','EG 1971','EG 2027','EG 2427',...
+whalesARK = {'EG 1238','EG 1971','EG 2027','EG 2427',...
     'EG 2470','EG 3120','EG 2753','EG 2151','EG 3392','EG 3821'};
 warning off
 
@@ -199,7 +199,7 @@ for i = 1:length(entangARK);
     if mx_ind > 0
         data_male(mx_ind,6) = mean([rel1*mean(data_male(mx_ind,2)) rel2*mean(data_male(mx_ind,5))]);
     end
-    mn_ind = floor(entang(i,3)):ceil(entang(i,4));
+    mn_ind = floor(entangARK(i,3)):ceil(entangARK(i,4));
     if mn_ind > 0
         data_male(mn_ind,7) = mean([rel1*mean(data_male(mn_ind,2)) rel2*mean(data_male(mn_ind,5))]);
         % make indices for minimum = 0 for maximum duration (so don't pile on top
