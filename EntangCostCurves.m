@@ -4,6 +4,7 @@
 close all
 
 % load data
+cd /Users/julievanderhoop/Documents/MATLAB/TOW
 load('EntangCost') % data from 15 towed cases, Amy's 13 cases.
 whales = {'EG 2212  ','EG 2223  ','EG 3311  ','EG 3420  ','EG 3714  ',...
     'EG 3107  ','EG 2710  ','EG 1427  ','EG 2212  ','EG 3445  ','EG 3314  ',...
@@ -16,20 +17,20 @@ rightwhaleMigrate = 7.3E9/22; % van der Hoop et al. 2013 (non-entangled, one-way
 rightwhaleRepro = 5.8E11/(365*2); % Klanjscek et al 2007: 5.8E11 J over 2 years
 rightwhalePreg = (2090-1906)*10^6; % Fortune et al 2013 (1906 = resting female costs/day)
 rightwhaleLac = (4120-1906)*10^6; % Fortune et al 2013 (1906 = resting female costs/day)'
-rightwhaleFor = 500E6; % Foraging cost J per day McGregor et al 2013
+rightwhaleFor = 500E6; % Foraging cost J per day McGregor et al 2010 (cited in Fortune et al 2013)
 t = 1:365*10;
 
 figure(109); clf; set(gcf,'Position',[48 5 1315 668])
-subplot('position',[0.05 0.1 0.3 0.85]); hold on
+subplot('position',[0.05 0.1 0.25 0.85]); hold on
 for i = 1:length(mindur);
     plot(t(1:mindur(i)),Wa_meas(i)*(1:mindur(i)),'color',[55/255 126/255 184/255],'LineWidth',1.5)
     plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),':','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
 
 % for Amy's whales:
-for i = 1:11
+for i = 1:10
     plot(d(1:actualmin(i)),Wa_ARK(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
-    if i ~= 10
+    if i ~= 9
         plot(d(1:actualmax(i)),Wa_ARK(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
     else continue
     end
@@ -45,16 +46,17 @@ plot(t(1:365),rightwhaleLac*t(1:365),'color',[152/255 152/255 152/255],'LineWidt
 plot(t(1:305),rightwhaleFor*t(1:305),'color',[152/255 152/255 152/255],'LineWidth',1.5);
 
 % these relative costs should form the basis of the timelines below
-figure(17); clf; hold on
-plot(0,rightwhaleMigrate,'o')
-plot(0,rightwhaleRepro,'o')
-plot(0,rightwhalePreg,'o')
-plot(0,rightwhaleLac,'o')
-plot(0,rightwhaleFor,'o')
-legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
+subplot('position',[0.32 0.1 0.04 0.85]); hold on; box on
+plot(0,rightwhaleMigrate,'ko','markerfacecolor',[228/255 26/255 28/255],'markersize',10)
+plot(0,rightwhaleRepro,'ko','markerfacecolor',[126/255 232/255 81/255],'markersize',10)
+plot(0,rightwhalePreg,'ko','markerfacecolor',[255/255 255/255 51/255],'markersize',10)
+plot(0,rightwhaleLac,'ko','markerfacecolor',[166/255 206/255 227/255],'markersize',10)
+plot(0,rightwhaleFor,'ko','markerfacecolor',[77/255 175/255 74/255],'markersize',10)
+set(gca,'xtick','')
+% legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
 
 % plot male budget
-figure(109)
+figure(109); set(gcf,'paperpositionmode','auto');
 subplot('position',[0.4 0.55 0.58 0.4]); hold on; box on
 h = area(data_male);
 h(1).FaceColor = [152/255 78/255 163/255];
