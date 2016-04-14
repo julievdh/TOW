@@ -1,5 +1,5 @@
 % Calculate whale drag coefficients for all whales for ARK entanglement
-% cases
+% casesf
 % Age at first entanglement gives length and weight (Moore et al 2004)
 % width-to-length ratios from Fortune et al 2012.
 clear all
@@ -142,17 +142,19 @@ stackedbar = @(x, A) bar(x, A, 'stack');
 dots = @(x, y) plot(x, y, 'bo', 'Markersize', 15,'MarkerFaceColor','b');
 triangles = @(x, y) plot(x, y, 'b^', 'Markersize', 15,'Markerfacecolor','b');
 
-fate = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0; 0; 0]; % 0 alive; 2 died. Sorted in this order. Whales that died are 2151 and 1238
+fate = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0]; % 0 alive; 2 died. Sorted in this order. Whales that died are 2151 and 1238
 
 % plot
 figure(99); clf; hold on
 [ax, h1, h2] = plotyy(1:10, bardata', 1:10, L,stackedbar,dots);
 % [ax, h1, h2] = plotyy(find(flt == 1), bardata(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
+% [ax, h1, h2] = plotyy(find(flt == 0), bardata(:,flt == 0)', find(flt == 0), L(flt==),stackedbar,dots);
+
 xlim([0.5 10.5])
 xticklabel_rotate(1:10,90,whales,'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
-plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
+% plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
 myC= [0 0 0; 0.5 0.5 0.5; 1 1 1];
 colormap(myC)
 ylabel('Total Line on Animal (m)')
@@ -160,7 +162,7 @@ xlim([0.5 10.5])
 adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
-print('DragContribution_ARK.tif','-dtiff','-r300')
+print('DragContribution_ARK','-dtiff','-r300')
 
 %%
 
@@ -170,3 +172,6 @@ print('DragContribution_ARK.tif','-dtiff','-r300')
 % w = linspace(min(Age),max(Age));
 % line(w,feval(fitcontrib,w),'Color','k')
 
+%% Power Estimates for Detailed Timelines
+power = (whaleDf*1.20)/0.15; % low drag efficiency 3911 MAXIMUM
+power_E = (Dtot.*1.20)./0.14; % high drag efficiency 3911 MINIMUM

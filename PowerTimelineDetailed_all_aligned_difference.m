@@ -7,18 +7,16 @@
 cd /Users/julievanderhoop/Documents/MATLAB/TOW
 load('EntTimelines')
 
-
 %%
 close all
 
-for i = 1:15
+for i = 1:25
     n = length(Timelines(i).dpower);
     clear minTimeline
     
     % make first baseline
     minTimeline(1:2,:) = [Timelines(i).day(1)-20 Timelines(i).dpower(1); % baseline and increase @ FSE
         Timelines(i).day(2) Timelines(i).dpower(1)]; % entangled and increase
-    % if animal was found dead in gear
     % if animal was found dead in gear
     if i == 6
         for k = 2:n-1
@@ -27,7 +25,7 @@ for i = 1:15
                 Timelines(i).day(k+1) Timelines(i).dpower(k)];
         end
         
-    else if ismember(i,[10 14 15]) == 1
+    else if ismember(i,[10 14 15 19]) == 1
             for k = 2:n-2
                 ln = length(minTimeline);
                 minTimeline(ln+1:ln+2,:) = [Timelines(i).day(k) Timelines(i).dpower(k);
@@ -69,8 +67,7 @@ for i = 1:15
         Timelines(i).day(1) Timelines(i).dpower(2)]; % entangled and increase
     
     % if animal was found dead in gear
-    % if animal was found dead in gear
-    if ismember(i,[3 6 10 14]) == 1
+    if ismember(i,[3 6 10 14 16]) == 1
         for k = 2:n-1
             ln = length(maxTimeline);
             maxTimeline(ln+1:ln+2,:) = [Timelines(i).day(k) Timelines(i).dpower(k); % baseline and increase @ FSE
@@ -90,15 +87,15 @@ for i = 1:15
             end
         end
     end
-
+    
     if i == 1
         % figure('paperunits','in','paperposition',[1 1 9 3.5]); hold on
         figure(1); clf; hold on
         set(gcf,'position',[1 17 740 600])
-        subplot('position',[0.1 0.1 0.85 0.4]); hold on       
+        subplot('position',[0.1 0.1 0.85 0.4]); hold on
     end
     
-    if ismember(i,[3 10 15]) == 1
+    if ismember(i,[3 10 15 19]) == 1
         plot(minTimeline(:,1),minTimeline(:,2),'k')
         h = BreakXAxis(maxTimeline(:,1),maxTimeline(:,2),550,2000,50);
         set(h,'color','k','LineStyle',':','MarkerSize',0.1)
@@ -109,12 +106,12 @@ for i = 1:15
     end
     
     % plot death or continuation
-    if ismember(i,[3 6 10 14 15]) == 1
+    if ismember(i,[3 6 10 14 15 16 19]) == 1
         text(maxTimeline(end,1),maxTimeline(end,2),'x','FontSize',14)
     else
         text(maxTimeline(end,1),maxTimeline(end,2),'>','FontSize',14)
     end
-       
+    
     [min_Wa(i),max_Wa(i)] = PowerIncrease_Detailed(minTimeline,maxTimeline);
     
 end
