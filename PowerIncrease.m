@@ -90,25 +90,9 @@ title('Maximum Work')
 legend('Entangled','Not Entangled','Location','SW')
 
 
-%% incorporate fate
-fate = [0; 0; 1; 0; 0; 1; 0; 0; 1; 1; 0; 0; 0; 1; 1]; % 0 = alive, 1 = died
-
-figure(3); clf; hold on
-h1 = histogram(diff_min(fate == 1));
-h2 = histogram(diff_min(fate == 0));
-h1.BinWidth = 2.5E9;
-h2.BinWidth = 2.5E9;
-xlabel('Minimum difference in work between entangled and non-entangled')
-legend('Dead','Alive','Location','NE')
-
-figure(4)
-boxplot(diff_min,fate)
-set(gca,'Xticklabels',{'Alive','Dead'})
-ylabel('Minimum difference in work (J) between entangled and non-entangled')
-
-%% stats
-[h,p,ci,stats] = ttest2(diff_max(fate == 0),diff_max(fate == 1))
-[h,p,ci,stats] = ttest2(diff_min(fate == 0),diff_min(fate == 1))
+%% incorporate fate 0 = alive, 1 = died
+fate = [0; 0; 1; 0; 0; 1; 0; 0; 1; 1; 0; 0; 0; 1; 1;... % these are towed cases
+    1; 0; 0; 1; 0; 0; 0; 0; 0; 0]; % these are ARK cases
 
 %% Detailed Timelines
 PowerTimelineDetailed_all_aligned_difference
