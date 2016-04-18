@@ -104,10 +104,13 @@ PowerTimelineDetailed_all_aligned_difference
 [h,p,ci,stats] = ttest2(max_Wa(fate == 0),max_Wa(fate == 1))
 
 %% calculate difference in entangled vs non entangled power
-pdiff = power_E(:,8) - power(:,8);
+pdiff = power_EAll - powerAll;
+foldinc = power_EAll./powerAll;
 % is it that cases with more gear drag are more lethal? or is it duration
 % that matters? 
 [h,p,ci,stats] = ttest2(pdiff(fate == 0),pdiff(fate == 1))
+% [h,p,ci,stats] = ttest2(foldinc(fate == 0),foldinc(fate == 1))
+
 
 figure; 
 subplot(121)
@@ -119,15 +122,30 @@ boxplot(max_Wa,fate)
 set(gca,'Xticklabels',{'Alive','Dead'})
 
 %% values reported in paper
-disp('meanSD min Wa (J)'); [mean(min_Wa)/1000 std(min_Wa)]
-disp('meanSD max Wa (J)'); [mean(max_Wa)/1000 std(max_Wa)]
+disp('meanSD min Wa (J)'); [mean(min_Wa) std(min_Wa)]
+disp('meanSD max Wa (J)'); [mean(max_Wa) std(max_Wa)]
 
 disp('meanSD min Wa (J) Fate == 0'); [mean(min_Wa(fate == 0)) std(min_Wa(fate == 0))]
 disp('meanSD min Wa (J) Fate == 1'); [mean(min_Wa(fate == 1)) std(min_Wa(fate == 1))]
 
-disp('meanSD max Wa (J) Fate == 0'); [mean(max_Wa(fate == 0)) std(max_Wa(fate == 0))]
+disp('meanSD max Wa (J) Fate == 0'); [mean(max_Wa(fate == 0)) std(max_Wa(fate == 0))] % alive
 disp('meanSD max Wa (J) Fate == 1'); [mean(max_Wa(fate == 1)) std(max_Wa(fate == 1))]
 
-disp('meanSD power increase (W) Fate == 0'); [mean(pdiff(fate == 0)) std(pdiff(fate == 0))]
-disp('meanSD power increase (W) Fate == 1'); [mean(pdiff(fate == 1)) std(pdiff(fate == 1))]
+disp('meanSD power increase (W) Fate == 0'); [mean(pdiff(fate == 0)) std(pdiff(fate == 0))] % alive
+disp('meanSD power increase (W) Fate == 1'); [mean(pdiff(fate == 1)) std(pdiff(fate == 1))] % died
 
+%% compare min_Wa for meas vs estimated
+figure(3); clf; hold on
+histogram(min_Wa(fate(1:15) == 0));
+histogram(min_Wa(fate(1:15) == 1));
+histogram(min_Wa(fate(16:25) == 0));
+histogram(min_Wa(fate(16:25) == 1));
+
+%% compare durations
+
+mindur_ARK = [1 22 1 1 1 1 1 433 1 1];
+maxdur_ARK = [121 346 16 99 211 106 289 997 NaN 76];
+figure(5); hold on
+histogram(mindur_ARK,[0:10:500])
+histogram(mindur,[0:10:500])
+xlabel('Minimum Entanglement Duration, Days')

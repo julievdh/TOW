@@ -172,6 +172,13 @@ print('DragContribution_ARK','-dtiff','-r300')
 % w = linspace(min(Age),max(Age));
 % line(w,feval(fitcontrib,w),'Color','k')
 
+return
+
+
 %% Power Estimates for Detailed Timelines
 power = (whaleDf*1.20)/0.15; % low drag efficiency 3911 MAXIMUM
 power_E = (Dtot.*1.20)./0.14; % high drag efficiency 3911 MINIMUM
+keep power power_E
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
+save('ARKcasePower')
+

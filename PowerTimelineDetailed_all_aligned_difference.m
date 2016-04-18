@@ -116,7 +116,7 @@ for i = 1:25
     
 end
 
-text(-1450,5600,'B','FontSize',18,'FontWeight','Bold')
+text(-1450,2800,'B','FontSize',18,'FontWeight','Bold')
 xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Power (W)')
 % ax1 = gca; % current axes
 % ax1_pos = ax1.Position; % position of first axes
@@ -130,20 +130,26 @@ xlabel('Days Relative to Final Disentanglement Attempt'); ylabel('Additional Pow
 %% zoom in on transition
 subplot('position',[0.1 0.55 0.4 0.4]); hold on
 
+% load ARK data
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/
+ARK = load('ARKcasePower');
+powerAll = vertcat(power(:,8),ARK.power); % combine non-entangled power for measured and estimated cases
+power_EAll = vertcat(power_E(:,8),ARK.power_E); % combine entangled power for measured and estimated cases
+
 % create colour matrix
-cmat = zeros(15,3);
+cmat = zeros(25,3);
 cmat(fate == 1) = 1; % 1 = dead
 
-for i = 1:15
+for i = 1:25
     % plot transition to entangled
-    plot([-0.25 1.25],[power(i,8) power_E(i,8)],'color',cmat(i,:))
-    plot([-0.25 1.25],[power(i,8) power_E(i,8)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
+    plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'color',cmat(i,:))
+    plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
 end
 ylabel('Propulsive Power (W)')
 set(gca,'Xtick',[-0.25 1.25])
 set(gca,'XtickLabel',{'Not Entangled','Entangled'})
-ylim([900 8000]); xlim([-1 2])
-text(-0.926,7500,'A','FontSize',18,'FontWeight','Bold')
+ylim([700 4500]); xlim([-1 2])
+text(-0.926,4250,'A','FontSize',18,'FontWeight','Bold')
 
 adjustfigurefont
 
