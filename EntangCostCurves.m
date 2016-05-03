@@ -47,12 +47,20 @@ plot(t(1:305),rightwhaleFor*t(1:305),'color',[152/255 152/255 152/255],'LineWidt
 
 % these relative costs should form the basis of the timelines below
 subplot('position',[0.32 0.1 0.04 0.85]); hold on; box on
+% add entanglements
+for i = 1:length(Wa_meas)
+    plot([-0.15 0.15],[Wa_meas(i) Wa_meas(i)],'-','color',[55/255 126/255 184/255],'LineWidth',1.5)
+end
+for i = 1:size(Wa_ARK,1)
+    plot([-0.15 0.15],[Wa_ARK(i,1) Wa_ARK(i,1)],'-','color',[77/255 175/255 74/255],'LineWidth',1.5)
+end
+
 plot(0,rightwhaleMigrate,'ko','markerfacecolor',[228/255 26/255 28/255],'markersize',10)
 plot(0,rightwhaleRepro,'ko','markerfacecolor',[126/255 232/255 81/255],'markersize',10)
 plot(0,rightwhalePreg,'ko','markerfacecolor',[255/255 255/255 51/255],'markersize',10)
 plot(0,rightwhaleLac,'ko','markerfacecolor',[166/255 206/255 227/255],'markersize',10)
 plot(0,rightwhaleFor,'ko','markerfacecolor',[77/255 175/255 74/255],'markersize',10)
-set(gca,'xtick','')
+set(gca,'xtick','','xlim',[-0.45 0.45])
 % legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
 
 % plot male budget
@@ -77,10 +85,10 @@ for i = 1:size(entang,1)
 end
 
 % Estimated ARK cases:
-% 6 males, 2 unknown sex ESTIMATED [1 unknown sex (3392 has insuff sightings info)
+% 6 males, 2 unknown sex ESTIMATED [1 unknown sex (3392) has insuff sightings info]
 entangARK = 1 + [6.83 10.83 10.83 10.83; 8.67 20.03 18.067 18.8; ...
     8.87 9.4 9.4 9.4; 3.57 10.53 7.67 7.67; 1.8 5.43 5.43 5.43; ...
-    0.767 23 4.23 18.8; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
+    0.767 23 4.23 24; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
 for i = 1:size(entangARK,1)
     jitter = rand*0.1;
     plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255])
@@ -141,10 +149,13 @@ print('CostCurves_AllMaleFemale','-dpng','-r300')
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
-for i = 1:length(entang);
+for i = length(entang):-1:1;
     % get relative costs of things
     rel1 = Wa_meas(i,1)/rightwhaleMigrate;
     rel2 = Wa_meas(i,1)/rightwhaleFor;
+    
+    % clear data male for next whale
+    data_male(:,6:7) = 0;
     
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
@@ -161,7 +172,7 @@ for i = 1:length(entang);
         data_male(mn_ind,6) = 0;
         
         ct = ct+1;
-        figure(1)
+        figure(1); set(gcf,'paperpositionmode','auto');
         subplot(4,2,ct); hold on
         h = area(data_male);
         h(1).FaceColor = [152/255 78/255 163/255];
@@ -172,20 +183,39 @@ for i = 1:length(entang);
         h(6).FaceColor = 'w';
         h(7).FaceColor = [55/255 126/255 184/255];
         
-        xlim([1 24]);
-        set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-            'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        xlim([1 24]);ylim([0 2])
+        if ismember(i,[12 15])
+            set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+                'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        else
+            set(gca,'xticklabels',{''})
+        end
         plot([13 13],[0 1.5],'k:')
-        ylabel('Relative Energetic Cost')
-        title(whales(i))
+        % ylabel('Relative Energetic Cost')
+        text(1.74,1.81,whales(i),'FontSize',14,'FontWeight','bold')
         adjustfigurefont
-    end
     
-    % clear data male for next whale
-    data_male(:,6:7) = 0;
-end
+figure(6); hold on % problem is that these are overlapping, so painting over with color white. can we make it transparent? alpha?
+data_male2 = data_male;
+data_male2(:,1) = data_male(:,1)+i;
+h = area(data_male2);
+h(1).FaceColor = [1 1 1]; h(1).EdgeColor = [1 1 1];
+h(2).FaceColor = [1 1 1]; h(2).EdgeColor = [1 1 1];
+h(3).FaceColor = [1 1 1]; h(3).EdgeColor = [1 1 1];
+h(4).FaceColor = [1 1 1]; h(4).EdgeColor = [1 1 1];
+h(5).FaceColor = [1 1 1]; h(5).EdgeColor = [1 1 1];
 
-print('CostCurves_AllMaleMeasured','-dpng','-r300')
+    end
+end
+figure(1);
+suplabel('Relative Energetic Cost','y');
+% print('CostCurves_AllMaleMeasured','-dpng','-r300')
+
+return 
+
+%% make area plot all stacked entanglements
+
+
 
 %% ADD AMY'S CASES TO THIS
 ct = 0;
@@ -220,19 +250,22 @@ for i = 1:length(entangARK);
         h(6).FaceColor = 'w';
         h(7).FaceColor = [55/255 126/255 184/255];
         
-        xlim([1 24]);
-        set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-            'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        xlim([1 24]); ylim([0 2])
+        if ismember(i,[7 8])
+            set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+                'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        else
+            set(gca,'xticklabels',{''})
+        end
         plot([13 13],[0 1.5],'k:')
-        ylabel('Relative Energetic Cost')
-        title(whalesARK(i))
+        text(1.74,1.81,whalesARK(i),'FontSize',14,'FontWeight','bold')
         adjustfigurefont
     end
     
     % clear data male for next whale
     data_male(:,6:7) = 0;
 end
-
+suplabel('Relative Energetic Cost','y');
 print('CostCurves_AllMaleARK','-dpng','-r300')
 
 %% FEMALES
@@ -267,9 +300,13 @@ for i = [2 7 13] %:length(entang_fem);
         % make indices for minimum = 0 for maximum duration (so don't pile on top
         % of each other)
         prerepro_case(mn_ind,8) = 0;
-        repro_case = repmat(data_female,rep(2,ct),1);
+        if i == 2
+            repro_case = [repmat(data_female(1:48,:),rep(2,ct),1); data_female(36:60,:)];
+        else
+            repro_case = repmat(data_female,rep(2,ct),1);
+        end
         
-        figure(3);
+        figure(3); set(gcf,'paperpositionmode','auto')
         subplot(3,1,ct); hold on
         % first plot a few years of pre-repro
         h = area([prerepro_case; repro_case]);
@@ -292,23 +329,30 @@ for i = [2 7 13] %:length(entang_fem);
         ax1 = gca; % current axes
         set(ax1,'xlim',[1 size([prerepro_case;repro_case],1)],'xaxislocation','bottom')
         set(ax1,'xticklabels',{'D','M','J','S'},'xtick',1:3:190)
-        % plot([13 13],[0 1.5],'k:')
-        ylabel('Relative Energetic Cost')
-        % title(whales(i))
+        % plot year markers
+        for y = 1:15
+            plot([1+12*y 1+12*y],[0 2.5],'k:')
+        end
+        for y = 1:length(yrs)
+            text(-20+24*y,0.25,num2str(yrs(ct,y)),'FontSize',14,'FontWeight','Bold')
+        end
+        
+        text(1.74,2.28,whales(i),'FontSize',14,'FontWeight','bold')
         
         ax1_pos = ax1.Position; % position of first axes
-        ax2 = axes('Position',ax1_pos,...
-            'XAxisLocation','top',...
-            'Ytick',[],...
-            'Color','none');
-        xlim([1 size([prerepro_case;repro_case],1)]); set(gca,'xtick',[12:24:size([prerepro_case;repro_case],1)],'xticklabels',yrs(ct,:))
-        if ct == 1;
-            xlabel('Calendar Year')
-        end
-        adjustfigurefont   
+        %         ax2 = axes('Position',ax1_pos,...
+        %             'XAxisLocation','top',...
+        %             'Ytick',[],...
+        %             'Color','none');
+        %         xlim([1 size([prerepro_case;repro_case],1)]); set(gca,'xtick',[12:24:size([prerepro_case;repro_case],1)],'xticklabels',yrs(ct,:))
+        %         if ct == 1;
+        %             xlabel('Calendar Year')
+        %         end
     end
+    ylim([0 2.5])
     % clear data male for next whale
     % data_male(:,6:7) = 0;
 end
-
+suplabel('Relative Energetic Cost','y');
+adjustfigurefont
 print('CostCurves_ReproFemale','-dpng','-r300')
