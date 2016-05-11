@@ -10,7 +10,7 @@ load('EntTimelines')
 %%
 close all
 
-for i = 1:25
+for i = 1:15
     n = length(Timelines(i).dpower);
     clear minTimeline
     
@@ -142,13 +142,19 @@ cmat(fate == 1) = 1; % 1 = dead
 
 for i = 1:25
     % plot transition to entangled
-    plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'color',cmat(i,:))
-    plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'o','markerfacecolor',cmat(i,:),'markeredgecolor',cmat(i,:))
+    h1 = plot([-0.25 1.25],[powerAll(i) power_EAll(i)],':','color',cmat(i,:));
+    h2 = plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'o','markeredgecolor',cmat(i,:));
+    h3 = plot(2,power_EAll(i)-powerAll(i),'o','color',cmat(i,:))
+    if i <= 15
+        set(h1,'linestyle','-');
+        set(h2,'markerfacecolor',cmat(i,:));
+        set(h3,'markerfacecolor',cmat(i,:));
+    end 
 end
 ylabel('Propulsive Power (W)')
-set(gca,'Xtick',[-0.25 1.25])
-set(gca,'XtickLabel',{'Not Entangled','Entangled'})
-ylim([700 4500]); xlim([-1 2])
+set(gca,'Xtick',[-0.25 1.25 2])
+set(gca,'XtickLabel',{'Not Entangled','Entangled','Difference'})
+ylim([0 4500]); xlim([-1 2.5])
 text(-0.926,4250,'A','FontSize',18,'FontWeight','Bold')
 
 adjustfigurefont

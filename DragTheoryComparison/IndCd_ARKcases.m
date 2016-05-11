@@ -1,4 +1,4 @@
-% Calculate whale drag coefficients for all whales for ARK entanglement
+% Calculate whale drag coefficients for all whales_ARK for ARK entanglement
 % casesf
 % Age at first entanglement gives length and weight (Moore et al 2004)
 % width-to-length ratios from Fortune et al 2012.
@@ -125,16 +125,20 @@ ylim([0 2500])
 % print('GearDrag_Fig7.eps','-depsc','-r300')
 
 %% drag contribution of each case
-clear bardata
-bardata(1,:) = whaleDf;
-bardata(2,:) = DI(:,8);
-bardata(3,:) = meas;
-[B,I] = sort(Age); % sort by Age
-% sort_bardata = bardata(:,I); % reform data matrix
+clear bardata_ARK
+bardata_ARK(1,:) = whaleDf;
+bardata_ARK(2,:) = DI(:,8);
+bardata_ARK(3,:) = meas;
+[B,I] = sort(L); % sort by Age
+sort_bardata_ARK = bardata_ARK(:,I); % reform data matrix
+
+% data for paper: 
+min(sum(bardata_ARK(2:3,:)))
+max(sum(bardata_ARK(2:3,:)))
 
 % gear to total body
-contrib = sum(bardata(2:3,:))./bardata(1,:);
-whales = {'Eg 1238  ','Eg 1971  ','Eg 2027  ','Eg 2151  ','Eg 2427  ',...
+contrib = sum(bardata_ARK(2:3,:))./bardata_ARK(1,:);
+whales_ARK = {'Eg 1238  ','Eg 1971  ','Eg 2027  ','Eg 2151  ','Eg 2427  ',...
     'Eg 2470  ','Eg 2753  ','Eg 3120  ','Eg 3392  ','Eg 3821  '};
 
 % set up anonymous functions
@@ -146,12 +150,12 @@ fate = [1; 0; 0; 1; 0; 0; 0; 0; 0; 0]; % 0 alive; 2 died. Sorted in this order. 
 
 % plot
 figure(99); clf; hold on
-[ax, h1, h2] = plotyy(1:10, bardata', 1:10, L,stackedbar,dots);
-% [ax, h1, h2] = plotyy(find(flt == 1), bardata(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
-% [ax, h1, h2] = plotyy(find(flt == 0), bardata(:,flt == 0)', find(flt == 0), L(flt==),stackedbar,dots);
+[ax, h1, h2] = plotyy(1:10, sort_bardata_ARK', 1:10, L(I),stackedbar,dots);
+% [ax, h1, h2] = plotyy(find(flt == 1), bardata_ARK(:,flt == 1)', find(flt == 1), L(flt==1),stackedbar,triangles);
+% [ax, h1, h2] = plotyy(find(flt == 0), bardata_ARK(:,flt == 0)', find(flt == 0), L(flt==),stackedbar,dots);
 
 xlim([0.5 10.5])
-xticklabel_rotate(1:10,90,whales,'FontSize',14)
+xticklabel_rotate(1:10,90,whales_ARK(I),'FontSize',14)
 ylabel('Drag (N)')
 axes(ax(2)); hold on
 % plot(find(fate == 1),1,'rs', 'Markersize', 15,'MarkerFaceColor','r') % fate
@@ -177,8 +181,13 @@ return
 
 %% Power Estimates for Detailed Timelines
 power = (whaleDf*1.20)/0.15; % low drag efficiency 3911 MAXIMUM
+% [mean(power) std(power)]
 power_E = (Dtot.*1.20)./0.14; % high drag efficiency 3911 MINIMUM
+% [mean(power_E) std(power_E)]
+[h,p,ci,stats] = ttest2(power,power_E);
 keep power power_E
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/
 save('ARKcasePower')
 
+% how much more energy in one day?
+[mean((power_E - power)*60*24*24) std((power_E - power)*60*24*24)]
