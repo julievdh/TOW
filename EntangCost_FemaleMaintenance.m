@@ -101,8 +101,23 @@ prop_allfemale_maintenance(i,3) = sum(prop_allfemale(1:5));
 prop_allfemale_maintenance(i,1:2) = prop_allfemale(6:7);
 prop_allfemale_maintenance(i,4:5) = prop_allfemale(8:9);
 %%
+clear bardata
+ct = -1;
+for i = [2 4 6 7 10 11 13 14]
+    ct = ct+2;
+bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 5]); % minimum duration
+ct = ct+1;
+bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 4]); % maximum duration
+barwhale(ct) = whales(i);
+end
+
+bardata(ct+2,:) = prop_allfemale_maintenance(8,[1:3 5]); % minimum duration
+bardata(ct+3,:) = prop_allfemale_maintenance(8,[1:3 4]); % maximum duration
+barwhale(ct) = whalesARK(8);
+
 figure(82);
-bar(prop_allfemale_maintenance,1,'stacked')
+bar(bardata,1,'stacked')
+set(gca,'xtick',1:24,'xticklabels',barwhale)
 %%
 prop_allfemale_maintenance(prop_allfemale_maintenance == 0) = NaN;
 nanmean(prop_allfemale_maintenance)
