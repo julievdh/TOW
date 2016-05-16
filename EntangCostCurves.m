@@ -77,7 +77,7 @@ h(5).FaceColor = [77/255 175/255 74/255];
 entang = 1 + [8.667,9.4,9.38,9.4;0,0,0,0;4.7,23,13.47,15.2;0,0,0,0;...
     1.17,3.3,2.23,2.4;0,0,0,0;0,0,0,0;5.27,21.23,7.4,7.56;...
     8.77,20.13,8.87,19.8;0,0,0,0;0,0,0,0;2.5,16.87,9.9,13.8;...
-    0,0,0,0;0,0,0,0;0,23,6.27,9.53]; % 6 males, 1 unknown sex MEASURED % +1 is becuase Dec = month 1 on plot
+    0,0,0,0;0,0,0,0;0,23,6.27,9.53]; % 6 males, 1 unknown sex MEASURED % +1 is because Dec = month 1 on plot
 for i = 1:size(entang,1)
     jitter = rand*0.1;
     plot(entang(i,1:2),[1.4+jitter 1.4+jitter],':','color',[55/255 126/255 184/255])
@@ -88,7 +88,7 @@ end
 % 6 males, 2 unknown sex ESTIMATED [1 unknown sex (3392) has insuff sightings info]
 entangARK = 1 + [6.83 10.83 10.83 10.83; 8.67 20.03 18.067 18.8; ...
     8.87 9.4 9.4 9.4; 3.57 10.53 7.67 7.67; 1.8 5.43 5.43 5.43; ...
-    0.767 23 4.23 24; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
+    0.767 23 4.23 23; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
 for i = 1:size(entangARK,1)
     jitter = rand*0.1;
     plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255])
@@ -147,6 +147,8 @@ end
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 print('CostCurves_AllMaleFemale','-dpng','-r300')
 
+%% Plot female budget like Villegas Amtmann 
+
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
 for i = length(entang):-1:1;
@@ -197,7 +199,8 @@ for i = length(entang):-1:1;
     
 figure(6); hold on % problem is that these are overlapping, so painting over with color white. can we make it transparent? alpha?
 data_male2 = data_male;
-data_male2(:,1) = data_male(:,1)+i;
+level = 5:-0.75:0.5;
+data_male2(:,1) = data_male(:,1)+level(ct);
 h = area(data_male2);
 h(1).FaceColor = [1 1 1]; h(1).EdgeColor = [1 1 1];
 h(2).FaceColor = [1 1 1]; h(2).EdgeColor = [1 1 1];
@@ -205,13 +208,27 @@ h(3).FaceColor = [1 1 1]; h(3).EdgeColor = [1 1 1];
 h(4).FaceColor = [1 1 1]; h(4).EdgeColor = [1 1 1];
 h(5).FaceColor = [1 1 1]; h(5).EdgeColor = [1 1 1];
 
+if i == 1; % plot original curve
+    h = area(data_male(:,1:5));
+    h(1).FaceColor = [152/255 78/255 163/255];
+        h(2).FaceColor = [228/255 26/255 28/255];
+        h(3).FaceColor = [247/255 129/255 121/255];
+        h(4).FaceColor = [255/255 127/255 0/255];
+        h(5).FaceColor = [77/255 175/255 74/255];
+        %h(6).FaceColor = 'w';
+        %h(7).FaceColor = [55/255 126/255 184/255];
+        
+        xlim([1 24]);ylim([0 7])
+        set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+                'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        
+end
     end
 end
+
 figure(1);
 suplabel('Relative Energetic Cost','y');
 % print('CostCurves_AllMaleMeasured','-dpng','-r300')
-
-return 
 
 %% make area plot all stacked entanglements
 
@@ -350,8 +367,7 @@ for i = [2 7 13] %:length(entang_fem);
         %         end
     end
     ylim([0 2.5])
-    % clear data male for next whale
-    % data_male(:,6:7) = 0;
+
 end
 suplabel('Relative Energetic Cost','y');
 adjustfigurefont
