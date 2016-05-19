@@ -5,6 +5,7 @@
 %load('EntangCost') % data from 15 towed cases, Amy's 13 cases.
 
 %% Plot female budget like Villegas Amtmann
+clear sumfemale prop_allfemale prop_allfemale_maintenance
 
 sumfemale = sum(data_female); % sum of female costs over 5 years
 prop_allfemale = sumfemale./sum(sumfemale); % proportion of total
@@ -13,20 +14,17 @@ prop_allfemale_maintenance(3) = sum(prop_allfemale(1:5));
 prop_allfemale_maintenance(1:2) = prop_allfemale(6:7);
 prop_allfemale_maintenance(2,:) = [0 0 0];
 
-figure(2); clf; hold on
-subplot('position',[0.1 0.1 0.15 0.8])
-bar(prop_allfemale_maintenance,'stacked')
-xlim([0.5 1.5])
-ylabel('Percent of five year energy budget')
-set(gca,'xticklabel','North Atlantic Right Whale')
+figure(2); clf
+set(gcf,'position',[427     5   940   668])
 
-% data from Villegas Amtmann and Lockyer
+
+%% data from Villegas Amtmann and Lockyer
 VA2015 = [0.071 0.08 0.849; ... % Southern Minke Whale
-    0.079 0.121 0.799; ... % Gray Whale
+    0.079 0.122 0.799; ... % Gray Whale
     0.064 0.104 0.832; ... % Southern fin whale
     0.057 0.074 0.869]; % Blue whale
-subplot('position',[0.35 0.1 0.6 0.8])
-bar(VA2015,'stacked')
+subplot('position',[0.35 0.5 0.6 0.45])
+bar(VA2015,'stacked'); ylim([0 1.1])
 ylabel('Percent of two year energy budget')
 set(gca,'xticklabel',{'Southern Minke Whale','Gray Whale','Southern Fin Whale','Blue Whale'})
 
@@ -103,31 +101,44 @@ prop_allfemale = sumfemale./sum(sumfemale(1:7)); % proportion of total, not incl
 prop_allfemale_maintenance(i,3) = sum(prop_allfemale(1:5));
 prop_allfemale_maintenance(i,1:2) = prop_allfemale(6:7);
 prop_allfemale_maintenance(i,4:5) = prop_allfemale(8:9);
-    allsummin(i) = sum(sumfemale([1:7 9]));
-    allsummax(i) = sum(sumfemale(1:8));
-%%
-clear bardata
-ct = -1;
-for i = [2 4 6 7 10 11 13 14]
-    ct = ct+2;
-    bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 5]); % minimum duration
-    ct = ct+1;
-    bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 4]); % maximum duration
-    barwhale(ct) = whales(i);
-end
+allsummin(i) = sum(sumfemale([1:7 9]));
+allsummax(i) = sum(sumfemale(1:8));
 
-bardata(ct+2,:) = prop_allfemale_maintenance(8,[1:3 5]); % minimum duration
-bardata(ct+3,:) = prop_allfemale_maintenance(8,[1:3 4]); % maximum duration
-barwhale(ct) = whalesARK(8);
-
-figure(82);
-bar(bardata,1,'stacked')
-set(gca,'xtick',1:24,'xticklabels',barwhale)
-%%
+%% all the whales plotted separately
+% clear bardata
+% ct = -1;
+% for i = [2 4 6 7 10 11 13 14]
+%     ct = ct+2;
+%     bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 5]); % minimum duration
+%     ct = ct+1;
+%     bardata(ct,:) = prop_allfemale_maintenance(i,[1:3 4]); % maximum duration
+%     barwhale(ct) = whales(i);
+% end
+%
+% bardata(ct+2,:) = prop_allfemale_maintenance(8,[1:3 5]); % minimum duration
+% bardata(ct+3,:) = prop_allfemale_maintenance(8,[1:3 4]); % maximum duration
+% barwhale(ct) = whalesARK(8);
+%
+% figure(82);
+% bar(bardata,1,'stacked')
+% set(gca,'xtick',1:24,'xticklabels',barwhale)
+%% average costs with minimum and maximum
 prop_allfemale_maintenance(prop_allfemale_maintenance == 0) = NaN;
 nanmean(prop_allfemale_maintenance)
 min(prop_allfemale_maintenance)
 max(prop_allfemale_maintenance)
+
+figure(2)
+bardata(2,:) = nanmean(prop_allfemale_maintenance(:,1:4));
+bardata(1,:) = nanmean(prop_allfemale_maintenance(:,[1:3 5]))
+subplot('position',[0.1 0.5 0.15 0.45]); hold on
+bar(bardata,1,'stacked')
+e1 = errorbar(1,1+bardata(1,4),nanstd(prop_allfemale_maintenance(:,5)));
+e2 = errorbar(2,1+bardata(2,4),nanstd(prop_allfemale_maintenance(:,4)));
+set(e1,'color','k'); set(e2,'color','k');
+xlim([0.25 2.75]); ylim([0 1.1]); box on
+ylabel('Percent of five year energy budget')
+set(gca,'xtick',1.5,'xticklabel','North Atlantic Right Whale')
 
 % calculate years until energy equilibrium:
 yrstoeq_min = (allsummin - 72)/(12-sum(sum(data_female(61:72,:))));
@@ -136,7 +147,8 @@ yrstoeq_max = (allsummax - 72)/(12-sum(sum(data_female(61:72,:))));
 yrstoeq_min = yrstoeq_min(yrstoeq_min > 0);
 yrstoeq_max = yrstoeq_max(yrstoeq_max > 0);
 
-figure; hold on
+figure(2);
+subplot('position',[0.1 0.1 0.85 0.3]); hold on
 cdfplot(yrstoeq_min)
 cdfplot(yrstoeq_max)
 
