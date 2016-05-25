@@ -27,6 +27,8 @@ subplot('position',[0.35 0.5 0.6 0.45])
 bar(VA2015,'stacked'); ylim([0 1.1])
 ylabel('Percent of two year energy budget')
 set(gca,'xticklabel',{'Southern Minke Whale','Gray Whale','Southern Fin Whale','Blue Whale'})
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1; 1 0 0];
+colormap(myC)
 
 %% Cost of entanglements on top of this?
 % we have 9 females total - 8 measured, 1 estimated
@@ -130,7 +132,7 @@ max(prop_allfemale_maintenance)
 
 figure(2)
 bardata(2,:) = nanmean(prop_allfemale_maintenance(:,1:4));
-bardata(1,:) = nanmean(prop_allfemale_maintenance(:,[1:3 5]))
+bardata(1,:) = nanmean(prop_allfemale_maintenance(:,[1:3 5]));
 subplot('position',[0.1 0.5 0.15 0.45]); hold on
 bar(bardata,1,'stacked')
 e1 = errorbar(1,1+bardata(1,4),nanstd(prop_allfemale_maintenance(:,5)));
@@ -149,6 +151,11 @@ yrstoeq_max = yrstoeq_max(yrstoeq_max > 0);
 
 figure(2);
 subplot('position',[0.1 0.1 0.85 0.3]); hold on
-cdfplot(yrstoeq_min)
-cdfplot(yrstoeq_max)
+cdfplot(yrstoeq_min*12)
+cdfplot(yrstoeq_max*12)
+xlabel('Time to Energetic Equilibrium (Months)'); ylabel('Proportion of Cases')
+title('')
 
+
+adjustfigurefont
+print('EntangCost_FemAll','-dsvg','-r300')
