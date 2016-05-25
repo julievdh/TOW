@@ -145,7 +145,7 @@ for i = 1:size(entangARK_fem,1)
 end
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('CostCurves_AllMaleFemale','-dpng','-r300')
+print('CostCurves_AllMaleFemale','-dsvg','-r300')
 
 %% Plot female budget like Villegas Amtmann 
 
@@ -198,6 +198,7 @@ for i = length(entang):-1:1;
         adjustfigurefont
     
 figure(6); hold on % problem is that these are overlapping, so painting over with color white. can we make it transparent? alpha?
+set(gcf,'position',[1542          98        1043         299])
 data_male2 = data_male;
 level = 5:-0.75:0.5;
 data_male2(:,1) = data_male(:,1)+level(ct);
@@ -291,7 +292,7 @@ print('CostCurves_AllMaleARK','-dpng','-r300')
 % MEASURED FEMALES: let's try Female Eg 2223
 ct = 0;
 figure(3); clf; set(gcf,'position',[1 5 1360 660])
-for i = [2 7 13] %:length(entang_fem);
+for i = [13 7 2] %:length(entang_fem);
     ct = ct+1;
     % get relative costs of things
     rel1 = Wa_meas(i,1)/rightwhaleMigrate;
@@ -300,9 +301,10 @@ for i = [2 7 13] %:length(entang_fem);
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
     % get indices
-    mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)))+12;
+    add = [12 0 12];
+    mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)))+add(ct);
     % what is the case-specific information for this female?
-    rep = [5 6 5; 2 2 1];
+    rep = [6 6 6; 2 2 1];
     yrs(1,:) = 1999:2:2013;
     yrs(2,:) = 1998:2:2012;
     yrs(3,1:5) = 2007:2:2015;
@@ -367,7 +369,40 @@ for i = [2 7 13] %:length(entang_fem);
         %         end
     end
     ylim([0 2.5])
+figure(7); hold on
+set(gcf,'position',[1542          98        1043         299])
+prerepro_case2 = prerepro_case;
+repro_case2 = repro_case;
+level = 2.5:-0.75:0;
+prerepro_case2(:,1) = prerepro_case(:,1)+level(ct);
+repro_case2(:,1) = repro_case(:,1)+level(ct);
+h = area([prerepro_case2; repro_case2]);
+h(1).FaceColor = [1 1 1]; h(1).EdgeColor = [1 1 1];
+h(2).FaceColor = [1 1 1]; h(2).EdgeColor = [1 1 1];
+h(3).FaceColor = [1 1 1]; h(3).EdgeColor = [1 1 1];
+h(4).FaceColor = [1 1 1]; h(4).EdgeColor = [1 1 1];
+h(5).FaceColor = [1 1 1]; h(5).EdgeColor = [1 1 1];
+h(6).FaceColor = [1 1 1]; h(6).EdgeColor = [1 1 1];
+h(7).FaceColor = [1 1 1]; h(7).EdgeColor = [1 1 1];
 
+
+if i == 2; % plot original curve
+h = area([prerepro_case(:,1:7); repro_case(:,1:7)]);
+    h(1).FaceColor = [152/255 78/255 163/255];
+        h(1).FaceColor = [152/255 78/255 163/255];
+        h(2).FaceColor = [228/255 26/255 28/255];
+        h(3).FaceColor = [247/255 129/255 121/255];
+        h(4).FaceColor = [255/255 127/255 0/255];
+        h(5).FaceColor = [77/255 175/255 74/255];
+        h(6).FaceColor = [255/255 255/255 51/255];
+        h(7).FaceColor = [166/255 206/255 227/255];
+        
+        xlim([1 145]); ylim([0 5])
+        %set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+        %        'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+        
+end
+set(gca,'xticklabels',{'D','M','J','S'},'xtick',1:3:190)
 end
 suplabel('Relative Energetic Cost','y');
 adjustfigurefont
