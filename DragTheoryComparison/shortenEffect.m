@@ -12,7 +12,7 @@ flt_short = zeros(length(flt),1); % remove all floats
 
 % get new expected gear
 clear Rx
-for ecase = 1:13
+for ecase = 1:10
     Rx(ecase) =  TOWDRAGest_apply(ecase,L(ecase),D(ecase));
 end
 
@@ -90,9 +90,9 @@ Wa_short = We_short-Wn;
 [h,p,ci,stats] = ttest2(Wa(:,1),Wa_short(:,1)); % YES
 
 %% find days til minwork
-for i = 1:13;
-    daysmin(i) = min(find(Wa(i,:) > 1.86E10));
-    daysmin_short(i) = min(find(Wa_short(i,:) > 1.86E10));
+for i = 1:1;
+    daysmin(i) = min(find(Wa(i,:) > 1.1E10));
+    daysmin_short(i) = min(find(Wa_short(i,:) > 1.1E10));
 end
 
 % is shortened gear critical duration significantly longer than non-shortened?
