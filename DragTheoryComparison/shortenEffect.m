@@ -31,7 +31,8 @@ meas_short(flt_short == 0) = feval(FIT,Rx_tot_short(flt_short == 0),'0');
 % histogram(meas_short,[0:5:300])
 
 figure(4); clf
-subplot(131); hold on
+set(gcf,'position',[427 328 872 345])
+subplot(141); hold on
 plot(zeros(length(meas(flt == 0)),1),meas(flt == 0),'bo','MarkerFaceColor','b')
 plot(zeros(length(meas(flt == 1)),1),meas(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(meas),1),meas_short,'ko','markerfacecolor','k')
@@ -45,11 +46,15 @@ xlim([-0.5 1.5])
 ylabel('Dcorr; Corrected Drag Force (N)'); 
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
+% for paper:
+% [mean(meas) std(meas) min(meas) max(meas)]
+% [mean(meas_short) std(meas_short) min(meas_short) max(meas_short)]
+
 %% calculate shortened Dtot
 Dtot_short = whaleDf + DI(:,8) + meas_short'; 
 
 figure(4); 
-subplot(132); hold on
+subplot(142); hold on
 plot(zeros(length(Dtot(flt == 0)),1),Dtot(flt == 0),'bo','MarkerFaceColor','b')
 plot(zeros(length(Dtot(flt == 1)),1),Dtot(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(Dtot),1),Dtot_short,'ko','markerfacecolor','k')
@@ -64,15 +69,14 @@ ylabel('Total Whale Drag Force (N)');
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 [mean((Dtot_short-Dtot)./Dtot) std((Dtot_short-Dtot)./Dtot)];
-    
 
 %% power = (drag x speed)/efficiency
-% entangled efficiency = 0.08
-% nonentangled efficiency = 0.10
-Pe = (Dtot*1.23)./0.08;
-Pn = (whaleDf*1.23)./0.10;
+% entangled efficiency = 0.14
+% nonentangled efficiency = 0.15
+Pe = (Dtot*1.23)./0.14;
+Pn = (whaleDf*1.23)./0.15;
 
-[h,p,ci,stats] = ttest2(Pe,Pn);
+[h,p,ci,stats] = ttest(Pe,Pn);
 
 d = 1:1:4000; % days
 
@@ -82,24 +86,39 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 % for shortened gear:
-Pe_short = (Dtot_short*1.23)./0.08;
+Pe_short = (Dtot_short*1.23)./0.14;
 We_short = Pe_short*d*24*60*60; % J required for one day, entangled
 Wa_short = We_short-Wn;
 
 % is shortened gear work significantly less than non-shortened?
-[h,p,ci,stats] = ttest2(Wa(:,1),Wa_short(:,1)); % YES
+[h,p,ci,stats] = ttest(Wa(:,1),Wa_short(:,1)); % YES
+
+%% plot
+subplot(143); hold on
+plot(zeros(length(Wa(flt == 0)),1),Wa(flt == 0,1),'bo','MarkerFaceColor','b')
+plot(zeros(length(Wa(flt == 1)),1),Wa(flt == 1,1),'b^','MarkerFaceColor','b')
+plot(ones(10,1),Wa_short(:,1),'ko','markerfacecolor','k')
+for i = 1:length(Dtot)
+    plot([0 1],[Wa(i,1) Wa_short(i,1)],'k--')
+end
+
+text(-0.4,2.35E8,'C','FontWeight','Bold','FontSize',18)
+
+xlim([-0.5 1.5])
+ylabel('Additional Work (W_a,J)'); 
+xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 %% find days til minwork
-for i = 1:1;
+for i = 1:10
     daysmin(i) = min(find(Wa(i,:) > 1.1E10));
     daysmin_short(i) = min(find(Wa_short(i,:) > 1.1E10));
 end
 
 % is shortened gear critical duration significantly longer than non-shortened?
-[h,p,ci,stats] = ttest2(daysmin_short,daysmin); % YES
+[h,p,ci,stats] = ttest(daysmin_short,daysmin); % YES
 
 figure(4); 
-subplot(133); hold on
+subplot(144); hold on
 plot(zeros(length(daysmin(flt == 0)),1),daysmin(flt == 0),'bo','MarkerFaceColor','b')
 plot(zeros(length(daysmin(flt == 1)),1),daysmin(flt == 1),'b^','MarkerFaceColor','b')
 plot(ones(length(daysmin),1),daysmin_short,'ko','markerfacecolor','k')
@@ -107,7 +126,7 @@ for i = 1:length(daysmin)
     plot([0 1],[daysmin(i) daysmin_short(i)],'k--')
 end
 
-text(-0.4,420,'C','FontWeight','Bold','FontSize',18)
+text(-0.4,750,'D','FontWeight','Bold','FontSize',18)
 
 xlim([-0.5 1.5])
 ylabel('Critical Duration (days)'); 
@@ -115,7 +134,8 @@ xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
 adjustfigurefont
 
+set(gcf,'paperpositionmode','auto')
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
-print -dtiff BodyLengthShorten
+print('BodyLengthShorten','-dsvg','-r300')
 
-[mean(daysmin_short-daysmin) std(daysmin_short-daysmin)]
+[mean(daysmin_short-daysmin) std(daysmin_short-daysmin) min(daysmin_short-daysmin) max(daysmin_short-daysmin)];
