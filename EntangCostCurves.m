@@ -1,7 +1,7 @@
 % Additional cost per day over existence: pregnancy, lactation, migration,
 % entanglement
 % 4 March 2016
-close all
+close all; clear all
 
 % load data
 cd /Users/julievanderhoop/Documents/MATLAB/TOW
@@ -21,21 +21,21 @@ rightwhaleFor = 500E6; % Foraging cost J per day McGregor et al 2010 (cited in F
 t = 1:365*10;
 
 figure(109); clf; set(gcf,'Position',[48 5 1315 668])
-subplot('position',[0.05 0.1 0.25 0.85]); hold on
+subplot('position',[0.12 0.1 0.25 0.85]); hold on
 for i = 1:length(mindur);
     plot(t(1:mindur(i)),Wa_meas(i)*(1:mindur(i)),'color',[55/255 126/255 184/255],'LineWidth',1.5)
     plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),':','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
 
 % for Amy's whales:
-for i = 1:10
-    plot(d(1:actualmin(i)),Wa_ARK(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
-    if i ~= 9
-        plot(d(1:actualmax(i)),Wa_ARK(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
-    else continue
-    end
-end
-xlabel('Days'); ylabel('Energetic Cost (J/day)')
+% for i = 1:10
+%     plot(d(1:actualmin(i)),Wa_ARK(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
+%     if i ~= 9
+%         plot(d(1:actualmax(i)),Wa_ARK(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
+%     else continue
+%     end
+% end
+xlabel('Days')
 xlim([0 730])
 adjustfigurefont; box on
 
@@ -46,14 +46,14 @@ plot(t(1:365),rightwhaleLac*t(1:365),'color',[152/255 152/255 152/255],'LineWidt
 plot(t(1:305),rightwhaleFor*t(1:305),'color',[152/255 152/255 152/255],'LineWidth',1.5);
 
 % these relative costs should form the basis of the timelines below
-subplot('position',[0.32 0.1 0.04 0.85]); hold on; box on
+subplot('position',[0.06 0.1 0.04 0.85]); hold on; box on
 % add entanglements
 for i = 1:length(Wa_meas)
     plot([-0.15 0.15],[Wa_meas(i) Wa_meas(i)],'-','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
-for i = 1:size(Wa_ARK,1)
-    plot([-0.15 0.15],[Wa_ARK(i,1) Wa_ARK(i,1)],'-','color',[77/255 175/255 74/255],'LineWidth',1.5)
-end
+% for i = 1:size(Wa_ARK,1)
+%     plot([-0.15 0.15],[Wa_ARK(i,1) Wa_ARK(i,1)],'-','color',[77/255 175/255 74/255],'LineWidth',1.5)
+% end
 
 plot(0,rightwhaleMigrate,'ko','markerfacecolor',[228/255 26/255 28/255],'markersize',10)
 plot(0,rightwhaleRepro,'ko','markerfacecolor',[126/255 232/255 81/255],'markersize',10)
@@ -61,9 +61,10 @@ plot(0,rightwhalePreg,'ko','markerfacecolor',[255/255 255/255 51/255],'markersiz
 plot(0,rightwhaleLac,'ko','markerfacecolor',[166/255 206/255 227/255],'markersize',10)
 plot(0,rightwhaleFor,'ko','markerfacecolor',[77/255 175/255 74/255],'markersize',10)
 set(gca,'xtick','','xlim',[-0.45 0.45])
+ylabel('Energetic Cost (J/day)')
 % legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
 
-% plot male budget
+%% plot male budget
 figure(109); set(gcf,'paperpositionmode','auto');
 subplot('position',[0.4 0.55 0.58 0.4]); hold on; box on
 h = area(data_male);
@@ -101,9 +102,9 @@ set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
 plot([13 13],[0 2.5],'k:')
 ylabel('Relative Energetic Cost')
 
-% plot female budget
+%% plot female budget
 subplot('position',[0.4 0.1 0.58 0.4]); hold on; box on
-prerepro = data_female(49:60,:); % pre reproductive females
+prerepro = data_female(25:36,:); % pre reproductive females
 h = area([repmat(prerepro,3,1); data_female]);
 h(1).FaceColor = [152/255 78/255 163/255];
 h(2).FaceColor = [228/255 26/255 28/255];
@@ -118,18 +119,20 @@ entang_fem = 1 + [0,0,0,0;8.4,18.27,8.6,17.27;0,0,0,0;9.43,20.93,13.98,14.4;...
     0,0,0,0;12.27,22.03,18.2,21.03;6.63,18.67,6.7,9.9;0,0,0,0;0,0,0,0;...
     9.63,36,12.1,18.43;9.8,12.98,12.2,12.98;0,0,0,0;...
     4.467,14.03,12.267,12.63;0,22.7,5.33,22.7;0,0,0,0]; % 8 females MEASURED
-entangARK_fem = 1 + [9.1 18.67 18.17 18.17]; % 1 female ESTIMATED
+% entangARK_fem = 1 + [9.1 18.67 18.17 18.17]; % 1 female ESTIMATED
 
-xlim([1 72]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
+xlim([1 84]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
     'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...
     'D','J','F','M','A','M','J','J','A','S','O','N',...
     'D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:72)
+    'D','J','F','M','A','M','J','J','A','S','O','N',...
+    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:84)
 plot([13 13],[0 2.5],'k:')
 plot([25 25],[0 2.5],'k:')
 plot([37 37],[0 2.5],'k:')
 plot([49 49],[0 2.5],'k:')
 plot([61 61],[0 2.5],'k:')
+plot([73 73],[0 2.5],'k:')
 xlabel('Time'); ylabel('Relative Energetic Cost')
 adjustfigurefont
 
@@ -138,14 +141,16 @@ for i = 1:size(entang_fem,1)
     plot(entang_fem(i,1:2),[2.0+jitter 2.0+jitter],':','color',[55/255 126/255 184/255])
     plot(entang_fem(i,3:4),[2.0+jitter 2.0+jitter],'color',[55/255 126/255 184/255])
 end
-for i = 1:size(entangARK_fem,1)
-    jitter = rand*0.2;
-    plot(entangARK_fem(i,1:2),[2.3+jitter 2.3+jitter],':','color',[77/255 175/255 74/255])
-    plot(entangARK_fem(i,3:4),[2.3+jitter 2.3+jitter],'color',[77/255 175/255 74/255])
-end
+% for i = 1:size(entangARK_fem,1)
+%     jitter = rand*0.2;
+%     plot(entangARK_fem(i,1:2),[2.3+jitter 2.3+jitter],':','color',[77/255 175/255 74/255])
+%     plot(entangARK_fem(i,3:4),[2.3+jitter 2.3+jitter],'color',[77/255 175/255 74/255])
+% end
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 print('CostCurves_AllMaleFemale','-dsvg','-r300')
+
+return
 
 %% Plot female budget like Villegas Amtmann 
 
@@ -225,6 +230,8 @@ if i == 1; % plot original curve
         
 end
     end
+    
+    
 end
 
 figure(1);
