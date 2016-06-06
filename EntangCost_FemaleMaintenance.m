@@ -7,7 +7,7 @@
 %% Plot female budget like Villegas Amtmann
 clear sumfemale prop_allfemale prop_allfemale_maintenance
 
-sumfemale = sum(data_female); % sum of female costs over 6 years
+sumfemale = sum(data_female(:,1:7)); % sum of female costs over 6 years
 prop_allfemale = sumfemale./sum(sumfemale); % proportion of total
 % combine maintenance costs
 prop_allfemale_maintenance(3) = sum(prop_allfemale(1:5));
@@ -23,12 +23,13 @@ VA2015 = [0.071 0.08 0.849; ... % Southern Minke Whale
     0.079 0.122 0.799; ... % Gray Whale
     0.064 0.104 0.832; ... % Southern fin whale
     0.057 0.074 0.869]; % Blue whale
-subplot('position',[0.35 0.5 0.6 0.45])
-bar(VA2015,'stacked'); ylim([0 1.1])
+ax1 = subplot('position',[0.35 0.5 0.6 0.45]);
+bar(VA2015,'stacked'); ylim([0 1.15]);
 ylabel('Percent of two year energy budget')
-set(gca,'xticklabel',{'Southern Minke Whale','Gray Whale','Southern Fin Whale','Blue Whale'})
-myC= [0 0 0; 0.5 0.5 0.5; 1 1 1; 1 0 0];
-colormap(myC)
+set(gca,'xticklabel',{'Southern Minke','Gray','Southern Fin','Blue'})
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1];
+colormap(ax1,myC)
+text(0.6,1.07,'B','FontSize',16,'FontWeight','Bold')
 
 %% Cost of entanglements on top of this?
 % we have 9 females total - 8 measured, 1 estimated
@@ -46,7 +47,7 @@ for i = [2 4 6 7 10 11 13 14] % these are measured females
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
     % get indices
-    mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)))+12;
+    mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)));
     % AND DO THESE INDICES BASED ON TIME BUT DONT CARE ABOUT REPRO STATE - NOT MAPPING TIME BUT JUST COMPARING TOTAL COSTS
     if mx_ind > 0
         data_female(mx_ind,8) = mean([rel1*mean(data_female(:,2)) rel2*mean(data_female(:,5))]);
@@ -131,18 +132,21 @@ min(prop_allfemale_maintenance)
 max(prop_allfemale_maintenance)
 
 figure(2)
-bardata(2,:) = nanmean(prop_allfemale_maintenance(:,1:4));
-bardata(1,:) = nanmean(prop_allfemale_maintenance(:,[1:3 5]));
-subplot('position',[0.1 0.5 0.15 0.45]); hold on
+bardata(2,:) = nanmean(prop_allfemale_maintenance(:,[1:3 4])); % maximum
+bardata(1,:) = nanmean(prop_allfemale_maintenance(:,[1:3 5])); % minimum
+ax2 = subplot('position',[0.1 0.5 0.15 0.45]); hold on
 bar(bardata,1,'stacked')
 e1 = errorbar(1,1+bardata(1,4),nanstd(prop_allfemale_maintenance(:,5)));
 e2 = errorbar(2,1+bardata(2,4),nanstd(prop_allfemale_maintenance(:,4)));
 set(e1,'color','k'); set(e2,'color','k');
-xlim([0.25 2.75]); ylim([0 1.1]); box on
+xlim([0.25 2.75]); ylim([0 1.15]); box on
 ylabel('Percent of four year energy budget')
-set(gca,'xtick',1.5,'xticklabel','North Atlantic Right Whale')
+set(gca,'xtick',1.5,'xticklabel','North Atlantic Right')
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1; 0 0 1];
+colormap(ax2, myC)
+text(0.5,1.07,'A','FontSize',16,'FontWeight','Bold')
 
-% calculate years until energy equilibrium:
+%% calculate years until energy equilibrium:
 yrstoeq_min = (allsummin - 48)/(12-sum(sum(data_female(37:48,:))));
 yrstoeq_max = (allsummax - 48)/(12-sum(sum(data_female(37:48,:))));
 
@@ -151,11 +155,13 @@ yrstoeq_max = yrstoeq_max(yrstoeq_max > 0);
 
 figure(2);
 subplot('position',[0.1 0.1 0.85 0.3]); hold on
-cdfplot(yrstoeq_min*12)
-cdfplot(yrstoeq_max*12)
-xlabel('Time to Energetic Equilibrium (Months)'); ylabel('Proportion of Cases')
+h1 = cdfplot(yrstoeq_min*12);
+h2 = cdfplot(yrstoeq_max*12);
+set(h1,'color','b'); set(h2,'color','b','linestyle','--')
+xlabel('Time to Energetic Equilibrium (Months)'); ylabel('Proportion of cases')
 title('')
+text(0.2,0.92,'C','FontSize',16,'FontWeight','Bold')
 
 
 adjustfigurefont
-print('EntangCost_FemAll','-dsvg','-r300')
+print('EntangCost_FemAll','-depsc','-r300')
