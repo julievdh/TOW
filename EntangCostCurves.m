@@ -87,14 +87,14 @@ end
 
 % Estimated ARK cases:
 % 6 males, 2 unknown sex ESTIMATED [1 unknown sex (3392) has insuff sightings info]
-entangARK = 1 + [6.83 10.83 10.83 10.83; 8.67 20.03 18.067 18.8; ...
-    8.87 9.4 9.4 9.4; 3.57 10.53 7.67 7.67; 1.8 5.43 5.43 5.43; ...
-    0.767 23 4.23 23; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
-for i = 1:size(entangARK,1)
-    jitter = rand*0.1;
-    plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255])
-    plot(entangARK(i,3:4)+1,[1.5+jitter 1.5+jitter],'color',[77/255 175/255 74/255])
-end
+% entangARK = 1 + [6.83 10.83 10.83 10.83; 8.67 20.03 18.067 18.8; ...
+%     8.87 9.4 9.4 9.4; 3.57 10.53 7.67 7.67; 1.8 5.43 5.43 5.43; ...
+%     0.767 23 4.23 23; 8.3 11.56 11.56 11.56; 7.33 9.87 9.87 9.87];
+% for i = 1:size(entangARK,1)
+%     jitter = rand*0.1;
+%     plot(entangARK(i,1:2)+1,[1.5+jitter 1.5+jitter],':','color',[77/255 175/255 74/255])
+%     plot(entangARK(i,3:4)+1,[1.5+jitter 1.5+jitter],'color',[77/255 175/255 74/255])
+% end
 
 xlim([1 24]); ylim([0 1.7])
 set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
@@ -153,6 +153,7 @@ print('CostCurves_AllMaleFemale','-dsvg','-r300')
 return
 
 %% Plot female budget like Villegas Amtmann 
+% EntangCost_FemaleMaintenance
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;

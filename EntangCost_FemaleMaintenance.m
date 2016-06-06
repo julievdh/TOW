@@ -7,7 +7,7 @@
 %% Plot female budget like Villegas Amtmann
 clear sumfemale prop_allfemale prop_allfemale_maintenance
 
-sumfemale = sum(data_female); % sum of female costs over 5 years
+sumfemale = sum(data_female); % sum of female costs over 6 years
 prop_allfemale = sumfemale./sum(sumfemale); % proportion of total
 % combine maintenance costs
 prop_allfemale_maintenance(3) = sum(prop_allfemale(1:5));
@@ -72,39 +72,39 @@ for i = [2 4 6 7 10 11 13 14] % these are measured females
     allsummax(i) = sum(sumfemale(1:8));
 end
 %%
-% add amy's one female case
-i = 8;
-data_female(:,8:9) = 0;
-% calculate relative costs for all females
-rel1 = Wa_ARK(i,1)/rightwhaleMigrate;
-rel2 = Wa_ARK(i,1)/rightwhaleFor;
-% add to data_male % MAKE THIS MORE SMOOTH?
-% add maximum duration
-% get indices
-mx_ind = (floor(entangARK_fem(1,1)):ceil(entangARK_fem(1,2)))+12;
-% AND DO THESE INDICES BASED ON TIME BUT DONT CARE ABOUT REPRO STATE - NOT MAPPING TIME BUT JUST COMPARING TOTAL COSTS
-if mx_ind > 0
-    data_female(mx_ind,8) = mean([rel1*mean(data_female(:,2)) rel2*mean(data_female(:,5))]);
-end
-mn_ind = floor(entangARK_fem(1,3)):ceil(entangARK_fem(1,4));
-if mn_ind > 0
-    data_female(mn_ind,9) = mean([rel1*mean(data_female(:,2)) rel2*mean(data_female(:,5))]);
-    % make indices for minimum = 0 for maximum duration (so don't pile on top
-    % of each other)
-    data_male(mn_ind,8) = 0;
-end
-figure(8)
-h = area(data_female);
-
-% caculate sum of total costs over 5 years including entanglement
-sumfemale = sum(data_female);
-prop_allfemale = sumfemale./sum(sumfemale(1:7)); % proportion of total, not including entanglement
-% combine maintenance costs
-prop_allfemale_maintenance(i,3) = sum(prop_allfemale(1:5));
-prop_allfemale_maintenance(i,1:2) = prop_allfemale(6:7);
-prop_allfemale_maintenance(i,4:5) = prop_allfemale(8:9);
-allsummin(i) = sum(sumfemale([1:7 9]));
-allsummax(i) = sum(sumfemale(1:8));
+% % add amy's one female case
+% i = 8;
+% data_female(:,8:9) = 0;
+% % calculate relative costs for all females
+% rel1 = Wa_ARK(i,1)/rightwhaleMigrate;
+% rel2 = Wa_ARK(i,1)/rightwhaleFor;
+% % add to data_male % MAKE THIS MORE SMOOTH?
+% % add maximum duration
+% % get indices
+% mx_ind = (floor(entangARK_fem(1,1)):ceil(entangARK_fem(1,2)))+12;
+% % AND DO THESE INDICES BASED ON TIME BUT DONT CARE ABOUT REPRO STATE - NOT MAPPING TIME BUT JUST COMPARING TOTAL COSTS
+% if mx_ind > 0
+%     data_female(mx_ind,8) = mean([rel1*mean(data_female(:,2)) rel2*mean(data_female(:,5))]);
+% end
+% mn_ind = floor(entangARK_fem(1,3)):ceil(entangARK_fem(1,4));
+% if mn_ind > 0
+%     data_female(mn_ind,9) = mean([rel1*mean(data_female(:,2)) rel2*mean(data_female(:,5))]);
+%     % make indices for minimum = 0 for maximum duration (so don't pile on top
+%     % of each other)
+%     data_male(mn_ind,8) = 0;
+% end
+% figure(8)
+% h = area(data_female);
+% 
+% % caculate sum of total costs over 6 years including entanglement
+% sumfemale = sum(data_female);
+% prop_allfemale = sumfemale./sum(sumfemale(1:7)); % proportion of total, not including entanglement
+% % combine maintenance costs
+% prop_allfemale_maintenance(i,3) = sum(prop_allfemale(1:5));
+% prop_allfemale_maintenance(i,1:2) = prop_allfemale(6:7);
+% prop_allfemale_maintenance(i,4:5) = prop_allfemale(8:9);
+% allsummin(i) = sum(sumfemale([1:7 9]));
+% allsummax(i) = sum(sumfemale(1:8));
 
 %% all the whales plotted separately
 % clear bardata
@@ -139,12 +139,12 @@ e1 = errorbar(1,1+bardata(1,4),nanstd(prop_allfemale_maintenance(:,5)));
 e2 = errorbar(2,1+bardata(2,4),nanstd(prop_allfemale_maintenance(:,4)));
 set(e1,'color','k'); set(e2,'color','k');
 xlim([0.25 2.75]); ylim([0 1.1]); box on
-ylabel('Percent of five year energy budget')
+ylabel('Percent of four year energy budget')
 set(gca,'xtick',1.5,'xticklabel','North Atlantic Right Whale')
 
 % calculate years until energy equilibrium:
-yrstoeq_min = (allsummin - 72)/(12-sum(sum(data_female(61:72,:))));
-yrstoeq_max = (allsummax - 72)/(12-sum(sum(data_female(61:72,:))));
+yrstoeq_min = (allsummin - 48)/(12-sum(sum(data_female(37:48,:))));
+yrstoeq_max = (allsummax - 48)/(12-sum(sum(data_female(37:48,:))));
 
 yrstoeq_min = yrstoeq_min(yrstoeq_min > 0);
 yrstoeq_max = yrstoeq_max(yrstoeq_max > 0);
