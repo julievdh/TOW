@@ -26,18 +26,9 @@ for i = 1:length(mindur);
     plot(t(1:mindur(i)),Wa_meas(i)*(1:mindur(i)),'color',[55/255 126/255 184/255],'LineWidth',1.5)
     plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),':','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
-
-% for Amy's whales:
-% for i = 1:10
-%     plot(d(1:actualmin(i)),Wa_ARK(i,1:actualmin(i)),'color',[77/255 175/255 74/255],'LineWidth',1.5)
-%     if i ~= 9
-%         plot(d(1:actualmax(i)),Wa_ARK(i,1:actualmax(i)),':','color',[77/255 175/255 74/255],'LineWidth',1.5)
-%     else continue
-%     end
-% end
 xlabel('Days')
-xlim([0 730])
-adjustfigurefont; box on
+xlim([0 730]); box on
+text(15,8.75E11,'B','FontSize',18,'FontWeight','Bold')
 
 plot(t(1:22),rightwhaleMigrate*t(1:22),'color',[152/255 152/255 152/255],'LineWidth',1.5);
 plot(t(1:365*2),rightwhaleRepro*t(1:365*2),'color',[152/255 152/255 152/255],'LineWidth',1.5);
@@ -51,19 +42,18 @@ subplot('position',[0.06 0.1 0.04 0.85]); hold on; box on
 for i = 1:length(Wa_meas)
     plot([-0.15 0.15],[Wa_meas(i) Wa_meas(i)],'-','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
-% for i = 1:size(Wa_ARK,1)
-%     plot([-0.15 0.15],[Wa_ARK(i,1) Wa_ARK(i,1)],'-','color',[77/255 175/255 74/255],'LineWidth',1.5)
-% end
 
 plot(0,rightwhaleMigrate,'ko','markerfacecolor',[228/255 26/255 28/255],'markersize',10)
 plot(0,rightwhaleRepro,'ko','markerfacecolor',[126/255 232/255 81/255],'markersize',10)
 plot(0,rightwhalePreg,'ko','markerfacecolor',[255/255 255/255 51/255],'markersize',10)
 plot(0,rightwhaleLac,'ko','markerfacecolor',[166/255 206/255 227/255],'markersize',10)
 plot(0,rightwhaleFor,'ko','markerfacecolor',[77/255 175/255 74/255],'markersize',10)
-set(gca,'xtick','','xlim',[-0.45 0.45])
+set(gca,'xtick','','xlim',[-0.45 0.75])
 ylabel('Energetic Cost (J/day)')
+text(-0.3,2.42E9,'A','FontSize',18,'FontWeight','Bold')
 % legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
-
+adjustfigurefont
+return 
 %% plot male budget
 figure(109); set(gcf,'paperpositionmode','auto');
 subplot('position',[0.4 0.55 0.58 0.4]); hold on; box on
@@ -150,8 +140,6 @@ end
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
 print('CostCurves_AllMaleFemale','-dsvg','-r300')
 
-return
-
 %% Plot female budget like Villegas Amtmann 
 % EntangCost_FemaleMaintenance
 
@@ -206,9 +194,10 @@ for i = length(entang):-1:1;
 figure(6); hold on % problem is that these are overlapping, so painting over with color white. can we make it transparent? alpha?
 set(gcf,'position',[1542          98        1043         299])
 data_male2 = data_male;
-level = 5:-0.75:0.5;
+level = 4.8:-0.8:0;
 data_male2(:,1) = data_male(:,1)+level(ct);
-h = area(data_male2);
+data_male2(data_male2 == 0) = NaN;
+h = bar(data_male2,1,'stacked');
 h(1).FaceColor = [1 1 1]; h(1).EdgeColor = [1 1 1];
 h(2).FaceColor = [1 1 1]; h(2).EdgeColor = [1 1 1];
 h(3).FaceColor = [1 1 1]; h(3).EdgeColor = [1 1 1];
@@ -216,7 +205,7 @@ h(4).FaceColor = [1 1 1]; h(4).EdgeColor = [1 1 1];
 h(5).FaceColor = [1 1 1]; h(5).EdgeColor = [1 1 1];
 
 if i == 1; % plot original curve
-    h = area(data_male(:,1:5));
+    h = bar(data_male(:,1:5),1,'stacked');
     h(1).FaceColor = [152/255 78/255 163/255];
         h(2).FaceColor = [228/255 26/255 28/255];
         h(3).FaceColor = [247/255 129/255 121/255];
@@ -237,7 +226,7 @@ end
 
 figure(1);
 suplabel('Relative Energetic Cost','y');
-% print('CostCurves_AllMaleMeasured','-dpng','-r300')
+print('CostCurves_AllMaleMeasured','-dsvg','-r300')
 
 %% make area plot all stacked entanglements
 
