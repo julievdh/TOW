@@ -59,39 +59,24 @@ text(-0.3,2.42E9,'A','FontSize',18,'FontWeight','Bold')
 % legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
 adjustfigurefont
 
-%% plot male budget
-figure(109); set(gcf,'paperpositionmode','auto');
-subplot('position',[0.4 0.55 0.58 0.4]); hold on; box on
-h = area(data_male);
-h(1).FaceColor = [152/255 78/255 163/255];
-h(2).FaceColor = [228/255 26/255 28/255];
-h(3).FaceColor = [247/255 129/255 121/255];
-h(4).FaceColor = [255/255 127/255 0/255];
-h(5).FaceColor = [77/255 175/255 74/255];
-
+%% set up to plot male budget
 % entang dates in MATLAB index order
 entang = 1 + [8.667,9.4,9.38,9.4;0,0,0,0;4.7,23,13.47,15.2;0,0,0,0;...
     1.17,3.3,2.23,2.4;0,0,0,0;0,0,0,0;5.27,21.23,7.4,7.56;...
     8.77,20.13,8.87,19.8;0,0,0,0;0,0,0,0;2.5,16.87,9.9,13.8;...
     0,0,0,0;0,0,0,0;0,23,6.27,9.53]; % 6 males, 1 unknown sex MEASURED % +1 is because Dec = month 1 on plot
 
-xlim([1 24]); % ylim([0 1.7])
-set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
-plot([13 13],[0 2.5],'k:')
-ylabel('Relative Energetic Cost')
-
 %% plot female budget
 subplot('position',[0.4 0.1 0.58 0.4]); hold on; box on
 prerepro = data_female(25:36,:); % pre reproductive females
-h = area([repmat(prerepro,3,1); data_female]);
-h(1).FaceColor = [152/255 78/255 163/255];
-h(2).FaceColor = [228/255 26/255 28/255];
-h(3).FaceColor = [247/255 129/255 121/255];
-h(4).FaceColor = [255/255 127/255 0/255];
-h(5).FaceColor = [77/255 175/255 74/255];
-h(6).FaceColor = [255/255 255/255 51/255];
-h(7).FaceColor = [166/255 206/255 227/255];
+% h = area([repmat(prerepro,3,1); data_female]);
+% h(1).FaceColor = [152/255 78/255 163/255];
+% h(2).FaceColor = [228/255 26/255 28/255];
+% h(3).FaceColor = [247/255 129/255 121/255];
+% h(4).FaceColor = [255/255 127/255 0/255];
+% h(5).FaceColor = [77/255 175/255 74/255];
+% h(6).FaceColor = [255/255 255/255 51/255];
+% h(7).FaceColor = [166/255 206/255 227/255];
 
 % ALL THE FEMALES WE MEASURED AND ESTIMATED WERE PRE-REPRODUCTIVE
 entang_fem = 1 + [0,0,0,0;8.4,18.27,8.6,17.27;0,0,0,0;9.43,20.93,13.98,14.4;...
@@ -99,29 +84,44 @@ entang_fem = 1 + [0,0,0,0;8.4,18.27,8.6,17.27;0,0,0,0;9.43,20.93,13.98,14.4;...
     9.63,36,12.1,18.43;9.8,12.98,12.2,12.98;0,0,0,0;...
     4.467,14.03,12.267,12.63;0,22.7,5.33,22.7;0,0,0,0]; % 8 females MEASURED
 
-xlim([1 84]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
-    'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N',...
-    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:84)
-plot([13 13],[0 2.5],'k:')
-plot([25 25],[0 2.5],'k:')
-plot([37 37],[0 2.5],'k:')
-plot([49 49],[0 2.5],'k:')
-plot([61 61],[0 2.5],'k:')
-plot([73 73],[0 2.5],'k:')
-xlabel('Time'); ylabel('Relative Energetic Cost')
-adjustfigurefont
-
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
-print('CostCurves_AllMaleFemale','-dsvg','-r300')
+% xlim([1 84]); set(gca,'xticklabels',{'D','J','F','M','A','M','J','J',...
+%     'A','S','O','N','D','J','F','M','A','M','J','J','A','S','O','N',...
+%     'D','J','F','M','A','M','J','J','A','S','O','N',...
+%     'D','J','F','M','A','M','J','J','A','S','O','N',...
+%     'D','J','F','M','A','M','J','J','A','S','O','N',...
+%     'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:84)
+% plot([13 13],[0 2.5],'k:')
+% plot([25 25],[0 2.5],'k:')
+% plot([37 37],[0 2.5],'k:')
+% plot([49 49],[0 2.5],'k:')
+% plot([61 61],[0 2.5],'k:')
+% plot([73 73],[0 2.5],'k:')
+% xlabel('Time'); ylabel('Relative Energetic Cost')
+% adjustfigurefont
+%
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+% print('CostCurves_AllMaleFemale','-dsvg','-r300')
 
 %% Plot female budget like Villegas Amtmann
 % EntangCost_FemaleMaintenance
 
 %% ADD ENTANGLEMENT TO MALE BUDGET
 ct = 0;
+figure(109); set(gcf,'paperpositionmode','auto');
+subplot('position',[0.4 0.4 0.58 0.55]); hold on; box on
+h = area(data_male);
+h(1).FaceColor = [152/255 78/255 163/255];
+h(2).FaceColor = [228/255 26/255 28/255];
+h(3).FaceColor = [247/255 129/255 121/255];
+h(4).FaceColor = [255/255 127/255 0/255];
+h(5).FaceColor = [77/255 175/255 74/255];
+
+xlim([1 24]); % ylim([0 1.7])
+set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
+    'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
+% plot([13 13],[0 2.5],'k:')
+ylabel('Relative Energetic Cost')
+
 for i = length(entang):-1:1;
     % get relative costs of things
     rel1 = Wa_meas(i,1)/rightwhaleMigrate;
@@ -163,15 +163,15 @@ for i = length(entang):-1:1;
         else
             set(gca,'xticklabels',{''})
         end
-        plot([13 13],[0 1.5],'k:')
+        plot([13 13],[0 8],'k:')
         % ylabel('Relative Energetic Cost')
         text(1.74,1.81,whales(i),'FontSize',14,'FontWeight','bold')
         adjustfigurefont
         
         relcost = mean([rel1*mean(data_male(mn_ind,2)) rel2*mean(data_male(mn_ind,5))]);
-        figure(109); subplot('position',[0.4 0.55 0.58 0.4]); hold on;
+        figure(109); subplot('position',[0.4 0.4 0.58 0.55]); hold on;
         fill([entang(i,1) entang(i,1) entang(i,2) entang(i,2) entang(i,1)],[(ct/2+1) (ct/2+1)+relcost (ct/2+1)+relcost (ct/2+1)+0 (ct/2+1)+0],'w')
-        fill([entang(i,3) entang(i,3) entang(i,4) entang(i,4) entang(i,3)],[(ct/2+1)+0 (ct/2+1)+relcost (ct/2+1)+relcost (ct/2+1)+0 (ct/2+1)+0],'r')
+        fill([entang(i,3) entang(i,3) entang(i,4) entang(i,4) entang(i,3)],[(ct/2+1)+0 (ct/2+1)+relcost (ct/2+1)+relcost (ct/2+1)+0 (ct/2+1)+0],[55/255 126/255 184/255])
     end
 end
 ylim([0 5.2])
@@ -198,10 +198,10 @@ for i = [13 7 2] %:length(entang_fem);
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
     % get indices
-    add = [12 12 12];
+    add = [12 0 12];
     mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)))+add(ct);
     % what is the case-specific information for this female?
-    rep = [5 7 5; 1 2 2];
+    rep = [5 7 6; 1 2 2];
     yrs(3,:) = 1999:2:2013;
     yrs(2,:) = 1998:2:2012;
     yrs(1,1:5) = 2007:2:2015;
@@ -266,24 +266,16 @@ for i = [13 7 2] %:length(entang_fem);
         %         end
     end
     ylim([0 2.5])
-    figure(7); hold on
-    set(gcf,'position',[1542          98        1043         299])
-    prerepro_case2 = prerepro_case;
-    repro_case2 = repro_case;
-    level = 2.5:-0.75:0;
-    prerepro_case2(:,1) = prerepro_case(:,1)+level(ct);
-    repro_case2(:,1) = repro_case(:,1)+level(ct);
-    h = area([prerepro_case2; repro_case2]);
-    h(1).FaceColor = [1 1 1]; h(1).EdgeColor = [1 1 1];
-    h(2).FaceColor = [1 1 1]; h(2).EdgeColor = [1 1 1];
-    h(3).FaceColor = [1 1 1]; h(3).EdgeColor = [1 1 1];
-    h(4).FaceColor = [1 1 1]; h(4).EdgeColor = [1 1 1];
-    h(5).FaceColor = [1 1 1]; h(5).EdgeColor = [1 1 1];
-    h(6).FaceColor = [1 1 1]; h(6).EdgeColor = [1 1 1];
-    h(7).FaceColor = [1 1 1]; h(7).EdgeColor = [1 1 1];
     
+    figure(109)
+    subplot('position',[0.4 0.1 0.58 0.25]); hold on; box on
+    relcost = mean([rel1*mean(prerepro_case(mx_ind,2)) rel2*mean(prerepro_case(mx_ind,5))]);
+    fill([entang_fem(i,1)+add(ct) entang_fem(i,1)+add(ct) entang_fem(i,2)+add(ct) entang_fem(i,2)+add(ct) entang_fem(i,1)+add(ct)],...
+        [(ct/4+1) (ct/4+1)+relcost (ct/4+1)+relcost (ct/4+1)+0 (ct/4+1)+0],'w')
+    fill([entang_fem(i,3)+add(ct) entang_fem(i,3)+add(ct) entang_fem(i,4)+add(ct) entang_fem(i,4)+add(ct) entang_fem(i,3)+add(ct)],...
+        [(ct/4+1)+0 (ct/4+1)+relcost (ct/4+1)+relcost (ct/4+1)+0 (ct/4+1)+0],[55/255 126/255 184/255])
     
-    if i == 2; % plot original curve
+    if i == 7; % plot on figure 109
         h = area([prerepro_case(:,1:7); repro_case(:,1:7)]);
         h(1).FaceColor = [152/255 78/255 163/255];
         h(1).FaceColor = [152/255 78/255 163/255];
@@ -293,17 +285,12 @@ for i = [13 7 2] %:length(entang_fem);
         h(5).FaceColor = [77/255 175/255 74/255];
         h(6).FaceColor = [255/255 255/255 51/255];
         h(7).FaceColor = [166/255 206/255 227/255];
-        
-        xlim([1 145]); ylim([0 5])
-        %set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-        %        'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
-        
+        xlim([1 133]); ylim([0 2])
     end
-    set(gca,'xticklabels',{'D','M','J','S'},'xtick',1:3:190)
+
 end
-
-return 
-
-suplabel('Relative Energetic Cost','y');
+set(gca,'xticklabels',{'D','M','J','S'},'xtick',1:3:133,'ytick',0:1)
+text(2,1.75,'D','FontSize',18,'FontWeight','Bold')
+ylabel('Relative Energetic Cost');
 adjustfigurefont
-print('CostCurves_ReproFemale','-dpng','-r300')
+print('CostCurves_All','-dpng','-r300')
