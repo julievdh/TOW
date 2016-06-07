@@ -170,75 +170,18 @@ for i = length(entang):-1:1;
         
         relcost = mean([rel1*mean(data_male(mn_ind,2)) rel2*mean(data_male(mn_ind,5))]);
         figure(109); subplot('position',[0.4 0.55 0.58 0.4]); hold on;
-        fill([entang(i,1) entang(i,1) entang(i,2) entang(i,2) entang(i,1)],[ct ct+relcost ct+relcost ct+0 ct+0],'w')
-        fill([entang(i,3) entang(i,3) entang(i,4) entang(i,4) entang(i,3)],[ct+0 ct+relcost ct+relcost ct+0 ct+0],'r')
-        
-        
-        
+        fill([entang(i,1) entang(i,1) entang(i,2) entang(i,2) entang(i,1)],[(ct/2+1) (ct/2+1)+relcost (ct/2+1)+relcost (ct/2+1)+0 (ct/2+1)+0],'w')
+        fill([entang(i,3) entang(i,3) entang(i,4) entang(i,4) entang(i,3)],[(ct/2+1)+0 (ct/2+1)+relcost (ct/2+1)+relcost (ct/2+1)+0 (ct/2+1)+0],'r')
     end
-    
-    
 end
+ylim([0 5.2])
+set(gca,'ytick',0:1)
+text(1.2,4.9,'C','FontSize',18,'FontWeight','Bold')
 
-return
+
 % figure(1);
 % suplabel('Relative Energetic Cost','y');
 % print('CostCurves_AllMaleMeasured','-dsvg','-r300')
-
-%% make area plot all stacked entanglements
-
-
-
-%% ADD AMY'S CASES TO THIS
-ct = 0;
-for i = 1:length(entangARK);
-    % get relative costs of things
-    rel1 = Wa_ARK(i)/rightwhaleMigrate;
-    rel2 = Wa_ARK(i)/rightwhaleFor;
-    
-    % add to data_male % MAKE THIS MORE SMOOTH?
-    % add maximum duration
-    % get indices
-    mx_ind = floor(entangARK(i,1)):ceil(entangARK(i,2));
-    if mx_ind > 0
-        data_male(mx_ind,6) = mean([rel1*mean(data_male(mx_ind,2)) rel2*mean(data_male(mx_ind,5))]);
-    end
-    mn_ind = floor(entangARK(i,3)):ceil(entangARK(i,4));
-    if mn_ind > 0
-        data_male(mn_ind,7) = mean([rel1*mean(data_male(mn_ind,2)) rel2*mean(data_male(mn_ind,5))]);
-        % make indices for minimum = 0 for maximum duration (so don't pile on top
-        % of each other)
-        data_male(mn_ind,6) = 0;
-        
-        ct = ct+1;
-        figure(2)
-        subplot(4,2,ct); hold on
-        h = area(data_male);
-        h(1).FaceColor = [152/255 78/255 163/255];
-        h(2).FaceColor = [228/255 26/255 28/255];
-        h(3).FaceColor = [247/255 129/255 121/255];
-        h(4).FaceColor = [255/255 127/255 0/255];
-        h(5).FaceColor = [77/255 175/255 74/255];
-        h(6).FaceColor = 'w';
-        h(7).FaceColor = [55/255 126/255 184/255];
-        
-        xlim([1 24]); ylim([0 2])
-        if ismember(i,[7 8])
-            set(gca,'xticklabels',{'D','J','F','M','A','M','J','J','A','S','O','N',...
-                'D','J','F','M','A','M','J','J','A','S','O','N'},'xtick',1:24)
-        else
-            set(gca,'xticklabels',{''})
-        end
-        plot([13 13],[0 1.5],'k:')
-        text(1.74,1.81,whalesARK(i),'FontSize',14,'FontWeight','bold')
-        adjustfigurefont
-    end
-    
-    % clear data male for next whale
-    data_male(:,6:7) = 0;
-end
-suplabel('Relative Energetic Cost','y');
-print('CostCurves_AllMaleARK','-dpng','-r300')
 
 %% FEMALES
 % which were reproductive after?
