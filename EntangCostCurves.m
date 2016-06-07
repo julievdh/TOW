@@ -188,7 +188,7 @@ text(1.2,4.9,'C','FontSize',18,'FontWeight','Bold')
 % case-by-case plotting likely
 % MEASURED FEMALES: let's try Female Eg 2223
 ct = 0;
-figure(3); clf; set(gcf,'position',[1 5 1360 660])
+figure(3); clf; set(gcf,'position',[150 5 1215 660])
 for i = [13 7 2] %:length(entang_fem);
     ct = ct+1;
     % get relative costs of things
@@ -198,13 +198,13 @@ for i = [13 7 2] %:length(entang_fem);
     % add to data_male % MAKE THIS MORE SMOOTH?
     % add maximum duration
     % get indices
-    add = [12 0 12];
+    add = [12 12 12];
     mx_ind = (floor(entang_fem(i,1)):ceil(entang_fem(i,2)))+add(ct);
     % what is the case-specific information for this female?
-    rep = [6 6 6; 2 2 1];
-    yrs(1,:) = 1999:2:2013;
+    rep = [5 7 5; 1 2 2];
+    yrs(3,:) = 1999:2:2013;
     yrs(2,:) = 1998:2:2012;
-    yrs(3,1:5) = 2007:2:2015;
+    yrs(1,1:5) = 2007:2:2015;
     prerepro_case = repmat(prerepro,rep(1,ct),1);
     data_female(:,8:9) = 0; % to make matrices the same size
     if mx_ind > 0
@@ -217,7 +217,7 @@ for i = [13 7 2] %:length(entang_fem);
         % of each other)
         prerepro_case(mn_ind,8) = 0;
         if i == 2
-            repro_case = [repmat(data_female(1:48,:),rep(2,ct),1); data_female(36:60,:)];
+            repro_case = [repmat(data_female(1:48,:),rep(2,ct),1); data_female(36:48,:)];
         else
             repro_case = repmat(data_female,rep(2,ct),1);
         end
@@ -301,6 +301,9 @@ for i = [13 7 2] %:length(entang_fem);
     end
     set(gca,'xticklabels',{'D','M','J','S'},'xtick',1:3:190)
 end
+
+return 
+
 suplabel('Relative Energetic Cost','y');
 adjustfigurefont
 print('CostCurves_ReproFemale','-dpng','-r300')
