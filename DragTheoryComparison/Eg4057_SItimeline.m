@@ -6,8 +6,18 @@ timeline = [2013 3 18 0 0 0;...
     2015 4 16 0 0 0; 2015 4 17 0 0 0; 2015 4 18 0 0 0;...
     2015 4 27 0 0 0; 2015 8 16 0 0 0; 2015 10 7 0 0 0];
 
-% minimum critical duration: 118 days after first seen entangled feb 2014
-mincriticalduration = [2014 6 13 0 0 0];
+whaleAge = 3;
+gearLength = [];
+gearLength = 155;
+flt = 0;
+gearDiam = 0.016;
+attachment = [1 4E-4 0.016];
+
+% calculate critical duration
+[critDur] = CriticalEstimate(whaleAge,[],gearLength,flt,gearDiam,attachment);
+
+%% minimum critical duration: 147 days after first seen entangled feb 2014
+mincriticalduration = [2014 7 13 0 0 0];
 
 % convert to datenum
 timelinenum = datenum(timeline);
