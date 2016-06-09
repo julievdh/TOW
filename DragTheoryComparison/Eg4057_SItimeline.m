@@ -26,6 +26,7 @@ mincritnum = datenum(mincriticalduration);
 % plot
 figure(1); clf; hold on
 set(gcf,'position',[1 454 1366 219])
+subplot(311); hold on
 for i = 1:length(timelinenum)
 plot([timelinenum(i) timelinenum(i)],[-0.2 0.2],'k')
 end
@@ -33,8 +34,56 @@ plot([735250 736300],[0 0],'k')
 plot([mincritnum mincritnum],[-1 1],'r')
 set(gca,'xlim',[735250 736300])
 xtk = get(gca,'xtick');
-set(gca,'xtick',xtk(1:2:end))
+set(gca,'xtick',xtk(1:2:end),'ytick',[])
 datetick('x','mmm-yy')
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison
-print('Eg4057_SItimeline.eps','-depsc','-r300')
+% cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison
+% print('Eg4057_SItimeline.eps','-depsc','-r300')
+
+%% Eg 3111
+% dates of sightings
+timeline = [2011 5 11 0 0 0; 2011 9 27 0 0 0; 2012 3 4 0 0 0];
+mincriticalduration = [2012 9 1 0 0 0; 2013 2 16 0 0 0];
+
+% convert to datenum
+timelinenum = datenum(timeline);
+mincritnum = datenum(mincriticalduration);
+
+% plot
+subplot(312); hold on
+for i = 1:length(timelinenum)
+plot([timelinenum(i) timelinenum(i)],[-0.2 0.2],'k')
+end
+plot([734620 736300],[0 0],'k')
+for i = 1:length(mincritnum)
+plot([mincritnum(i) mincritnum(i)],[-1 1],'r')
+end
+set(gca,'xlim',[735250 736300])
+xtk = get(gca,'xtick');
+set(gca,'xtick',xtk(1:2:end),'ytick',[])
+datetick('x','mmm-yy')
+
+%% Eg 1019
+% dates of sightings
+timeline = [2009 3 15 0 0 0; 2009 7 18 0 0 0];
+mincriticalduration = [2009 12 23 0 0 0; 2009 12 31 0 0 0];
+
+% convert to datenum
+timelinenum = datenum(timeline);
+mincritnum = datenum(mincriticalduration);
+
+% plot
+subplot(313); hold on
+for i = 1:length(timelinenum)
+plot([timelinenum(i) timelinenum(i)],[-0.2 0.2],'k')
+end
+plot([733820 736300],[0 0],'k')
+for i = 1:length(mincritnum)
+plot([mincritnum(i) mincritnum(i)],[-1 1],'r')
+end
+set(gca,'xlim',[733830 736300])
+xtk = get(gca,'xtick');
+set(gca,'xtick',xtk(1:2:end),'ytick',[])
+datetick('x','mmm-yy')
+
+

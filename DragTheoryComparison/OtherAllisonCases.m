@@ -7,7 +7,9 @@ CriticalEstimate(10,[],36,0,[],[])
 CriticalEstimate(10,[],6,0,[],[])
 
 %% 2. Eg 3445
-
+original = CriticalEstimate(10,[],36,0,[],[]);
+partialD = CriticalEstimate
+reduced = CriticalEstimate(10,[],36,0,[],[]);
 
 %% 3. Eg 1019 Radiator
 flt = [1 0.4086 0.5];
