@@ -1,4 +1,4 @@
-function [critDur,daysmax] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+function [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
 % estimate minimum critical entanglement duration based on whale and gear
 % dimensions
 % inputs
@@ -86,8 +86,8 @@ Dtot = Drag+Dcorr+DI;
 %% Calculate power = (drag x speed)/efficiency
 % entangled efficiency = 0.08
 % nonentangled efficiency = 0.10
-Pe = (Dtot*1.23)./0.08;
-Pn = (Drag*1.23)./0.10;
+Pe = (Dtot*1.23)./0.14;
+Pn = (Drag*1.23)./0.15;
 
 d = 1:1:4000; % days
 
@@ -97,11 +97,7 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 %% find days til minwork
-Wc = 1.86E10; % J, average additional energy expenditure of whales who died
+Wc = 1.10E10; % J, 0.75 quantile threshold additional energy expenditure of whales who died
 critDur = min(find(Wa > Wc)); 
-days_max = min(find(Wa > 2.27E11));
-if isempty(days_max) == 1
-    daysmax = 4000;
-else daysmax = days_max;
 end
 
