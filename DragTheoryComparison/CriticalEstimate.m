@@ -97,7 +97,7 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 %% find days til minwork
-Wc = 1.10E10; % J, 0.75 quantile threshold additional energy expenditure of whales who died
+Wc = 8.57E9; % J, 0.75 quantile threshold additional energy expenditure of whales who died
 critDur = min(find(Wa > Wc)); 
 end
 

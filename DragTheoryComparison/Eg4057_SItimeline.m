@@ -7,7 +7,7 @@ timeline = [2013 3 18 0 0 0;...
     2015 4 27 0 0 0; 2015 8 16 0 0 0; 2015 10 7 0 0 0];
 
 whaleAge = 3;
-gearLength = [];
+whaleLength = [];
 gearLength = 155;
 flt = 0;
 gearDiam = 0.016;
@@ -16,8 +16,8 @@ attachment = [1 4E-4 0.016];
 % calculate critical duration
 [critDur] = CriticalEstimate(whaleAge,[],gearLength,flt,gearDiam,attachment);
 
-%% minimum critical duration: 147 days after first seen entangled feb 2014
-mincriticalduration = [2014 7 13 0 0 0];
+%% minimum critical duration: 118 days after first seen entangled feb 2014
+mincriticalduration = [2014 6 14 0 0 0];
 
 % convert to datenum
 timelinenum = datenum(timeline);
@@ -39,7 +39,7 @@ datetick('x','mmm-yy')
 %% Eg 3111
 % dates of sightings
 timeline = [2011 5 11 0 0 0; 2011 9 27 0 0 0; 2012 3 4 0 0 0];
-mincriticalduration = [2012 9 1 0 0 0; 2013 2 16 0 0 0];
+mincriticalduration = [2012 11 11 0 0 0; 2014 3 29 0 0 0];
 
 % convert to datenum
 timelinenum = datenum(timeline);
@@ -62,7 +62,7 @@ datetick('x','mmm-yy')
 %% Eg 1019
 % dates of sightings
 timeline = [2009 3 15 0 0 0; 2009 7 18 0 0 0; 2015 7 18 0 0 0];
-mincriticalduration = [2009 12 23 0 0 0; 2009 12 31 0 0 0];
+mincriticalduration = [2010 1 1 0 0 0; 2010 1 15 0 0 0];
 
 % convert to datenum
 timelinenum = datenum(timeline);
@@ -83,5 +83,5 @@ set(gca,'xlim',[733800 736481],'ytick',[])
 %set(gca,'xtick',xtk(1:2:end),'ytick',[])
 datetick('x','mmm-yy')
 
-cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison
-print('Eg4057_SItimeline.eps','-depsc','-r300')
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
+print('Eg4057_SItimeline','-dsvg','-r300')
