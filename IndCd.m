@@ -4,7 +4,8 @@
 
 % 9 Dec 2014
 
-clear all; close all
+% clear all; 
+close all
 
 % Whale ID follows order of TOWDATA
 whales = {'EG 2212  ','EG 2223  ','EG 3311  ','EG 3420  ','EG 3714  ',...
