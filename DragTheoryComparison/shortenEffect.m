@@ -68,13 +68,13 @@ xlim([-0.5 1.5])
 ylabel('Total Whale Drag Force (N)'); 
 xticklabel_rotate([0 1],90,{'All Gear','One Body Length'},'FontSize',14)
 
-[mean((Dtot_short-Dtot)./Dtot) std((Dtot_short-Dtot)./Dtot)];
+[mean((Dtot_short-Dtot)./Dtot) std((Dtot_short-Dtot)./Dtot)]; % mean drag reduction with partial disentanglement
 
 %% power = (drag x speed)/efficiency
-% entangled efficiency = 0.14
-% nonentangled efficiency = 0.15
-Pe = (Dtot*1.23)./0.14;
-Pn = (whaleDf*1.23)./0.15;
+% entangled efficiency = 0.16 -- 0.16 after edits July 24
+% nonentangled efficiency = 0.17 -- 0.17 after edits July 24
+Pe = (Dtot*1.23)./0.16;
+Pn = (whaleDf*1.23)./0.17;
 
 [h,p,ci,stats] = ttest(Pe,Pn);
 
@@ -86,7 +86,7 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 % for shortened gear:
-Pe_short = (Dtot_short*1.23)./0.14;
+Pe_short = (Dtot_short*1.23)./0.16;
 We_short = Pe_short*d*24*60*60; % J required for one day, entangled
 Wa_short = We_short-Wn;
 
@@ -102,7 +102,7 @@ for i = 1:length(Dtot)
     plot([0 1],[Wa(i,1) Wa_short(i,1)],'k--')
 end
 
-text(-0.4,2.35E8,'C','FontWeight','Bold','FontSize',18)
+text(-0.4,1.87E8,'C','FontWeight','Bold','FontSize',18)
 
 xlim([-0.5 1.5])
 ylabel('Additional Work (W_a,J)'); 
@@ -126,7 +126,7 @@ for i = 1:length(daysmin)
     plot([0 1],[daysmin(i) daysmin_short(i)],'k--')
 end
 
-text(-0.4,750,'D','FontWeight','Bold','FontSize',18)
+text(-0.4,840,'D','FontWeight','Bold','FontSize',18)
 
 xlim([-0.5 1.5])
 ylabel('Critical Duration (days)'); 

@@ -9,6 +9,7 @@ IndCd_ARKcases
 % nonentangled efficiency = 0.17 -- NSD between the two
 Pe = (Dtot*1.23)./0.16;
 Pn = (whaleDf*1.23)./0.17;
+Pa = Pe-Pn; 
 
 [h,p,ci,stats] = ttest2(Pe,Pn);
 
@@ -19,7 +20,9 @@ Wn = Pn*d*24*60*60; % J required for one day, not entangled
 We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
-
+[mean(Pe) std(Pe)]; % Mean SD entangled power
+[mean(Pn) std(Pn)]; % Mean SD non-entangled power
+mean(Wa(:,1)); % Mean one day swimming increased work
 
 %% find days til minwork
 for i = 1:10;
@@ -66,9 +69,10 @@ set(gca,'ytick',[0E10 1.10E10])
 xlabel('Days')
 
 adjustfigurefont
-print('DaystoDeath_2.eps','-depsc','-r300')
+print('DaystoDeath_2','-dsvg','-r300')
 
-[mean(daysmin) std(daysmin)]
+[mean(daysmin) std(daysmin)];
+[min(daysmin) max(daysmin)];
 %% range of days
 % time carrying gear from Amy's cases
 actualmin = data(:,20);
@@ -78,6 +82,14 @@ disentangled = [0; 1; 1; 0; 1; 1; 1; 1; 1; 1]; % yes = 1 no = 0
 disdate = [NaN; 0; 0; NaN; 0; 0; 0; 51; 0; 0];
 float = data(:,6);
 
+for i = 1:10;
+actualminWa(i) = Wa(i,actualmin(i)); % additional work based on actual Min and Max days 
+if i ~= 9
+actualmaxWa(i) = Wa(i,actualmax(i));
+end
+end
+actualmaxWa(9) = NaN; 
+    
 %%
 figure(3); clf; hold on
 [Y,I] = sort(daysmin,'descend');
@@ -125,8 +137,7 @@ return
 %% how many exceeded/did not exceed critical level?
 data(actualmin > daysmin',1) % whales whose minimum duration exceeds threshold
 data(actualmax > daysmin',1) % whales whose maximum duration exceeds threshold
-actualmax(fate == 1) - daysmin(fate == 1)'
-
+actualmax(fate == 1) - daysmin(fate == 1)' % if died, days before daysmin 
 %%
 
 figure(2); clf; hold on
