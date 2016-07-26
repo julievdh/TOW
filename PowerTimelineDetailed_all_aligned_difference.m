@@ -140,11 +140,11 @@ power_EAll = vertcat(power_E(:,8),ARK.power_E); % combine entangled power for me
 cmat = zeros(25,3);
 cmat(fate == 1) = 1; % 1 = dead
 
-for i = 1:25
+for i = 1:15
     % plot transition to entangled
     h1 = plot([-0.25 1.25],[powerAll(i) power_EAll(i)],':','color',cmat(i,:));
     h2 = plot([-0.25 1.25],[powerAll(i) power_EAll(i)],'o','markeredgecolor',cmat(i,:));
-    h3 = plot(2,power_EAll(i)-powerAll(i),'o','color',cmat(i,:))
+    h3 = plot(2,power_EAll(i)-powerAll(i),'o','color',cmat(i,:));
     if i <= 15
         set(h1,'linestyle','-');
         set(h2,'markerfacecolor',cmat(i,:));
