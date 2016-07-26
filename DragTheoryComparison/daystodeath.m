@@ -5,10 +5,10 @@
 IndCd_ARKcases
 
 %% power = (drag x speed)/efficiency
-% entangled efficiency = 0.05
-% nonentangled efficiency = 0.065
-Pe = (Dtot*1.23)./0.05;
-Pn = (whaleDf*1.23)./0.065;
+% entangled efficiency = 0.16 -- these changed 24 July 2016 with revisions.
+% nonentangled efficiency = 0.17 -- NSD between the two
+Pe = (Dtot*1.23)./0.16;
+Pn = (whaleDf*1.23)./0.17;
 
 [h,p,ci,stats] = ttest2(Pe,Pn);
 
@@ -19,46 +19,56 @@ Wn = Pn*d*24*60*60; % J required for one day, not entangled
 We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
+
+
 %% find days til minwork
 for i = 1:10;
-    daysmin(i) = min(find(Wa(i,:) > 1.86E10));
-    days_max = min(find(Wa(i,:) > 2.27E11));
-    if isempty(days_max) == 1
-        daysmax(i) = 4000;
-    else daysmax(i) = days_max;
+    days_min = min(find(Wa(i,:) > 1.10E10 )); % this is 75th quantile of MINIMUM additional energy
+    if isempty(days_min) == 1
+        daysmin(i) = NaN;
+    else
+        daysmin(i) = days_min;
     end
 end
 
 %% kernel density of days
 [f_min,xi_min] = ksdensity(daysmin,'bandwidth',25);
-[f_max,xi_max] = ksdensity(daysmax,'bandwidth',250);
 
 %% plot
-figure(1); clf 
-subplot('position',[0.05 0.1 0.4,0.85]); hold on
-scatter(zeros(10,1),Wn(:,1),'ko','filled')
-scatter(repmat(0.5,10,1),We(:,1),'bo','filled')
+figure(1); clf; hold on
+% subplot('position',[0.05 0.1 0.4,0.85]); hold on
+scatter(zeros(10,1),Wn(:,1),60,'ko','filled')
+scatter(repmat(0.5,6,1),We(flt == 1,1),60,'b^','filled')
+scatter(repmat(0.5,4,1),We(flt == 0,1),60,'b^','filled')
 plot([0 0.5],[Wn(:,1) We(:,1)],'k:')
-plot(1,Wa(:,1),'bo')
+scatter(ones(6,1),Wa(flt == 1,1),60,'b^','filled')
+scatter(ones(4,1),Wa(flt == 0,1),60,'bo','filled')
+
 ylabel('Work (J)')
 xlim([-0.25 1.25])
-set(gca,'xticklabel',{'W_n','W_e','W_a'})
-text(-0.15,6.6E8,'A','FontSize',20,'FontWeight','Bold')
+set(gca,'xtick',[0 0.5 1],'xticklabel',{'W_n','W_e','W_a'})
+text(-0.2,3.8E8,'A','FontSize',20,'FontWeight','Bold')
+box on
 
-subplot('position',[0.475 0.1 0.425 0.85]); hold on
-plot(d,Wa,'b')
+adjustfigurefont
+print('ARK_Wa','-dsvg','-r300')
+%%
+figure(2); clf; hold on
+% subplot('position',[0.475 0.1 0.425 0.85]); hold on
+plot(d,Wa,'k:')
 % plot death threshold
-plot([0 1200],[1.86E10 1.86E10],'r--')
+plot([0 4000],[1.10E10 1.10E10 ],'r--')
 %plot(daysmin,repmat(1.86E10,13,1),'r*')
-plot(xi_min,f_min*1.5E12+1.86E10,'k')
-ylim([0 3.5E10]); xlim([0 400])
-text(15,3.3E10,'B','FontSize',20,'FontWeight','Bold')
-set(gca,'ytick',[0E10 1E10 2E10 3E10])
+plot(xi_min,f_min*5E11+1.10E10,'k')
+ylim([0 1.5E10]); xlim([0 400])
+text(15,1.43E10,'B','FontSize',20,'FontWeight','Bold')
+set(gca,'ytick',[0E10 1.10E10])
 xlabel('Days')
 
 adjustfigurefont
-print('DaystoDeath_2.tif','-dtiff','-r300')
+print('DaystoDeath_2.eps','-depsc','-r300')
 
+[mean(daysmin) std(daysmin)]
 %% range of days
 % time carrying gear from Amy's cases
 actualmin = data(:,20);
@@ -66,30 +76,31 @@ actualmax = data(:,21); % 3392 NAN because don't know birth date, never seen bef
 fate = data(:,19); % 0 alive; 1 died
 disentangled = [0; 1; 1; 0; 1; 1; 1; 1; 1; 1]; % yes = 1 no = 0
 disdate = [NaN; 0; 0; NaN; 0; 0; 0; 51; 0; 0];
+float = data(:,6);
 
 %%
 figure(3); clf; hold on
-barh([actualmin actualmax-actualmin],'stacked')
+[Y,I] = sort(daysmin,'descend');
+
+barh([actualmin(I) actualmax(I)-actualmin(I)],'stacked')
 for i = 1:10
-plot([daysmin(i) daysmin(i)],[i-0.5 i+0.5],'r','LineWidth',1.5)
-if disentangled(i) == 1
-    if flt(i) == 0
-    plot(830,i,'ko','MarkerFaceColor','k','MarkerSize',15)
-    else if flt(i) == 1
-        plot(830,i,'k^','MarkerFaceColor','k','MarkerSize',15)
+plot([daysmin(I(i)) daysmin(I(i))],[i-0.5 i+0.5],'r','LineWidth',1.5)
+if flt(I(i)) == 0
+    plot(1050,i,'ko','MarkerFaceColor','k','MarkerSize',15)
+    else if flt(I(i)) == 1
+        plot(1050,i,'k^','MarkerFaceColor','k','MarkerSize',15)
         end
-    end
-    plot([disdate(i) disdate(i)],[i-0.5 i+0.5],'k','LineWidth',1.5)
+end
+if disentangled(I(i)) == 1
+     plot([disdate(I(i)) disdate(I(i))],[i-0.5 i+0.5],'k','LineWidth',1.5)
 end
 end
-
-
 % add disentanglement dates
 % add fates (color labels)
-
+ylim([0 11])
 xlabel('Days Entangled'); 
-set(gca,'ytick',[1:10],'yticklabel',whales)
-xlim([0 850])
+set(gca,'ytick',[1:10],'yticklabel',data(I,1))
+xlim([0 1100])
 myC= [0.75 0.75 0.75; 1 1 1];
 colormap(myC)
 
@@ -100,16 +111,21 @@ ax2 = axes('Position',ax1_pos,...
     'XAxisLocation','top',...
     'Ytick',[],...
     'Color','none');
-xlim([0 850/365.25]); set(gca,'xtick',0:1:2)
+xlim([0 1100/365.25]); set(gca,'xtick',0:1:2)
 xlabel('Years Entangled')
 
 box on
 
 adjustfigurefont
 
-print('EntDuration2.tif','-dtiff','-r300')
+print('EntDuration2.svg','-dsvg','-r300')
 
 return
+
+%% how many exceeded/did not exceed critical level?
+data(actualmin > daysmin',1) % whales whose minimum duration exceeds threshold
+data(actualmax > daysmin',1) % whales whose maximum duration exceeds threshold
+actualmax(fate == 1) - daysmin(fate == 1)'
 
 %%
 
@@ -149,4 +165,11 @@ xlabel('Years')
 adjustfigurefont
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('EntDuration.tif','-dtiff','-r300')
+
+%% compare predicted death to durations
+figure; hold on
+plot(actualmin,'o')
+plot(actualmax,'o')
+plot(daysmin,'*')
+plot(find(fate == 1),zeros(length(find(fate == 1)))+1000,'rs')
 
