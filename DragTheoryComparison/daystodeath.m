@@ -5,10 +5,10 @@
 IndCd_ARKcases
 
 %% power = (drag x speed)/efficiency
-% entangled efficiency = 0.16 -- these changed 24 July 2016 with revisions.
-% nonentangled efficiency = 0.17 -- NSD between the two
-Pe = (Dtot*1.23)./0.16;
-Pn = (whaleDf*1.23)./0.17;
+% entangled efficiency = 0.13 -- these changed 24 July 2016 with revisions.
+% nonentangled efficiency = 0.13 -- NSD between the two
+Pe = (Dtot*1.23)./0.13;
+Pn = (whaleDf*1.23)./0.13;
 Pa = Pe-Pn; 
 
 [h,p,ci,stats] = ttest2(Pe,Pn);
@@ -26,7 +26,7 @@ mean(Wa(:,1)); % Mean one day swimming increased work
 
 %% find days til minwork
 for i = 1:10;
-    days_min = min(find(Wa(i,:) > 1.10E10 )); % this is 75th quantile of MINIMUM additional energy
+    days_min = min(find(Wa(i,:) > 8.57E9 )); % this is 75th quantile of MINIMUM additional energy AFTER EDITS JULY 26
     if isempty(days_min) == 1
         daysmin(i) = NaN;
     else
@@ -48,9 +48,9 @@ scatter(ones(6,1),Wa(flt == 1,1),60,'b^','filled')
 scatter(ones(4,1),Wa(flt == 0,1),60,'bo','filled')
 
 ylabel('Work (J)')
-xlim([-0.25 1.25])
+xlim([-0.25 1.25]); ylim([0 4.2E8])
 set(gca,'xtick',[0 0.5 1],'xticklabel',{'W_n','W_e','W_a'})
-text(-0.2,3.8E8,'A','FontSize',20,'FontWeight','Bold')
+text(-0.2,4E8,'A','FontSize',20,'FontWeight','Bold')
 box on
 
 adjustfigurefont
@@ -60,12 +60,11 @@ figure(2); clf; hold on
 % subplot('position',[0.475 0.1 0.425 0.85]); hold on
 plot(d,Wa,'k:')
 % plot death threshold
-plot([0 4000],[1.10E10 1.10E10 ],'r--')
-%plot(daysmin,repmat(1.86E10,13,1),'r*')
-plot(xi_min,f_min*5E11+1.10E10,'k')
-ylim([0 1.5E10]); xlim([0 400])
+plot([0 4000],[8.57E9 8.57E9 ],'r--')
+plot(xi_min,f_min*5E11+8.57E9,'k')
+ylim([0 1.5E10]); xlim([0 365])
 text(15,1.43E10,'B','FontSize',20,'FontWeight','Bold')
-set(gca,'ytick',[0E10 1.10E10])
+set(gca,'ytick',[0E10 8.57E9 1E10 14E9])
 xlabel('Days')
 
 adjustfigurefont
@@ -83,13 +82,13 @@ disdate = [NaN; 0; 0; NaN; 0; 0; 0; 51; 0; 0];
 float = data(:,6);
 
 for i = 1:10;
-actualminWa(i) = Wa(i,actualmin(i)); % additional work based on actual Min and Max days 
-if i ~= 9
-actualmaxWa(i) = Wa(i,actualmax(i));
+    actualminWa(i) = Wa(i,actualmin(i)); % additional work based on actual Min and Max days
+    if i ~= 9
+        actualmaxWa(i) = Wa(i,actualmax(i));
+    end
 end
-end
-actualmaxWa(9) = NaN; 
-    
+actualmaxWa(9) = NaN;
+
 %%
 figure(3); clf; hold on
 [Y,I] = sort(daysmin,'descend');

@@ -86,8 +86,8 @@ Dtot = Drag+Dcorr+DI;
 %% Calculate power = (drag x speed)/efficiency
 % entangled efficiency = 0.16
 % nonentangled efficiency = 0.17 based on edits 24 July 2016
-Pe = (Dtot*1.23)./0.16;
-Pn = (Drag*1.23)./0.17;
+Pe = (Dtot*1.23)./0.13;
+Pn = (Drag*1.23)./0.13;
 
 d = 1:1:4000; % days
 

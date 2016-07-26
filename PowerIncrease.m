@@ -1,5 +1,5 @@
 % Whale power from Individual Drag
-
+clear all
 IndCd; close all
 
 %% Power = (D*U)/eta 
@@ -64,38 +64,6 @@ dur_d = dur_s/(60*60*24); % days
 % durations corrected March 25 2015
 mindur = [0.5;263;51;12;5;57;68;5;332;192;25;119;11;137;100];
 maxdur = [23;300;2510;352;64;297;397;487;346;2459;98;435;293;769;3328];
-
-% one day
-% [mean(power_E(:,8)*60*60*24) std(power_E(:,8)*60*60*24) min(power_E(:,8)*60*60*24) max(power_E(:,8)*60*60*24)];
-
-% THESE ARE THE NON-DETAILED TIMELINES
-% % calculate total work (J) over minimum and maximum distances
-% minWork = power(:,8).*mindur*60*60*24;
-% maxWork = power(:,8).*maxdur*60*60*24;
-% minWork_E = power_E(:,8).*mindur*60*60*24;
-% maxWork_E = power_E(:,8).*maxdur*60*60*24;
-% 
-% diff_min = (minWork_E - minWork); % IN J
-% [mean(diff_min) std(diff_min)];
-% diff_max = (maxWork_E - maxWork); % IN J
-% [mean(diff_max) std(diff_max)];
-
-% plot
-figure(2); clf
-subplot(211); hold on
-plot(minWork_E,'o')
-plot(minWork,'o')
-ylabel('Work (J)')
-title('Minimum Work')
-
-subplot(212); hold on
-plot(maxWork_E,'o')
-plot(maxWork,'o')
-ylabel('Work (J)')
-xlabel('Case Number')
-title('Maximum Work')
-legend('Entangled','Not Entangled','Location','SW')
-
 
 %% incorporate fate 0 = alive, 1 = died
 fate = [0; 0; 1; 0; 0; 1; 0; 0; 1; 1; 0; 0; 0; 1; 1]; % these are towed cases
