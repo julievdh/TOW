@@ -68,16 +68,17 @@ maxdur = [23;300;2510;352;64;297;397;487;346;2459;98;435;293;769;3328];
 % one day
 % [mean(power_E(:,8)*60*60*24) std(power_E(:,8)*60*60*24) min(power_E(:,8)*60*60*24) max(power_E(:,8)*60*60*24)];
 
-% calculate total work (J) over minimum and maximum distances
-minWork = power(:,8).*mindur*60*60*24;
-maxWork = power(:,8).*maxdur*60*60*24;
-minWork_E = power_E(:,8).*mindur*60*60*24;
-maxWork_E = power_E(:,8).*maxdur*60*60*24;
-
-diff_min = (minWork_E - minWork); % IN J
-[mean(diff_min) std(diff_min)];
-diff_max = (maxWork_E - maxWork); % IN J
-[mean(diff_max) std(diff_max)];
+% THESE ARE THE NON-DETAILED TIMELINES
+% % calculate total work (J) over minimum and maximum distances
+% minWork = power(:,8).*mindur*60*60*24;
+% maxWork = power(:,8).*maxdur*60*60*24;
+% minWork_E = power_E(:,8).*mindur*60*60*24;
+% maxWork_E = power_E(:,8).*maxdur*60*60*24;
+% 
+% diff_min = (minWork_E - minWork); % IN J
+% [mean(diff_min) std(diff_min)];
+% diff_max = (maxWork_E - maxWork); % IN J
+% [mean(diff_max) std(diff_max)];
 
 % plot
 figure(2); clf
@@ -107,11 +108,15 @@ PowerTimelineDetailed_all_aligned_difference
 return 
 %% stats
 [h,p,ci,stats] = ttest2(min_Wa(fate == 0),min_Wa(fate == 1))
-[h,p,ci,stats] = ttest2(max_Wa(fate == 0),max_Wa(fate == 1))
+[mean(min_Wa(fate == 0)) std(min_Wa(fate == 0))]; % mean SD min additional survived
+[mean(min_Wa(fate == 1)) std(min_Wa(fate == 1))]; % died
 
+[h,p,ci,stats] = ttest2(max_Wa(fate == 0),max_Wa(fate == 1))
+[mean(min_Wa(fate == 0)) std(min_Wa(fate == 0))]; % mean SD max additional survived
+[mean(min_Wa(fate == 1)) std(min_Wa(fate == 1))]; % died
 %% calculate difference in entangled vs non entangled power
-pdiff = power_EAll - powerAll;
-foldinc = power_EAll./powerAll;
+pdiff = power_E(:,8) - power(:,8);
+foldinc = power_E(:,8)./power(:,8);
 % is it that cases with more gear drag are more lethal? or is it duration
 % that matters? 
 [h,p,ci,stats] = ttest2(pdiff(fate == 0),pdiff(fate == 1))
@@ -145,7 +150,7 @@ disp('meanSD max Wa (J) Fate == 1'); [mean(max_Wa(fate == 1)) std(max_Wa(fate ==
 disp('meanSD power increase (W) Fate == 0'); [mean(pdiff(fate == 0)) std(pdiff(fate == 0))] % alive
 disp('meanSD power increase (W) Fate == 1'); [mean(pdiff(fate == 1)) std(pdiff(fate == 1))] % died
 
-disp('0.95 Quantile Threshold'); quantile(min_Wa(fate == 1)',0.95)
+disp('0.75 Quantile Threshold'); quantile(min_Wa(fate == 1)',0.75)
 
 disp('increase in power'); 
 [mean(power_foldinc(:)) std(power_foldinc(:))]
