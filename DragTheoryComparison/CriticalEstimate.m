@@ -51,9 +51,13 @@ else
     %% Get corrected gear drag
     if flt == 0 % if there are no floats
         [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1));
-    else % use information for the floats (area, drag coefficient)
+    else if size(flt,2) == 1
+            load('LENGTHfit')
+    Dcorr = feval(lnthFIT,gearLength,num2str(flt(1)));
+        else % use information for the floats (area, drag coefficient)
         [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1),flt(2),flt(3));
     end
+end
 end
 
 
@@ -84,8 +88,8 @@ end
 Dtot = Drag+Dcorr+DI;
 
 %% Calculate power = (drag x speed)/efficiency
-% entangled efficiency = 0.16
-% nonentangled efficiency = 0.17 based on edits 24 July 2016
+% entangled efficiency = 0.13
+% nonentangled efficiency = 0.13 based on edits 24 July 2016
 Pe = (Dtot*1.23)./0.13;
 Pn = (Drag*1.23)./0.13;
 
