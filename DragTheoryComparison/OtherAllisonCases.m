@@ -77,4 +77,18 @@ Crit(i,2) = CriticalEstimate(Age(i),[],L(i),flt(i),D(i),[]); % length and presen
 Crit(i,3) = CriticalEstimate(Age(i),[],L(i),flt(i),D(i),[pApt.pt(i,:) pApt.A(i,:) pApt.p(i,:)]); % length, p/a float, diameter, attachment
 Crit(i,4) = CriticalEstimate(Age(i),[],L(i),[flt(i) A(i) C(i)],D(i),[pApt.pt(i,:) pApt.A(i,:) pApt.p(i,:)]);  % length, float dimensions, diameter, attachment
 end
+%%
+figure(2); clf; hold on
+for i = 1:length(L)
+h = plot(L(i),Crit(i,4),'bo');
+h2 = plot([L(i) L(i)],[min(Crit(i,:)) max(Crit(i,:))],'b');
+if flt(i) == 1
+    set(h,'marker','^','color','g')
+    set(h2,'color','g')
+end
+end
+xlabel('Total Line Length (m)'); ylabel('Critical Duration (days)')
+adjustfigurefont
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
+print('CritDurSensitivity2','-dpdf','-r300')
