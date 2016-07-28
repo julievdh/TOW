@@ -2,22 +2,22 @@ function [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDi
 % estimate minimum critical entanglement duration based on whale and gear
 % dimensions
 % inputs
-    % whaleAge: age of whale [years]
-    % whaleLength: length of whale [m]
-    % gearLength: length of gear (total) [m]
-    % flt: array of information for floats.
-        % 0 = no floats
-        % 1 = floats
-        % if 1, should enter also wetted area [m^2] and drag coefficient []
-        % of floats, so should be [1 __ __];
-    % gearDiam: diameter of line [m]
-    % attachment: array of information for attachment points [pt A p]
-        % pt = location of attachment point [m]
-        % A = frontal area of attachment points [m^2]
-        % p = height of protuberance at each attachment [m]
+% whaleAge: age of whale [years]
+% whaleLength: length of whale [m]
+% gearLength: length of gear (total) [m]
+% flt: array of information for floats.
+% 0 = no floats
+% 1 = floats
+% if 1, should enter also wetted area [m^2] and drag coefficient []
+% of floats, so should be [1 __ __];
+% gearDiam: diameter of line [m]
+% attachment: array of information for attachment points [pt A p]
+% pt = location of attachment point [m]
+% A = frontal area of attachment points [m^2]
+% p = height of protuberance at each attachment [m]
 % outputs:
-    % daysmin: minimum critical duration [days]
-    % daysmax: maximum critical duration [days]
+% daysmin: minimum critical duration [days]
+% daysmax: maximum critical duration [days]
 
 %% Estimate other morphometrics from age
 % if input age, estimate length
@@ -53,11 +53,11 @@ else
         [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1));
     else if size(flt,2) == 1
             load('LENGTHfit')
-    Dcorr = feval(lnthFIT,gearLength,num2str(flt(1)));
+            Dcorr = feval(lnthFIT,gearLength,num2str(flt(1)));
         else % use information for the floats (area, drag coefficient)
-        [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1),flt(2),flt(3));
+            [Dcorr,Dtheor] = TOWDRAGest_AnyCorrect(gearLength,gearDiam,flt(1),flt(2),flt(3));
+        end
     end
-end
 end
 
 
@@ -67,9 +67,19 @@ if isempty(attachment) ~= 1
     % pt = location of attachment point [m]
     % A = frontal area of attachment points [m^2]
     % p = height of protuberance at each attachment [m]
-    pt = attachment(1);
-    A = attachment(2);
-    p = attachment(3);
+    % because entry can be multiple attachment points, parse at NaNs:
+    if sum(isnan(attachment)) == 0 % if 5 attachment points, no NaNs
+        pt = attachment(1:5); A = attachment(6:10); p = attachment(11:15);
+    else
+    a = attachment;
+    b=[0 find(isnan(a)) numel(a)+1];
+    c=arrayfun(@(x)a(b(x)+1:b(x+1)-1),1:numel(b)-1,'uni',0);
+    c(cellfun(@isempty,c))=[]; %remove empty cells caused by consecutive NaN
+    c{:};
+    pt = c{1};
+    A = c{2};
+    p = c{3};
+    end
     
     % calculate width
     [width,stations] = bodywidth(l);
@@ -102,6 +112,6 @@ Wa = We-Wn;
 
 %% find days til minwork
 Wc = 8.57E9; % J, 0.75 quantile threshold additional energy expenditure of whales who died
-critDur = min(find(Wa > Wc)); 
+critDur = min(find(Wa > Wc));
 end
 
