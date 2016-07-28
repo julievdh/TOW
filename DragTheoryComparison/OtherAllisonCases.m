@@ -52,17 +52,29 @@ yr15_300m_0016_a_fd = CriticalEstimate(15,[],300,flt,gearDiam,attachment);
 
 
 figure(1); clf; hold on
-plot([30 100 300],[yr15_30m yr15_100m yr15_300m],'b')
+plot([30 100 300],[yr15_30m yr15_100m yr15_300m],'b:')
 plot([30 100 300],[yr15_30m_0016 yr15_100m_0016 yr15_300m_0016],'b--')
-plot([30 100 300],[yr15_30m_0016_a yr15_100m_0016_a yr15_300m_0016_a],'b:')
-plot([30 100 300],[yr15_30m_f yr15_100m_f yr15_300m_f],'g')
-plot([30 100 300],[yr15_30m_0016_f yr15_100m_0016_f yr15_300m_0016_f],'g--')
-plot([30 100 300],[yr15_30m_0016_a_f yr15_100m_0016_a_f yr15_300m_0016_a_f],'g:')
+plot([30 100 300],[yr15_30m_0016_a yr15_100m_0016_a yr15_300m_0016_a],'b-')
 plot([30 100 300],[yr15_30m_0016_a_fd yr15_100m_0016_a_fd yr15_300m_0016_a_fd],'g^')
-
+plot([30 100 300],[yr15_30m_f yr15_100m_f yr15_300m_f],'g:')
+plot([30 100 300],[yr15_30m_0016_f yr15_100m_0016_f yr15_300m_0016_f],'g--')
+plot([30 100 300],[yr15_30m_0016_a_f yr15_100m_0016_a_f yr15_300m_0016_a_f],'g-')
 
 xlabel('Gear Length (m)'); ylabel('Critical Duration (days)')
+set(gca,'xtick',[0 30 100 300])
+legend('Length','Length + Diameter','Length + Diameter + Attachment','Float')
+
 adjustfigurefont
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
+print('CritDurSensitivity','-dsvg','-r300')
 
+%% Or estimate sensitivity for actual cases? 
+pApt = load('ARKcase_pApt');
+for i = 1:length(L) 
+Crit(i,1) = CriticalEstimate(Age(i),[],L(i),flt(i),[],[]); % just length and presence/absence of float
+Crit(i,2) = CriticalEstimate(Age(i),[],L(i),flt(i),D(i),[]); % length and presence/absence float, diameter
+Crit(i,3) = CriticalEstimate(Age(i),[],L(i),flt(i),D(i),[pApt.pt(i,:) pApt.A(i,:) pApt.p(i,:)]); % length, p/a float, diameter, attachment
+Crit(i,4) = CriticalEstimate(Age(i),[],L(i),[flt(i) A(i) C(i)],D(i),[pApt.pt(i,:) pApt.A(i,:) pApt.p(i,:)]);  % length, float dimensions, diameter, attachment
+end
 
