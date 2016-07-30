@@ -8,9 +8,6 @@ CriticalEstimate(10,[],36,0,[],[]);
 CriticalEstimate(10,[],6,0,[],[]);
 
 %% 2. Eg 3445
-original = CriticalEstimate(10,[],36,0,[],[]);
-% partialD = CriticalEstimate
-reduced = CriticalEstimate(10,[],36,0,[],[]);
 
 %% 3. Eg 1019 Radiator
 flt = [1 0.4086 0.5];
@@ -70,6 +67,8 @@ cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('CritDurSensitivity','-dsvg','-r300')
 
 %% Or estimate sensitivity for actual cases? 
+IndCd_ARKcases
+%%
 pApt = load('ARKcase_pApt');
 for i = 1:length(L) 
 Crit(i,1) = CriticalEstimate(Age(i),[],L(i),flt(i),[],[]); % just length and presence/absence of float
@@ -92,3 +91,7 @@ adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('CritDurSensitivity2','-dpdf','-r300')
+
+%% values to report:
+estdiff = max(Crit') - min(Crit');
+[mean(estdiff) std(estdiff) min(estdiff) max(estdiff)]
