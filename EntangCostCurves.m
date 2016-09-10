@@ -293,4 +293,4 @@ set(gca,'xticklabels',{'D','M','J','S'},'xtick',1:3:133,'ytick',0:1)
 text(2,1.75,'D','FontSize',18,'FontWeight','Bold')
 ylabel('Relative Energetic Cost');
 adjustfigurefont
-print('CostCurves_All','-dpng','-r300')
+print('CostCurves_All','-dsvg','-r300')
