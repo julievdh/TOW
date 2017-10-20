@@ -95,3 +95,52 @@ print('CritDurSensitivity2','-dpdf','-r300')
 %% values to report:
 estdiff = max(Crit') - min(Crit');
 [mean(estdiff) std(estdiff) min(estdiff) max(estdiff)]
+
+%% Eg 3530 Ruffian
+% [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+meshA = 0.1244+0.0832+0.189;
+rodA = pi*[1.40 1.48 1.5 1.8 1.81].*[0.0258 0.02 0.0133 0.0164 0.0135];
+potA = sum(rodA) + meshA; 
+
+flt = [1 potA 0.5]; 
+attachment = [1 4E-4 0.016];
+critDur = CriticalEstimate(13,[],138,flt,0.016,attachment);
+
+% drag from weight only
+Dcorr_weight = 5.9 + 9.1*(19.1+61) % 19.1 kg of rope + 61 kg TRAP
+% drag from length only, with float 
+load('LENGTHfit')
+% DCORR for lobster:
+Dcorr = 50.808 + 0.418*529.2480;
+
+
+%% 3603 Starboard
+% [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+meshA = 0.1244+0.0832+0.189;
+rodA = pi*[1.40 1.48 1.5 1.8 1.81].*[0.0258 0.02 0.0133 0.0164 0.0135];
+potA = sum(rodA) + meshA; 
+
+flt = [1 4*potA 0.5]; 
+attachment = [1 4E-4 0.016];
+critDur = CriticalEstimate([],13.3,32,flt,0.016,attachment);
+
+% drag from weight only
+Dcorr_weight2 = 5.9 + 9.1*(200) % 180lbs + 200 lbs = 200 kg
+Dcorr_weight4 = 5.9 + 9.1*(400) % 4 traps
+
+% drag from length only, with float 
+% DCORR for lobster - 2 traps
+Dcorr1 = 50.808 + 0.418*695;
+% 4 traps
+Dcorr2 = 50.808 + 0.418*1.3429e+03;
+
+%% plot these bars 
+snowcrabdata(1,16:19) = [297 297 259 259]; % whale body
+snowcrabdata(2,16:19) = [1 1 106 192]; % interference
+snowcrabdata(3,16:19) = [73 179 63 63]; % rope
+snowcrabdata(4,16:19) = [270 530 341 695];
+snowcrabdata(5,16:19) = [0 0 612 1300];
+
+figure(98)
+bar(snowcrabdata','stacked')
+

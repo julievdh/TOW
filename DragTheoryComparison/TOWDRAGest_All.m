@@ -1,6 +1,7 @@
 % TOWDRAGEst_All
 % Estimate expected theoretical drag for all TOWDRAG gear sets
 
+cd /Users/julievanderhoop/Documents/MATLAB/TOW
 load('TOWDRAG')
 
 % gear sets with line only == 1
@@ -88,7 +89,7 @@ print('MeasExpected_Slopes.eps','-depsc','-r300')
 
 %% How much are we overestimating with theory?
 
-% set up tow matrix
+% set up tow matrix: each row is a gear set, each column is a speedxdepth
 for gearset = [2:13,15:20]
     towmatrix(gearset,:) = abs(TOWDRAG(gearset).mn_dragN);
 end
@@ -101,7 +102,7 @@ towmatrix(towmatrix == 0) = NaN;
 
 % separate lobster trap (1), telem buoy (21), and gillnet (14)
 
-measured = reshape(towmatrix,[],1);
+measured = reshape(towmatrix,[],1); 
 expected = reshape(Rx,[],1);
 float = repmat(flt,9,1);
 

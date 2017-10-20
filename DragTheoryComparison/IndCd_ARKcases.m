@@ -166,7 +166,7 @@ xlim([0.5 10.5])
 adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
-print('DragContribution_ARK','-dtiff','-r300')
+print('DragContribution_ARK','-dsvg','-r300')
 
 %%
 

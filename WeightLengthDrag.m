@@ -178,3 +178,14 @@ anova(fit);
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
 print('4069_Fig5.eps','-depsc','-r300')
+return 
+%% Add Snow Crab data 
+% Ruffian 
+% length
+plot([137.6 137.6],[0 350],'k:') % Ruffian
+plot([39 39],[0 350],'k:') % Starboard
+
+% weight
+plot([19.1+61 19.1+61],[0 350],'k:') % Ruffian
+plot([200 200],[0 350],'k:')
+
