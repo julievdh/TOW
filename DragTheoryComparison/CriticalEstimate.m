@@ -30,6 +30,8 @@ end
 % if input length, use length
 if isempty(whaleLength) ~= 1
     l = whaleLength;
+    d_max=0.21*(l*100)+38.63;
+    d_max = d_max/100; % convert to m
 end
 if l > 70;
     disp('Whale length should be entered in m - please check input')
@@ -68,17 +70,20 @@ if isempty(attachment) ~= 1
     % A = frontal area of attachment points [m^2]
     % p = height of protuberance at each attachment [m]
     % because entry can be multiple attachment points, parse at NaNs:
-    if sum(isnan(attachment)) == 0 % if 5 attachment points, no NaNs
+    if size(attachment,1) == 1
+        pt = attachment(1); A = attachment(2); p = attachment(3);
+    else if  sum(isnan(attachment)) == 0 % if 5 attachment points, no NaNs
         pt = attachment(1:5); A = attachment(6:10); p = attachment(11:15);
     else
-    a = attachment;
-    b=[0 find(isnan(a)) numel(a)+1];
-    c=arrayfun(@(x)a(b(x)+1:b(x+1)-1),1:numel(b)-1,'uni',0);
-    c(cellfun(@isempty,c))=[]; %remove empty cells caused by consecutive NaN
-    c{:};
-    pt = c{1};
-    A = c{2};
-    p = c{3};
+        a = attachment;
+        b=[0 find(isnan(a)) numel(a)+1];
+        c=arrayfun(@(x)a(b(x)+1:b(x+1)-1),1:numel(b)-1,'uni',0);
+        c(cellfun(@isempty,c))=[]; %remove empty cells caused by consecutive NaN
+        c{:};
+        pt = c{1};
+        A = c{2};
+        p = c{3};
+    end
     end
     
     % calculate width
@@ -93,6 +98,7 @@ if isempty(attachment) ~= 1
 else
     DI = 0;
 end
+
 
 %% calculate total
 Dtot = Drag+Dcorr+DI;
@@ -111,7 +117,7 @@ We = Pe*d*24*60*60; % J required for one day, entangled
 Wa = We-Wn;
 
 %% find days til minwork
-Wc = 8.57E9; % J, 0.75 quantile threshold additional energy expenditure of whales who died
+Wc = 8.57E9; % J, 0crit.75 quantile threshold additional energy expenditure of whales who died
 critDur = min(find(Wa > Wc));
 end
 

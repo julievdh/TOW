@@ -218,12 +218,53 @@ end
 % plot averages
 plot(U,mean(whaleDf),'color',[38/255 80/255 170/255],'LineWidth',3)
 plot(U,mean(DI),'color',[0.494 0.184 0.556],'LineWidth',3)
-plot(U,mean(yfit'),'.-','color',[0.829 0.594 0.025],'LineWidth',3)
+plot(U,mean(yfit'),'.-','color',[1 38/255 0],'LineWidth',3)
 plot(U,mean(Dtot),'k','LineWidth',3)
 
-box on
+%% for presentation
+% plot mins and maxs of each
+figure(15), clf, hold on
+plot_ci(U',[mean(whaleDf)' max(whaleDf)' min(whaleDf)'], 'PatchColor', [38/255 80/255 170/255] ,...
+    'PatchAlpha', 0.1,'MainLineWidth', 2, 'MainLineStyle', '-', 'MainLineColor', [38/255 80/255 170/255], ...
+    'LineWidth', 1, 'LineStyle','-', 'LineColor', 'w');
+
+plot_ci(U',[mean(DI)' max(DI)' min(DI)'], 'PatchColor', [0.494 0.184 0.556] ,...
+    'PatchAlpha', 0.1,'MainLineWidth', 2, 'MainLineStyle', '-', 'MainLineColor', [0.494 0.184 0.556], ...
+    'LineWidth', 1, 'LineStyle','-', 'LineColor', 'w');
+
+plot_ci(U',[mean(yfit')' max(yfit')' min(yfit')'], 'PatchColor', [236/255 65/255 0] ,...
+    'PatchAlpha', 0.1,'MainLineWidth', 2, 'MainLineStyle', '-', 'MainLineColor', [236/255 65/255 0], ...
+    'LineWidth', 1, 'LineStyle','-', 'LineColor', 'w');
+
+plot_ci(U',[mean(Dtot)' max(Dtot)' min(Dtot)'], 'PatchColor', 'k' ,...
+    'PatchAlpha', 0.2,'MainLineWidth', 2, 'MainLineStyle', '-', 'MainLineColor', 'k', ...
+    'LineWidth', 1.5, 'LineStyle','--', 'LineColor', 'k');
+
+box on, xlim([0.5 2.5]), ylim([0 2500])
 xlabel('Speed (m/s)'); ylabel('Drag (N)')
 adjustfigurefont
+set(gca,'fontsize',20)
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/PresentationFigs
+print('-dpng','4069_Fig5_Patch','-r300')
+
+%% do a stacked bar 
+figure(16)
+H = bar([mean(whaleDf(:,8)) max(whaleDf(:,8)); mean(DI(:,8)) max(DI(:,8)); mean(yfit(:,8)') max(yfit(:,8)')]','stack');
+myC= [38/255 80/255 170/255;
+    0.494 0.184 0.556;
+    236/255 65/255 0]; % colours
+for z=1:3
+  set(H(z),'facecolor',myC(z,:)) % set colours
+end
+% legend('Whale Body','Interference Drag','Gear Drag','Location','NE')
+set(gca,'xticklabels',{'Mean','Max'}), ylabel('Drag (N)')
+set(gca,'fontsize',20)
+set(gcf,'position',[1051 86 258 312],'paperpositionmode','auto')
+box off
+print('-dpng','4069_MeanMaxDrag_Bar','-r300')
+
+
+%%
 [legh,objh,outh,outm] = legend('Whale Drag','Interference Drag',...
     'Gear Drag','Total Whale + Gear','Location','NW');
 set(objh,'linewidth',2);

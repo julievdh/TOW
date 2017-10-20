@@ -62,3 +62,28 @@ adjustfigurefont
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/DragTheoryComparison/Figures
 print('ARK_All_EntDuration.svg','-dsvg','-r300')
+
+%% plot all for presentation, without separating experimental ones
+all = [NonMeas; Meas; Other];
+
+figure(1); clf; hold on
+set(gcf,'position',[343 220 1000 293],'paperpositionmode','auto')
+[Y,I] = sort(all(:,2),'ascend');
+bar([all(I,2) all(I,3)-all(I,2)],'stacked')
+xlim([0 73]); ylim([0 3000]); ylabel('Days');
+set(gca,'xtick',[]);
+myC= [0.75 0.75 0.75; 1 1 1];
+colormap(myC)
+
+% make two separate axes
+ax1 = gca; % current axes
+ax1_pos = ax1.Position; % position of first axes
+ax2 = axes('Position',ax1_pos,...
+    'YAxisLocation','right',...
+    'Xtick',[],...
+    'Color','none');
+ylim([0 3000/365.25]); ylabel('Years')
+set(gca,'xtick',0:2:10) 
+adjustfigurefont('Helvetica',18)
+
+print('ARK_All_EntDuration_together.png','-dpng','-r300')
