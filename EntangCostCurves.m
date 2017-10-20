@@ -24,7 +24,7 @@ figure(109); clf; set(gcf,'Position',[48 5 1315 668])
 subplot('position',[0.12 0.1 0.25 0.85]); hold on
 for i = 1:length(mindur);
     plot(t(1:mindur(i)),Wa_meas(i)*(1:mindur(i)),'color',[55/255 126/255 184/255],'LineWidth',1.5)
-    plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),':','color',[55/255 126/255 184/255],'LineWidth',1.5)
+    plot(t(1:maxdur(i)),Wa_meas(i)*(1:maxdur(i)),'--','color',[55/255 126/255 184/255],'LineWidth',1.5)
 end
 xlabel('Days')
 xlim([0 730]); box on
@@ -58,6 +58,10 @@ ylabel('Energetic Cost (J/day)')
 text(-0.3,2.42E9,'A','FontSize',18,'FontWeight','Bold')
 % legend('Migration','Reproduction','Pregnancy','Lactation','Foraging')
 adjustfigurefont
+
+% print just this
+cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs
+print('CostCurves_LeftPanels','-dsvg','-r300')
 
 %% set up to plot male budget
 % entang dates in MATLAB index order

@@ -36,7 +36,7 @@ m_grid('box','fancy','tickdir','out');
 figure(1)
 
 for i = 1:length(entang)-1
-    m_line(entang(i:i+1,3),entang(i:i+1,2),'color','r','Linewidth',1.5)
+    m_line(entang(i:i+1,3),entang(i:i+1,2),'color','b','Linewidth',1.5)
 end
 
 

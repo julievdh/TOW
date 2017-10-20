@@ -147,8 +147,9 @@ colormap(ax2, myC)
 text(0.5,1.07,'A','FontSize',16,'FontWeight','Bold')
 
 %% calculate years until energy equilibrium:
-yrstoeq_min = (allsummin - 48)/(12-sum(sum(data_female(37:48,:))));
-yrstoeq_max = (allsummax - 48)/(12-sum(sum(data_female(37:48,:))));
+FEBR = sum(sum(data_female(:,1:7)));
+yrstoeq_min = (allsummin - FEBR)/(12-sum(sum(data_female(37:48,:))));
+yrstoeq_max = (allsummax - FEBR)/(12-sum(sum(data_female(37:48,:))));
 
 yrstoeq_min = yrstoeq_min(yrstoeq_min > 0);
 yrstoeq_max = yrstoeq_max(yrstoeq_max > 0);

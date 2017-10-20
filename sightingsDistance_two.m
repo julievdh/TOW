@@ -9,28 +9,27 @@ load(filename)
 
 %%
 % find max lat of all sightings
-maxlat = 49;
+maxlat = 30.8;
 
 % find minlat of all sightings
 minlat = 29;
 
 % find maxlong of all sightings
-maxlong = 82.28;
+maxlong = 81.23;
 
 % find minlong of all sightings
-minlong = 56;
+minlong = 81.29;
 
 m_proj('UTM','long',[-maxlong -minlong],'lat',[minlat maxlat]);
 
-%% plot
-
+% plot
 warning off
 
 % plot coastline
 m_gshhs_h('patch',[.9 .9 .9],'edgecolor','k');
 m_grid('linestyle','none','tickdir','out','FontSize',18);
 
-% plot tracks
+%% plot tracks
 figure(1);
 
 for i = 1:length(entang)-1
