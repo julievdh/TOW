@@ -267,7 +267,7 @@ print('-dpng','4069_MeanMaxDrag_Bar','-r300')
 %%
 [legh,objh,outh,outm] = legend('Whale Drag','Interference Drag',...
     'Gear Drag','Total Whale + Gear','Location','NW');
-set(objh,'linewidth',2);
+% set(objh,'linewidth',2);
 ylim([0 2500])
 
 cd /Users/julievanderhoop/Documents/MATLAB/TOW/AnalysisFigs/Paper
@@ -402,6 +402,8 @@ xlim([0.5 2.5])
 xlabel('Speed (m/s)'); ylabel('Freq')
 text(0.60,2.8,'C','FontWeight','bold','FontSize',18)
 adjustfigurefont
+
+return 
 
 %% What is relative contribution of whale vs gear vs interference?
 clear bardata
