@@ -104,43 +104,120 @@ potA = sum(rodA) + meshA;
 
 flt = [1 potA 0.5]; 
 attachment = [1 4E-4 0.016];
-critDur = CriticalEstimate(13,[],138,flt,0.016,attachment);
+[critDur,~,Dtheor] = CriticalEstimate(13,[],138,flt,0.016,attachment);
 
 % drag from weight only
 Dcorr_weight = 5.9 + 9.1*(19.1+61) % 19.1 kg of rope + 61 kg TRAP
 % drag from length only, with float 
 load('LENGTHfit')
 % DCORR for lobster:
-Dcorr = 50.808 + 0.418*529.2480;
+Dcorr = 50.808 + 0.418*Dtheor;
 
 
 %% 3603 Starboard
 % [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
-meshA = 0.1244+0.0832+0.189;
-rodA = pi*[1.40 1.48 1.5 1.8 1.81].*[0.0258 0.02 0.0133 0.0164 0.0135];
-potA = sum(rodA) + meshA; 
 
-flt = [1 4*potA 0.5]; 
-attachment = [1 4E-4 0.016];
-critDur = CriticalEstimate([],13.3,32,flt,0.016,attachment);
+flt = [1 2*potA 0.5];  % 0.5 is drag coefficient for a lobster pot. Our max Cd on lobster gear = 0.69, mean 0.45
+% attachment = [1 4E-4 0.016];
+[critDur,~,Dtheor2] = CriticalEstimate([],13.3,32,flt,0.016,[]);
+
+flt = [1 4*potA 0.5];  % 0.5 is drag coefficient for a lobster pot. Our max Cd on lobster gear = 0.69, mean 0.45
+[critDur,~,Dtheor4] = CriticalEstimate([],13.3,32,flt,0.016,[]);
 
 % drag from weight only
-Dcorr_weight2 = 5.9 + 9.1*(200) % 180lbs + 200 lbs = 200 kg
-Dcorr_weight4 = 5.9 + 9.1*(400) % 4 traps
+Dcorr_weight2 = 5.9 + 9.1*(200); % 180lbs + 200 lbs = 200 kg
+Dcorr_weight4 = 5.9 + 9.1*(400); % 4 traps
 
 % drag from length only, with float 
 % DCORR for lobster - 2 traps
-Dcorr1 = 50.808 + 0.418*695;
+Dcorr2 = 50.808 + 0.418*Dtheor2;
 % 4 traps
-Dcorr2 = 50.808 + 0.418*1.3429e+03;
+Dcorr4 = 50.808 + 0.418*Dtheor4;
 
-%% plot these bars 
-snowcrabdata(1,16:19) = [297 297 259 259]; % whale body
-snowcrabdata(2,16:19) = [1 1 106 192]; % interference
-snowcrabdata(3,16:19) = [73 179 63 63]; % rope
-snowcrabdata(4,16:19) = [270 530 341 695];
-snowcrabdata(5,16:19) = [0 0 612 1300];
+%% whale #9 Gulf of St Lawrence
+glength = 54.81+63.32+34.96; % m
+gdiam = (0.025*54.81 + 0.0219*63.32 + 0.0188*34.96)/glength;% weighted average based on lengths
+flt = [1 potA 0.5];  % 0.5 is drag coefficient for a lobster pot. Our max Cd on lobster gear = 0.69, mean 0.45
+
+[critDur,~,Dtheor9] = CriticalEstimate(2,11.1,glength,flt,gdiam,[]);
+
+Dcorr_weight9 = 5.9 + 9.1*(61); % 61 kg TRAP
+% drag from length only, with float 
+% DCORR for lobster:
+Dcorr9 = 50.808 + 0.418*Dtheor9;
+
+
+
+%% plot these bars with others
+%IndCd % , plot fig 98 
+
+clear bardata
+bardata(1,:) = mean(whaleDf');
+bardata(2,:) = mean(DI');
+bardata(3,:) = mean(yfit);
+
+% Clusters after ADCP data included
+cluster = [3,5,5,5,5,4,4,5,5,5,5,2,5,5,4,4,5,5,5,5,1];
+bardata(5,:) = cluster(1:15); % assign clusters
+[B,I] = sort(bardata(5,:)); % sort by cluster
+bardata = bardata(:,I); % reform data matrix
+figure(98); clf; hold on
+% set(gcf,'position',[18   127   969   546],'paperpositionmode','auto')
+H = bar(bardata(1:3,:)','stacked');
+myC= [0 0 0; 0.5 0.5 0.5; 1 1 1]; % colours
+for z=1:3
+  set(H(z),'facecolor',myC(z,:)) % set colours
+end
+
+snowcrabdata(1,16:21) = [297 297 259 259 130 130]; % whale body
+snowcrabdata(2,16:21) = [1 1 106 192 1 1]; % interference
+snowcrabdata(3,16:21) = [73 179 63 63 167 167]; % rope
+snowcrabdata(4,16:21) = [Dcorr Dcorr_weight Dcorr2 Dcorr_weight2 Dcorr9 Dcorr_weight9];
+snowcrabdata(5,16:19) = [0 0 Dcorr4 Dcorr_weight4];
 
 figure(98)
 bar(snowcrabdata','stacked')
+myC= [38/255 80/255 170/255; 0.494 0.184 0.556; 0 1 0; 236/255 65/255 0; 255/255 255/255 102/255];
+colormap(myC)
 
+% set(gca,'xticklabel',whales(I))
+ylim([0 4000]), xlim([0 22]), box on
+xticklabel_rotate([1:15,16,18,20],90,[whales(I),'Ruffian','Starboard','Whale #9'],'FontSize',18)
+adjustfigurefont('Helvetica',18)
+legend('Whale Body','Interference Drag','Gear Drag','Location','NW')
+
+print('GearDrag_Fig9_snowcrab','-dpng','-r300')
+
+%% submax strength versus drag
+Rsmforce = (.099+0.007*(13.681)^1.56)*1000; % kN to N
+Rmforce = (0.401 + 0.03*(13.861)^1.56)*1000;
+Rdrag = sum(snowcrabdata(1:5,16:17)); % N
+
+Ssmforce = (.099+0.007*(13.3)^1.56)*1000; % kN to N
+Smforce = (0.401 + 0.03*(13.3)^1.56)*1000;
+Sdrag = [sum(snowcrabdata(1:4,18:19)) sum(snowcrabdata(2:5,18:19))]; % N
+
+W9smforce = (.099+0.007*(11.1)^1.56)*1000; % kN to N 
+W9mforce = (0.401 + 0.03*(11.1)^1.56)*1000;
+W9drag = sum(snowcrabdata(1:5,20:21)); % N 
+
+figure(10), clf, hold on
+plot([16 16],[Rsmforce Rmforce],'o-','color',[0.75 0.75 0.75],'markerfacecolor','w')
+plot([17 17],[Ssmforce Smforce],'o-','color',[0.75 0.75 0.75],'markerfacecolor','w')
+plot([18 18],[W9smforce W9mforce],'o-','color',[0.75 0.75 0.75],'markerfacecolor','w')
+xlim([0 19])
+plot([16 16 17 17 17 17 18 18],[Rdrag Sdrag W9drag],'k*')
+
+% 15 other cases: 
+l = [1235;1300;1282;1235;1108;1011;1164;1413;1260;1108;1108;1164;1260;1357;1435]/100;
+allsmforce = (.099+0.007.*(l).^1.56)*1000; 
+allmforce = (0.401 + 0.03.*(l).^1.56)*1000;
+
+for i = 1:length(l)
+    plot([i i],[allsmforce(i) allmforce(i)],'o-','color',[0.75 0.75 0.75],'markerfacecolor','w')
+    plot(i,sum(bardata(1:3,i)),'k*')
+end
+
+ylabel({'Drag (N)',''})
+xticklabel_rotate([1:18],90,[whales(I),'Ruffian','Starboard','Whale #9'],'FontSize',18)
+adjustfigurefont('Helvetica',18)
