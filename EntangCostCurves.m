@@ -298,3 +298,23 @@ text(2,1.75,'D','FontSize',18,'FontWeight','Bold')
 ylabel('Relative Energetic Cost');
 adjustfigurefont
 print('CostCurves_All','-dsvg','-r300')
+
+%% calculations for Deborah Cramer
+sum(sum(data_female(25:36,1:7)))
+
+multby = 50/sum(sum(data_female(25:36,1:7))); % this is the multiplier 
+
+budgetyr1 = data_female(25:36,1:7)*multby;
+sum(budgetyr1) % per column budget over 1 year 
+
+budgetyr_preg = data_female(1:12,1:7)*multby; 
+sum(sum(budgetyr_preg))-sum(sum(budgetyr1))
+
+budgetyr_lac = data_female(13:24,1:7)*multby; 
+sum(sum(budgetyr_lac))-sum(sum(budgetyr1))
+
+% do female cost curves
+allsummin(allsummin == 0) = NaN;
+allsummax(allsummax == 0) = NaN;
+(allsummin-48)*multby
+(allsummax-48)*multby

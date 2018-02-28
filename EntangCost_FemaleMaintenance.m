@@ -7,7 +7,7 @@
 %% Plot female budget like Villegas Amtmann
 clear sumfemale prop_allfemale prop_allfemale_maintenance
 
-sumfemale = sum(data_female(:,1:7)); % sum of female costs over 6 years
+sumfemale = sum(data_female(:,1:7)); % sum of female costs over 4 years
 prop_allfemale = sumfemale./sum(sumfemale); % proportion of total
 % combine maintenance costs
 prop_allfemale_maintenance(3) = sum(prop_allfemale(1:5));
@@ -39,7 +39,7 @@ text(0.6,1.07,'B','FontSize',16,'FontWeight','Bold')
 rightwhaleMigrate = 7.3E9/22; % van der Hoop et al. 2013 (non-entangled, one-way migration in 22 days) = cost per day
 rightwhaleFor = 500E6; % Foraging cost J per day McGregor et al 2010 (cited in Fortune et al 2013)
 
-for i = [2 4 6 7 10 11 13 14] % these are measured females
+for i =[2 4 6 7 10 11 13 14] % these are measured females
     data_female(:,8:9) = 0;
     % calculate relative costs for all females
     rel1 = Wa_meas(i,1)/rightwhaleMigrate;

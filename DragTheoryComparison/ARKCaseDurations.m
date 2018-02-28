@@ -87,3 +87,14 @@ set(gca,'xtick',0:2:10)
 adjustfigurefont('Helvetica',18)
 
 print('ARK_All_EntDuration_together.png','-dpng','-r300')
+
+%% calculations for Deborah Cramer
+migration(1) = size(find(all(:,2) >= 22),1); 
+migration(2) = size(find(all(:,3) >= 22),1); 
+
+preg(1) = size(find(all(:,2) >= 365),1); 
+preg(2) = size(find(all(:,3) >= 365),1); 
+
+calfint(1) = size(find(all(:,2) >= 4*365),1); 
+calfint(2) = size(find(all(:,3) >= 4*365),1); 
+
