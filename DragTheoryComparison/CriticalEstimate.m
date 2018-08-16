@@ -18,6 +18,8 @@ function [critDur,Dcorr,Dtheor] = CriticalEstimate(whaleAge,whaleLength,gearLeng
 % outputs:
 % daysmin: minimum critical duration [days]
 % daysmax: maximum critical duration [days]
+% Dcorr: drag estimate [N] corrected from theory
+% Dtheor: theoretical drag estimate [N]
 
 %% Estimate other morphometrics from age
 % if input age, estimate length
@@ -44,6 +46,14 @@ if isempty(whaleAge)
 else
     Drag = -0.2227*whaleAge.^2 + 18.51*whaleAge + 93.694;
 end
+
+%% to calculate wetted area of buoy: 
+% FOR SPHERE
+% BuoyAw = (pi*(diam)^2) /2 (so diam 0.43 m = 0.29 m^2) 
+% FOR ELLIPSE 
+% p = 1.6072; 
+% a = 0.58; b = 0.32; c = 0.32; (32 cm diameter, 58 cm long buoy)
+% BuoyAw = (4*pi*((a^p*b^p+a^p*c^p+b^p*c^p)/3)^(1/p))/2 = 1.01 m^2.
 
 %% if only length and float, use van der Hoop equation
 if isempty(gearDiam)
