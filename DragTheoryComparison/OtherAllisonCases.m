@@ -95,4 +95,3 @@ print('CritDurSensitivity2','-dpdf','-r300')
 %% values to report:
 estdiff = max(Crit') - min(Crit');
 [mean(estdiff) std(estdiff) min(estdiff) max(estdiff)]
-

@@ -86,11 +86,11 @@ colormap(myC)
 
 % set(gca,'xticklabel',whales(I))
 ylim([0 4000]), xlim([0 32]), box on
-xticklabel_rotate([1:25,26,28,30],90,[whales_all,'Ruffian','Starboard','Whale #9'],'FontSize',18)
+% xticklabel_rotate([1:25,26,28,30],90,[whales_all,'Ruffian','Starboard','Whale #9'],'FontSize',18)
 adjustfigurefont('Helvetica',18)
 legend('Whale Body','Interference Drag','Gear Drag','Location','NW')
 
-print('GearDrag_Fig9_snowcrab','-dpng','-r300')
+%print('GearDrag_Fig9_snowcrab','-dpng','-r300')
 
 %% submax strength versus drag
 Rsmforce = (.099+0.007*(13.681)^1.56)*1000; % kN to N
@@ -151,3 +151,35 @@ plot(3.1127e+03,Rdrag/Rsmforce,'o') % minimum distance of Ruffian
 % add Starboard
 plot(8.8*1.852,Sdrag(1)/Ssmforce,'o')
 plot(0.12*1.852,Sdrag(2)/Ssmforce,'o')
+
+%% 2018
+% Eg 3843, 10 year old male
+% [critDur] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+
+% one reddish/orange low drag buoy marked 55 = 58 cm long, circumference = 99 cm -->
+% 32 cm diameter
+% 64 feet of ¾? sink line and a single low drag buoy
+
+% to calculate wetted area of buoy: 
+% BuoyAw = (pi*(diam)^2) /2 (so diam 0.43 m = 0.29 m^2) % FOR SPHERE
+ % FOR ELLIPSE 
+p = 1.6072; 
+a = 0.58; b = 0.32; c = 0.32; 
+BuoyAw = (4*pi*((a^p*b^p+a^p*c^p+b^p*c^p)/3)^(1/p))/2; 
+
+flt = [1 BuoyAw 0.5]; % yes, wetted area, drag coefficient
+
+
+[critDur_recov,Dgear,~,Dwhale] = CriticalEstimate(10,[],19.5,flt,0.0191,[])
+
+newdata(1,32) = Dwhale;
+newdata(2,32) = 0; 
+newdata(3,32) = Dgear; 
+figure(98)
+h = bar(newdata','stacked');
+set(h(1),'facecolor',[0 0 0])
+set(h(3),'facecolor',[1 1 1])
+xlim([0 33])
+xticklabel_rotate([0:24,26,28,30,32],90,[whales_all,'Ruffian','Starboard','Whale #9','3843'],'FontSize',18)
+
+print('GearDrag_Fig9_snowcrab3843','-dpng','-r300')

@@ -1,4 +1,4 @@
-function [critDur,Dcorr,Dtheor] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
+function [critDur,Dcorr,Dtheor,Drag] = CriticalEstimate(whaleAge,whaleLength,gearLength,flt,gearDiam,attachment)
 % estimate minimum critical entanglement duration based on whale and gear
 % dimensions
 % inputs
