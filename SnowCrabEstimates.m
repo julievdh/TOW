@@ -169,8 +169,30 @@ BuoyAw = (4*pi*((a^p*b^p+a^p*c^p+b^p*c^p)/3)^(1/p))/2;
 
 flt = [1 BuoyAw 0.5]; % yes, wetted area, drag coefficient
 
+% gear removed = 19.5 m; gear remaining = a body length + 10 feet
+[critDur_recovered,Dgear,~,Dwhale] = CriticalEstimate(10,[],19.5,flt,0.0191,[])
+[critDur_all,Dgear_recovered,~,Dwhale] = CriticalEstimate(10,[],19.5+16.3,flt,0.0191,[])
+[critDur_remains,Dgear,~,Dwhale] = CriticalEstimate(10,[],16.3,0,0.0191,[])
 
-[critDur_recov,Dgear,~,Dwhale] = CriticalEstimate(10,[],19.5,flt,0.0191,[])
+% If the pink buoy is added to the first estimate, the weight would include 
+% flooded with water and attached some distance away from the low drag buoy, 
+% say 2 fathoms as that was the max distance allowed for a secondary buoy in 
+% 2018, how would that effect the drag?
+% - add 2 fathoms of line = 3.7 m
+% - add second float: 53 cm long, 80 cm circumference = 25 cm diameter
+
+a = 0.53; b = 0.25; c = 0.25; 
+BuoyAw2 = (4*pi*((a^p*b^p+a^p*c^p+b^p*c^p)/3)^(1/p))/2; 
+BuoyV = (4/3)*pi*a*b*c; % the volume of the pink buoy would be: (4/3)*pi*a*b*c in m^3
+BuoyW = BuoyV*1000*1.025;  % convert m^3 to L, multiply by density (kg/L)
+
+
+flt = [1 BuoyAw+BuoyAw2 0.5];
+[critDur_withpink,Dgear,~,Dwhale] = CriticalEstimate(10,[],19.5+16.3,flt,0.0191,[])
+
+
+Dcorr_weight = 5.9 + 9.1*(BuoyW) % flooded buoy weight
+
 
 newdata(1,32) = Dwhale;
 newdata(2,32) = 0; 
